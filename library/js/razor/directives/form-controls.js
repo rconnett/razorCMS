@@ -5,8 +5,8 @@ define(["angular"], function(angular)
     .directive('slideSwitch', function() {
 		return {
 			restrict: 'E',
-			scope: {"ssModel": "="},
-			template: '<div class="slide-switch" ng-class="{\'slide-switch-on\': ssModel}" ng-click="ssModel = !ssModel"><span class="slide-switch-slider"><span ng-hide="ssModel">OFF</span><span ng-show="ssModel">ON</span></span></div>'
+			scope: {"ssModel": "=", "ssDisabled": "="},
+			template: '<div class="slide-switch" title="{{(ssDisabled ? \'Disabled (is home page)\' : \'\')}}" ng-class="{\'slide-switch-on\': ssModel, \'slide-switch-disabled\': ssDisabled}" ng-click="ssModel = (ssDisabled ? ssModel : !ssModel)"><span class="slide-switch-slider"><span ng-hide="ssModel">OFF</span><span ng-show="ssModel">ON</span></span></div>'
 		};
     })
  

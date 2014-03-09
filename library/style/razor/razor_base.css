@@ -318,6 +318,10 @@ h6 {
   float: right;
   color: #69B0F1;
 }
+.razor-admin .slide-switch.slide-switch-disabled {
+  opacity: 0.6;
+  cursor: default;
+}
 .razor-admin .multi-select {
   color: #000;
   background-color: #f4f4f4;
