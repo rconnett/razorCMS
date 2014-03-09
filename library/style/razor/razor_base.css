@@ -1,0 +1,443 @@
+/* apply razor any fixes */
+*,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Open Sans', Arial;
+}
+.ng-cloak {
+  display: none;
+}
+.mobile-show-block {
+  display: block;
+}
+.mobile-show-inline-block {
+  display: inline-block;
+}
+.mobile-show-inline {
+  display: inline;
+}
+.mobile-hide-block,
+.mobile-hide-inline-block,
+.mobile-hide-inline {
+  display: none;
+}
+@media (min-width: 830px) {
+  .mobile-show-block,
+  .mobile-show-inline-block,
+  .mobile-show-inline {
+    display: none;
+  }
+  .mobile-hide-block {
+    display: block;
+  }
+  .mobile-hide-inline-block {
+    display: inline-block;
+  }
+  .mobile-hide-inline {
+    display: inline;
+  }
+}
+.razor-admin .template-wrapper {
+  padding-top: 60px;
+}
+.razor-admin .dashbar-nav {
+  margin: 0px;
+  padding: 0px;
+  list-style-type: none;
+}
+.razor-admin .dashbar-nav li {
+  height: 50px;
+  display: inline-block;
+}
+.razor-admin .dashbar-nav li:hover {
+  background-color: #f4f4f4;
+}
+.razor-admin .dashbar-nav li.active {
+  background-color: #f4f4f4;
+}
+.razor-admin .dashbar-nav li.active:hover {
+  background-color: #f4f4f4;
+}
+.razor-admin .dashbar-nav li a {
+  height: 50px;
+  line-height: 50px;
+  padding: 0px 20px;
+  display: inline-block;
+  text-decoration: none;
+}
+.razor-admin .alert-form {
+  padding: 6px;
+  margin: 0px;
+  display: inline-block;
+}
+.razor-admin .notification-message {
+  margin: 0px;
+  display: block;
+  padding: 7px;
+  position: fixed;
+  bottom: -200px;
+  left: 50%;
+  width: 40%;
+  margin: 0px 0px 0px -20%;
+  border: 5px solid #444;
+  z-index: 10000;
+  animation: slide-up-down 5s forwards;
+  -moz-animation: slide-up-down 5s forwards;
+  -webkit-animation: slide-up-down 5s forwards;
+  -o-animation: slide-up-down 5s forwards;
+}
+.razor-admin .razor-admin-panel {
+  margin-bottom: 5px;
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 2px 2px -2px rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid #ddd;
+  position: fixed;
+  width: 100%;
+  height: 58px;
+  z-index: 100;
+}
+.razor-admin .razor-admin-panel .login-form {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.razor-admin .razor-admin-panel .login-form .fa-sign-in {
+  font-size: 33px;
+}
+.razor-admin .razor-admin-panel .login-form .error-message {
+  padding: 6px;
+}
+.razor-admin .razor-admin-panel .account-details {
+  padding: 0px 0px 5px 0px;
+}
+.razor-admin .razor-admin-panel .account-details span {
+  display: block;
+  font-size: 12px;
+}
+.razor-admin .razor-admin-panel .account-details span.name {
+  font-weight: bold;
+  font-size: 25px;
+}
+.razor-admin .razor-admin-panel .editor-controls {
+  margin-top: 12px;
+}
+.razor-admin .dashboard-icon {
+  padding: 7px;
+  font-size: 40px;
+  cursor: pointer;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+}
+.razor-admin .dashboard-icon:hover {
+  text-shadow: 0 0 0.3em #0D7DA8;
+}
+.razor-admin .dashboard-icon.alt-color {
+  color: #fff;
+}
+.razor-admin .dashboard-icon.alt-color:hover {
+  text-shadow: 0 0 0.3em #fff;
+}
+.razor-admin .razor-admin-dashboard {
+  margin-top: 60px;
+  position: fixed;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  height: 100%;
+  z-index: 200;
+  color: #fff;
+  overflow-y: auto;
+}
+.razor-admin .razor-admin-dashboard .dash-nav {
+  position: fixed;
+  top: 0px;
+  width: 100%;
+  height: 60px;
+  background-color: #111;
+  z-index: 300;
+}
+.razor-admin .razor-admin-dashboard .dash-nav .navbar {
+  min-height: inherit;
+  margin-top: 10px;
+}
+.razor-admin .razor-admin-dashboard .dash-nav .navbar .navbar-nav li a {
+  padding: 5px 10px;
+}
+.razor-admin .razor-admin-dashboard .dash-workspace {
+  padding-top: 10px;
+  margin-bottom: 60px;
+}
+.razor-admin .editable-menu-link .editable-menu-anchor {
+  cursor: pointer;
+}
+.razor-admin .editable-menu-link .editable-menu-options {
+  padding-left: 5px;
+  min-width: 135px;
+}
+.razor-admin .editable-menu-link .editable-menu-options li {
+  display: inline;
+}
+.razor-admin .content-column.edit {
+  min-height: 50px;
+}
+.razor-admin .content-column.edit .content-block {
+  margin-bottom: 10px;
+  background-color: #fff;
+  border: 1px solid #bbb;
+  opacity: 0.6;
+}
+.razor-admin .content-column.edit .content-block .btn-toolbar {
+  margin: 0px 0px 2px -2px;
+  background-color: transparent;
+}
+.razor-admin .content-column.edit .content-block:hover,
+.razor-admin .content-column.edit .content-block.active {
+  opacity: 1;
+}
+.razor-admin .content-column.edit .content-block .content-view {
+  height: auto;
+  min-height: 50px;
+  width: 100%;
+}
+.razor-admin .content-column.edit .content-block textarea {
+  height: auto;
+  min-height: 150px;
+  width: 100%;
+}
+.razor-admin .content-column.edit .content-block > div {
+  width: 100% !important;
+  background-color: #fff;
+}
+.razor-admin .content-column.edit .content-block > div .nicEdit-main {
+  width: 99% !important;
+}
+.razor-admin .modal .modal-header h1,
+.razor-admin .modal .modal-header h2,
+.razor-admin .modal .modal-header h3,
+.razor-admin .modal .modal-header h4,
+.razor-admin .modal .modal-header h5,
+.razor-admin .modal .modal-header h6 {
+  margin: 3px;
+}
+.razor-admin .modal .modal-header .fa-times {
+  cursor: pointer;
+}
+.razor-admin .accordian .panel-title a {
+  cursor: pointer;
+  text-decoration: none;
+}
+.razor-admin .accordian .panel-title a .expander {
+  font-size: 20px;
+  padding: 0px;
+}
+.razor-admin .accordian .panel-title a .expander.button-heading {
+  padding-top: 5px;
+}
+.razor-admin .accordian .content {
+  color: #000;
+}
+.razor-admin .accordian .content .table-data {
+  margin: 20px 0px 0px 0px;
+}
+.razor-admin .accordian .content .page-preview {
+  margin-top: 20px;
+  margin-bottom: -255px;
+  height: 250px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid #ccc;
+}
+.razor-admin .accordian .content .page-preview.for-menu {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+.razor-admin .accordian .content .page-preview iframe {
+  border: none;
+  width: 200%;
+  height: 500px;
+  -ms-zoom: 0.5;
+  -moz-transform: scale(0.5);
+  -moz-transform-origin: 0 0;
+  -o-transform: scale(0.5);
+  -o-transform-origin: 0 0;
+  -webkit-transform: scale(0.5);
+  -webkit-transform-origin: 0 0;
+}
+.razor-admin .accordian .content .page-preview .preview-mask {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 97%;
+  height: 100%;
+}
+.razor-admin .accordian .content .content-preview {
+  margin-top: 20px;
+  height: 250px;
+  overflow: scroll;
+  border: 1px solid #ccc;
+}
+.razor-admin .accordian .content .used_on_pages {
+  padding: 2px 4px;
+  border: 1px solid #ccc;
+  margin: 3px;
+  display: inline-block;
+  background-color: #eee;
+}
+.razor-admin .accordian .filter {
+  margin-bottom: 20px;
+}
+.razor-admin .slide-switch {
+  display: block;
+  padding: 2px;
+  width: 100px;
+  height: 35px;
+  background-color: #aaa;
+  border: 2px solid #555;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.razor-admin .slide-switch .slide-switch-slider {
+  display: block;
+  height: 27px;
+  width: 50px;
+  background-color: #555;
+  float: left;
+  text-align: center;
+  padding-top: 5px;
+  font-size: 11px;
+  color: #aaa;
+  border-radius: 2px;
+}
+.razor-admin .slide-switch.slide-switch-on {
+  background-color: #69B0F1;
+}
+.razor-admin .slide-switch.slide-switch-on .slide-switch-slider {
+  float: right;
+  color: #69B0F1;
+}
+.razor-admin .multi-select {
+  color: #000;
+  background-color: #f4f4f4;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  padding: 2px;
+  position: relative;
+}
+.razor-admin .multi-select .ms-input-filter,
+.razor-admin .multi-select .ms-input-select {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  color: #777;
+}
+.razor-admin .multi-select .ms-selected {
+  list-style-type: none;
+  width: 100%;
+  display: block;
+  margin: 0px 0px 3px 0px;
+  padding: 0px;
+}
+.razor-admin .multi-select .ms-selected .ms-selected-item {
+  color: #444;
+  border: 1px solid #bbb;
+  background-color: #ddd;
+  margin: 1px;
+  padding: 2px 6px;
+  border-radius: 3px;
+  display: inline-block;
+  font-weight: bold;
+  font-size: 14px;
+}
+.razor-admin .multi-select .ms-selected .ms-selected-item .ms-remove-item {
+  margin-left: 3px;
+  cursor: pointer;
+}
+.razor-admin .multi-select .ms-filter {
+  width: 100%;
+  display: block;
+  height: 29px;
+  padding: 3px;
+}
+.razor-admin .multi-select .ms-options {
+  list-style-type: none;
+  color: #000;
+  position: absolute;
+  min-width: 50%;
+  display: block;
+  z-index: 10000;
+  background-color: #fff;
+  padding: 10px;
+  margin-left: -2px;
+  margin-top: 3px;
+  box-shadow: 0px 1px 6px 3px rgba(0, 0, 0, 0.3);
+}
+.razor-admin .multi-select .ms-options .ms-option-item {
+  padding: 3px;
+}
+.razor-admin .multi-select .ms-options .ms-option-item:hover {
+  background-color: #69B0F1;
+  cursor: pointer;
+}
+.razor-admin .multi-select .ms-options .ms-option-item-empty {
+  padding: 3px;
+  color: #aaa;
+}
+@keyframes slide-up-down {
+  0% {
+    bottom: -200px;
+  }
+  5% {
+    bottom: -10px;
+  }
+  85% {
+    bottom: -10px;
+  }
+  100% {
+    bottom: -200px;
+  }
+}
+@-moz-keyframes slide-up-down {
+  0% {
+    bottom: -200px;
+  }
+  5% {
+    bottom: -10px;
+  }
+  85% {
+    bottom: -10px;
+  }
+  100% {
+    bottom: -200px;
+  }
+}
+@-webkit-keyframes slide-up-down {
+  0% {
+    bottom: -200px;
+  }
+  5% {
+    bottom: -10px;
+  }
+  85% {
+    bottom: -10px;
+  }
+  100% {
+    bottom: -200px;
+  }
+}
+@-o-keyframes slide-up-down {
+  0% {
+    bottom: -200px;
+  }
+  5% {
+    bottom: -10px;
+  }
+  85% {
+    bottom: -10px;
+  }
+  100% {
+    bottom: -200px;
+  }
+}

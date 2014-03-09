@@ -1,0 +1,557 @@
+/* apply razor any fixes */
+
+// fix for ui-bootstrap cursor issue
+// .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+// fix for open sans issue and bootstrap
+*, h1, h2, h3, h4, h5, h6 { font-family: 'Open Sans', Arial; }
+
+// ng-cloak fix for hiding until loaded
+.ng-cloak { display: none; }
+
+// create hide show classes for mobile media sizes
+.mobile-show-block { display: block; }
+.mobile-show-inline-block { display: inline-block; }
+.mobile-show-inline { display: inline; }
+.mobile-hide-block, .mobile-hide-inline-block, .mobile-hide-inline { display: none; }
+
+@media (min-width:830px)
+{
+	.mobile-show-block, .mobile-show-inline-block, .mobile-show-inline { display: none; }
+	.mobile-hide-block { display: block; }
+	.mobile-hide-inline-block { display: inline-block; }
+	.mobile-hide-inline { display: inline; }
+}
+
+// admin specific
+.razor-admin
+{	
+	// push site down due to panel
+	.template-wrapper { padding-top: 60px; }
+
+	.dashbar-nav
+	{
+		margin: 0px;
+		padding: 0px;
+		list-style-type: none;
+
+		li
+		{ 
+			height: 50px;
+			display: inline-block;
+
+			&:hover { background-color: #f4f4f4; }
+			
+			&.active
+			{
+				background-color: #f4f4f4; 
+
+				&:hover { background-color: #f4f4f4; }
+			}
+
+			a 
+			{ 
+				height: 50px;
+				line-height: 50px;
+				padding: 0px 20px; 
+				display: inline-block;
+				text-decoration: none;
+			}
+		}
+	}
+
+	.alert-form
+	{
+		padding: 6px;
+		margin: 0px;
+		display: inline-block;
+	}
+
+	.notification-message 
+	{ 
+		margin: 0px;
+		display: block;
+		padding: 7px; 
+		position: fixed;
+		bottom: -200px;
+		left: 50%;
+		width: 40%;
+		margin: 0px 0px 0px -20%;
+		border: 5px solid #444;
+		z-index: 10000;
+
+	    animation: slide-up-down 5s forwards;
+	    -moz-animation: slide-up-down 5s forwards;
+	    -webkit-animation: slide-up-down 5s forwards;
+	    -o-animation: slide-up-down 5s forwards;
+	}	
+
+	// admin panel
+	.razor-admin-panel
+	{
+		margin-bottom: 5px;
+		background-color: rgba(255, 255, 255, 0.8);
+		box-shadow: 0 2px 2px -2px rgba(0, 0, 0, 0.3);
+		border-bottom: 1px solid #ddd;
+		position: fixed;
+		width: 100%;
+		height: 58px; // not 60 due to box shadow
+		z-index: 100;
+
+		// login form in admin-panel
+		.login-form
+		{
+			padding-top: 10px;
+			padding-bottom: 10px;
+
+			.fa-sign-in { font-size: 33px; }
+			.error-message { padding: 6px; }
+		}
+
+		// account details in admin panel
+		.account-details
+		{
+			padding: 0px 0px 5px 0px;
+
+			span
+			{
+				display: block;
+				font-size: 12px;
+
+				&.name 
+				{ 
+					font-weight: bold;
+					font-size: 25px;
+				}
+			}
+		}
+
+		// editor panel
+		.editor-controls
+		{
+			margin-top: 12px;
+		}
+	}
+
+	.dashboard-icon
+	{
+		padding: 7px;
+		font-size: 40px; 
+		cursor: pointer;
+		position: fixed;
+		top: 0px;
+		left: 0px;
+
+		&:hover { text-shadow: 0 0 0.3em #0D7DA8; }
+
+		&.alt-color
+		{
+			color: #fff;
+
+			&:hover { text-shadow: 0 0 0.3em #fff; }
+		}
+	}
+
+	.razor-admin-dashboard
+	{
+		margin-top: 60px;
+		position: fixed;
+		width: 100%;
+		background-color: rgba(0, 0, 0, 0.90);
+		height: 100%;
+		z-index: 200;
+		color: #fff;
+		overflow-y: auto;
+
+		.dash-nav
+		{
+			position: fixed;
+			top: 0px;
+			width: 100%;
+			height: 60px;
+			background-color: #111;
+			z-index: 300;
+
+			.navbar
+			{
+				min-height: inherit;
+				margin-top: 10px;
+
+				.navbar-nav
+				{
+					li
+					{
+						a { padding: 5px 10px; }
+					}
+				}
+			}
+		}
+
+		.dash-workspace
+		{
+			padding-top: 10px;
+			margin-bottom: 60px;
+		}
+	}
+
+	// editor stuff below this
+
+	// editable menu stuff
+	.editable-menu-link
+	{
+		.editable-menu-anchor { cursor: pointer; }
+		.editable-menu-options 
+		{
+			padding-left: 5px; 
+			min-width: 135px;
+
+			li { display: inline; }
+		}
+	}
+
+	// editable areas when active
+	.content-column
+	{
+		&.edit
+		{
+			min-height: 50px;
+
+			.content-block
+			{
+				margin-bottom: 10px;
+				background-color: #fff;
+				border: 1px solid #bbb;
+				opacity: 0.6;
+
+				.btn-toolbar
+				{
+					margin: 0px 0px 2px -2px;
+					background-color: transparent;
+				}
+
+				&:hover, &.active { opacity: 1; }	
+				
+				.content-view
+				{
+					height: auto;
+					min-height: 50px;
+					width: 100%;
+				}
+
+				textarea
+				{
+					height: auto;
+					min-height: 150px;
+					width: 100%;
+				}
+
+				&> div
+				{
+					width: 100% !important;
+					background-color: #fff;
+
+					.nicEdit-main
+					{
+						width: 99% !important;
+					}
+				}
+			}
+		}
+	}
+
+	.modal
+	{
+		.modal-header
+		{
+			h1, h2, h3, h4, h5, h6 { margin: 3px; }
+			.fa-times { cursor: pointer; }
+		}
+	}
+
+	.accordian
+	{
+		.panel-title
+		{
+			a 
+			{ 
+				cursor: pointer;
+				text-decoration: none;
+
+				.expander
+				{ 
+					font-size: 20px;
+					padding: 0px; 
+
+					&.button-heading { padding-top: 5px;}
+				} 
+			}
+		}
+
+		.content 
+		{ 
+			color: #000; 
+
+			.table-data { margin: 20px 0px 0px 0px; }
+			
+			.page-preview
+			{
+				margin-top: 20px;
+				margin-bottom: -255px;
+				height: 250px;
+				overflow: hidden;
+				position: relative;
+				border: 1px solid #ccc;
+
+				&.for-menu
+				{
+					margin-top: 0px;
+					margin-bottom: 0px;
+				}
+
+				iframe
+				{
+					border: none;
+					width: 200%;
+					height: 500px;
+					-ms-zoom: 0.5;
+					-moz-transform: scale(0.5);
+					-moz-transform-origin: 0 0;
+					-o-transform: scale(0.5);
+					-o-transform-origin: 0 0;
+					-webkit-transform: scale(0.5);
+					-webkit-transform-origin: 0 0;
+				}
+
+				.preview-mask
+				{
+					position: absolute;
+					top: 0px;
+					left: 0px;
+					width: 97%;
+					height: 100%;
+				}
+			}
+
+			.content-preview
+			{
+				margin-top: 20px;
+				height: 250px;
+				overflow: scroll;
+				border: 1px solid #ccc;
+			}
+
+			.used_on_pages
+			{
+				padding: 2px 4px;
+				border: 1px solid #ccc;
+				margin: 3px;
+				display: inline-block;
+				background-color: #eee;
+			}
+		}
+
+		.filter { margin-bottom: 20px; }
+	}
+
+
+	// slide switch directive style
+	.slide-switch
+	{
+		display: block;
+		padding: 2px; 
+		width: 100px; 
+		height: 35px; 
+		background-color: #aaa; 
+		border: 2px solid #555; 
+		cursor: pointer;
+		border-radius: 4px;
+
+		.slide-switch-slider
+		{
+			display: block; 
+			height: 27px; 
+			width: 50px; 
+			background-color: #555;
+			float: left;
+			text-align: center;
+			padding-top: 5px;
+			font-size: 11px;
+			color: #aaa;
+			border-radius: 2px;
+		}
+
+		&.slide-switch-on
+		{
+			background-color: #69B0F1;
+
+			.slide-switch-slider
+			{
+				float: right;
+				color: #69B0F1;
+			}
+		}
+	}
+
+	// multi select directive css
+	.multi-select
+	{
+		color: #000; 
+		background-color: #f4f4f4; 
+		border: 1px solid #aaa; 
+		border-radius: 4px; 
+		padding: 2px;
+		position: relative;
+
+		.ms-input-filter, .ms-input-select
+		{
+			position: absolute;
+			right: 10px;
+			bottom: 10px;
+			color: #777;
+		}
+
+		.ms-selected
+		{
+			list-style-type: none; 
+			width: 100%; 
+			display: block; 
+			margin: 0px 0px 3px 0px; 
+			padding: 0px;
+
+			.ms-selected-item
+			{
+				color: #444; 
+				border: 1px solid #bbb; 
+				background-color: #ddd; 
+				margin: 1px; 
+				padding: 2px 6px; 
+				border-radius: 3px; 
+				display: inline-block;
+				font-weight: bold; 
+				font-size: 14px;
+
+				.ms-remove-item 
+				{ 
+					margin-left: 3px;
+					cursor:pointer; 
+				}
+			}
+		}
+
+		.ms-filter
+		{
+			width: 100%; 
+			display:block; 
+			height: 29px; 
+			padding: 3px;
+		}
+
+		.ms-options
+		{
+			list-style-type: none; 
+			color: #000; 
+			position: absolute; 
+			min-width: 50%; 
+			display: block; 
+			z-index: 10000; 
+			background-color: #fff; 
+			padding: 10px;
+			margin-left: -2px;
+			margin-top: 3px;
+			box-shadow: 0px 1px 6px 3px rgba(0, 0, 0, 0.3);
+
+			.ms-option-item 
+			{ 
+				padding: 3px; 
+
+				&:hover 
+				{ 
+					background-color: #69B0F1; 
+					cursor: pointer;
+				}
+			}
+
+			.ms-option-item-empty 
+			{ 
+				padding: 3px;
+				color: #aaa; 
+			}
+		}
+	}	
+
+	// slide up then down animation (mainly for notifications)
+	@keyframes slide-up-down 
+	{
+	    0% { bottom:-200px; }  
+	    5% { bottom:-10px; }   
+	    85% { bottom:-10px; }
+	    100% { bottom:-200px; }
+	}
+	@-moz-keyframes slide-up-down
+	{
+	    0% { bottom:-200px; }  
+	    5% { bottom:-10px; }   
+	    85% { bottom:-10px; }
+	    100% { bottom:-200px; }
+	}
+	@-webkit-keyframes slide-up-down
+	{
+	    0% { bottom:-200px; }  
+	    5% { bottom:-10px; }   
+	    85% { bottom:-10px; }
+	    100% { bottom:-200px; }
+	}
+	@-o-keyframes slide-up-down
+	{
+	    0% { bottom:-200px; }  
+	    5% { bottom:-10px; }   
+	    85% { bottom:-10px; }
+	    100% { bottom:-200px; }
+	}
+
+	// slide down animation (draw open)
+	// @keyframes draw-open 
+	// {
+	//     0% { top:-200px; }  
+	//     85% { top:-50px; }
+	//     100% { top:0px; }
+	// }
+	// @-moz-keyframes draw-open
+	// {
+	//     0% { top:-200px; }  
+	//     85% { top:-50px; }
+	//     100% { top:0px; }
+	// }
+	// @-webkit-keyframes draw-open
+	// {
+	//     0% { top:-200px; }  
+	//     85% { top:-50px; }
+	//     100% { top:0px; }
+	// }
+	// @-o-keyframes draw-open
+	// {
+	//     0% { top:-200px; }  
+	//     85% { top:-50px; }
+	//     100% { top:0px; }
+	// }
+	// @keyframes draw-open 
+	// {
+	//     0% { height:0px; }  
+	//     100% { height:400px; }
+	// }
+	// @-moz-keyframes draw-open
+	// {
+	//     0% { height:0px; }  
+	//     100% { height:400px; }
+	// }
+	// @-webkit-keyframes draw-open
+	// {
+	//     0% { height:0px; }  
+	//     100% { height:400px; }
+	// }
+	// @-o-keyframes draw-open
+	// {
+	//     0% { height:0px; }  
+	//     100% { height:400px; }
+	// }
+}
