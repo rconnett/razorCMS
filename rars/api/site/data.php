@@ -21,13 +21,24 @@ class SiteData extends RazorAPI
         // check link unique
         $search = array("column" => "id", "value" => 1);
 
-        $row = array(
-            "name" => $data["name"]
-        );
+        $row = array();
+
+        if (isset($data["name"])) $row["name"] = $data["name"];
+        if (isset($data["home_page"])) $row["home_page"] = (int) $data["home_page"];
 
         $db->edit_rows($search, $row);
 
         $db->disconnect(); 
+
+        // activate home page if not
+        if (isset($data["home_page"]))
+        {
+            $db->connect("page");
+            $search = array("column" => "id", "value" => (int) $data["home_page"]);
+            $row = array("active" => true);
+            $db->edit_rows($search, $row);
+            $db->disconnect();         
+        }
 
         $this->response("success", "json");
     }
