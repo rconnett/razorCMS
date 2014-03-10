@@ -41,8 +41,15 @@ class RazorSite
             return;
         }
 
-        // carry on loading theme
-        if ($this->page["theme"] == "default") include_once(RAZOR_BASE_PATH."theme/view/default.php");
+        // if default not chosen, load manifest
+        if (!empty($this->page["theme"]))
+        {
+            $manifest = RazorFileTools::read_file_contents(RAZOR_BASE_PATH."extension/theme/{$this->page["theme"]}", "json");
+            $view_path = RAZOR_BASE_PATH."extension/theme/{$manifest->handle}/{$manifest->theme}/view/{$manifest->layout}.php";
+
+            if (is_file($view_path)) include_once($view_path);
+        }
+        else include_once(RAZOR_BASE_PATH."theme/view/default.php");
     }
 
     public function content($loc, $col)

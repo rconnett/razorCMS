@@ -1,0 +1,14 @@
+{
+	"manifest": "1-column",
+	"type": "theme",
+	"handle": "razorcms",
+	"theme": "default-extra",
+	"layout": "1-column",
+	"name": "Default Extra (1 column)",
+	"author": "smiffy6969",
+	"version": 1,
+	"created": 1394394028,
+	"description": "Variation of the clean default theme with 1 column in the header, main and footer areas.",
+	"menus": ["header","footer"],
+	"content": {"header": 1,"main": 1,"footer": 1}
+}

@@ -11,6 +11,43 @@
 class RazorFileTools
 {
     /**
+     * Look recursively through folders and return a flat array of paths or contents for each match
+     * 
+     * @param string $path The folder to start searching
+     * @param string $search The filename to look for in each folder
+     * @param string $type What to return, "path" (filepath), or string, json to return contents in that style
+     * @param string $match What to match, "all" for whole filename match, end for end match
+     */
+    public static function find_file_contents($path, $search, $type = "path", $match = "all")
+    {
+        $folders_files = self::read_dir_contents($path);
+
+        if (empty($folders_files)) return array();
+
+        $matches = array();
+
+        foreach ($folders_files as $ff)
+        {
+            if (is_dir("{$path}/{$ff}")) $matches = array_merge($matches, self::find_file_contents("{$path}/{$ff}", $search, $type, $match));
+
+            if ($match == "all" && $ff == $search)
+            {
+                if ($type != "path") $matches[] = self::read_file_contents("{$path}/{$ff}", $type);
+                else $matches[] = "{$path}/{$ff}";
+            }
+            
+            if ($match == "end" && strpos($ff, $search) !== false)
+            {
+                if ($type != "path") $matches[] = self::read_file_contents("{$path}/{$ff}", $type);
+                else $matches[] = "{$path}/{$ff}";
+            }
+        }
+
+        return $matches;
+    }
+
+
+    /**
      * Look through json files for a matching keys value, only checks top level keys
      * 
      * @param string $path The file to search
@@ -183,7 +220,7 @@ class RazorFileTools
         }
 
 	    while ($filename = readdir($dir_handler)) {
-            if ($filename == '.' || $filename == '..' || $filename == '.svn') {
+            if ($filename == '.' || $filename == '..' || $filename == '.svn' || $filename == '.git') {
                 continue;
             }
 

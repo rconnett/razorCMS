@@ -56,12 +56,21 @@
 				<div class="form-group">
 					<label for="page-theme" class="col-sm-3 control-label">Theme</label>
 					<div class="col-sm-7">
-						<select class="form-control" ng-model="page.theme" name="theme" required>
-							<option value="default" selected>default</option>
-						</select>
-					</div>
-					<div class="col-sm-2 error-block" ng-show="form.theme.$dirty && form.theme.$invalid">
-						<span class="alert alert-danger alert-form" ng-show="form.theme.$error.required">Required</span>
+						<button class="btn btn-default pull-left" ng-click="chooseTheme()"><i class="fa fa-tint"></i> Choose Theme</button>
+						<div class="selected-theme-box pull-left" ng-hide="page.themeData.handle">
+							<i class="fa fa-tint"></i>
+							<div class="text">
+								<span class="handle">razorcms</span>
+								<span class="theme">Default</span>
+							</div>
+						</div>						
+						<div class="selected-theme-box pull-left" ng-show="page.themeData.handle">
+							<i class="fa fa-tint"></i>
+							<div class="text">
+								<span class="handle" ng-show="page.themeData.handle">{{page.themeData.handle}}</span>
+								<span class="theme" ng-show="page.themeData.theme">{{page.themeData.name}}</span>
+							</div>
+						</div>
 					</div>
 				</div>
 				<div class="form-group">
