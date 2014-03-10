@@ -170,6 +170,22 @@ h6 {
   padding-top: 10px;
   margin-bottom: 60px;
 }
+.razor-admin .razor-admin-page .selected-theme-box {
+  margin-left: 20px;
+}
+.razor-admin .razor-admin-page .selected-theme-box i {
+  font-size: 30px;
+}
+.razor-admin .razor-admin-page .selected-theme-box .text {
+  display: inline-block;
+}
+.razor-admin .razor-admin-page .selected-theme-box .text .handle {
+  display: block;
+  font-size: 10px;
+}
+.razor-admin .razor-admin-page .selected-theme-box .text .theme {
+  display: block;
+}
 .razor-admin .editable-menu-link .editable-menu-anchor {
   cursor: pointer;
 }
@@ -285,6 +301,14 @@ h6 {
   margin: 3px;
   display: inline-block;
   background-color: #eee;
+}
+.razor-admin .accordian .content .theme-screenshot {
+  width: 526px;
+  border: 1px solid #bbb;
+  padding: 3px;
+}
+.razor-admin .accordian .content table {
+  margin-bottom: 0px;
 }
 .razor-admin .accordian .filter {
   margin-bottom: 20px;

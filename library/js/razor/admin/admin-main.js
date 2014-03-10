@@ -2,7 +2,7 @@ define(["angular", "cookie-monster", "nicedit", "ui-bootstrap"], function(angula
 {
     angular.module("razor.admin.main", ['ui.bootstrap'])
 
-    .controller("main", function($scope, $location, rars, $modal, $sce, $timeout, $rootScope)
+    .controller("main", function($scope, $location, rars, $modal, $sce, $timeout, $rootScope, $http)
     {
         $scope.location = $location;
         $scope.user = null;
@@ -131,6 +131,14 @@ define(["angular", "cookie-monster", "nicedit", "ui-bootstrap"], function(angula
             rars.get("page/details", RAZOR_PAGE_ID).success(function(data)
             {
                 $scope.page = data.page;
+
+                if (!$scope.page.theme) return;
+
+                // load in theme data
+                $http.get(RAZOR_BASE_URL + "extension/theme/" + $scope.page.theme).then(function(response) 
+                { 
+                    $scope.page.themeData = response.data; 
+                });
             });
 
             // all available menus
