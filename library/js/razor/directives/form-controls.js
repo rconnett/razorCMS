@@ -5,27 +5,27 @@ define(["angular"], function(angular)
     .directive('slideSwitch', function() {
 		return {
 			restrict: 'E',
-			scope: {"ssModel": "=", "ssDisabled": "="},
-			template: '<div class="slide-switch" title="{{(ssDisabled ? \'Disabled (is home page)\' : \'\')}}" ng-class="{\'slide-switch-on\': ssModel, \'slide-switch-disabled\': ssDisabled}" ng-click="ssModel = (ssDisabled ? ssModel : !ssModel)"><span class="slide-switch-slider"><span ng-hide="ssModel">OFF</span><span ng-show="ssModel">ON</span></span></div>'
+			scope: {"rzrModel": "=", "rzrDisabled": "="},
+			template: '<div class="slide-switch" title="{{(rzrDisabled ? \'Disabled (is home page)\' : \'\')}}" ng-class="{\'slide-switch-on\': rzrModel, \'slide-switch-disabled\': rzrDisabled}" ng-click="rzrModel = (rzrDisabled ? rzrModel : !rzrModel)"><span class="slide-switch-slider"><span ng-hide="rzrModel">OFF</span><span ng-show="rzrModel">ON</span></span></div>'
 		};
     })
  
     .directive('multiSelect', function() {
 		return {
 			restrict: 'E',
-			scope: {"msSelected": "=", "msOptions": "=", "msValue": "=", "msLabel": "="},
+			scope: {"rzrSelected": "=", "rzrOptions": "=", "rzrValue": "=", "rzrLabel": "="},
 			template: '<div class="multi-select">' +
-				'<ul class="ms-selected" ng-show="msSelected.length > 0">' +
-					'<li ng-repeat="sel in msSelected" class="ms-selected-item">' +
-						'{{sel[msLabel]}}' +
-						'<i class="ms-remove-item fa fa-times" ng-click="msSelected.splice($index, 1)"></i>' +
+				'<ul class="rzr-selected" ng-show="rzrSelected.length > 0">' +
+					'<li ng-repeat="sel in rzrSelected" class="rzr-selected-item">' +
+						'{{sel[rzrLabel]}}' +
+						'<i class="ms-remove-item fa fa-times" ng-click="rzrSelected.splice($index, 1)"></i>' +
 					'</li>' +
 				'</ul>' +	
 				'<i class="ms-input-filter fa fa-filter" ng-show="selectaOptions"></i><i class="ms-input-select fa fa-caret-down" ng-hide="selectaOptions"></i>' +
 				'<input class="form-control" class="ms-filter" type="text" ng-model="search" ng-focus="selectaOptions = true" ng-blur="hideOptions()" placeholder="Click to select, filter on options">' +
-				'<ul class="ms-options" ng-show="selectaOptions">' +
-					'<li ng-repeat="opt in msOptions | filter:search | filter:hideSelected" ng-click="msSelected.push(opt)" class="ms-option-item">{{opt[msLabel]}}</li>' +
-					'<li class="ms-option-item-empty" ng-show="msOptions.length === msSelected.length"><i class="fa fa-ban"></i> empty</li>' +
+				'<ul class="rzr-options" ng-show="selectaOptions">' +
+					'<li ng-repeat="opt in rzrOptions | filter:search | filter:hideSelected" ng-click="rzrSelected.push(opt)" class="ms-option-item">{{opt[rzrLabel]}}</li>' +
+					'<li class="ms-option-item-empty" ng-show="rzrOptions.length === rzrSelected.length"><i class="fa fa-ban"></i> empty</li>' +
 				'</ul>' +
 			'</div>',
 			controller: function($scope, $timeout)
@@ -34,9 +34,9 @@ define(["angular"], function(angular)
 				{
 				    var result = true
 
-				    angular.forEach($scope.msSelected, function(val)
+				    angular.forEach($scope.rzrSelected, function(val)
 				    {
-				        if (val[$scope.msValue] === opt[$scope.msValue]) result = false;
+				        if (val[$scope.rzrValue] === opt[$scope.rzrValue]) result = false;
 				    });
 
 				    return result;

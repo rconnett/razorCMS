@@ -12,6 +12,7 @@ define(["angular", "cookie-monster", "nicedit", "ui-bootstrap"], function(angula
         $scope.toggle = null;
         $scope.changed = null;
         $scope.dash = null;
+        $scope.clickAndSort = {};
 
         $scope.site = null;
         $scope.content = null;
@@ -304,15 +305,20 @@ define(["angular", "cookie-monster", "nicedit", "ui-bootstrap"], function(angula
             });
         };
 
-        $scope.findMenuItem = function(loc)
+        $scope.findMenuItem = function(loc, parentMenuIndex)
         {
             $modal.open(
             {
                 templateUrl: RAZOR_BASE_URL + "theme/partial/modal/menu-item-selection.html",
                 controller: "menuItemListModal"
             }).result.then(function(selected)
-            {
-                $scope.menus[loc].menu_items.push({"page_id": selected.id, "page_name": selected.name, "page_link": selected.link, "page_active": selected.active});
+            {                
+                if (typeof parentMenuIndex == "undefined") $scope.menus[loc].menu_items.push({"page_id": selected.id, "page_name": selected.name, "page_link": selected.link, "page_active": selected.active});
+                else 
+                {
+                    if (!$scope.menus[loc].menu_items[parentMenuIndex].sub_menu) $scope.menus[loc].menu_items[parentMenuIndex].sub_menu = [];
+                    $scope.menus[loc].menu_items[parentMenuIndex].sub_menu.push({"page_id": selected.id, "page_name": selected.name, "page_link": selected.link, "page_active": selected.active});
+                }
             });
         };
 
@@ -343,6 +349,16 @@ define(["angular", "cookie-monster", "nicedit", "ui-bootstrap"], function(angula
             {
                 if (!!redirect) window.location = RAZOR_BASE_URL + redirect;
             });
+        };
+
+        $scope.clickAndSortClick = function(location, index, items)
+        {
+            if (!$scope.clickAndSort[location]) $scope.clickAndSort[location] = {};
+            $scope.clickAndSort[location].moveFrom = (!$scope.clickAndSort[location].selected ? index : ($scope.clickAndSort[location].picked != index ? $scope.clickAndSort[location].moveFrom : null));
+            $scope.clickAndSort[location].moveTo = ($scope.clickAndSort[location].selected && $scope.clickAndSort[location].picked != null && $scope.clickAndSort[location].picked != index ? index : null);
+            $scope.clickAndSort[location].selected = !$scope.clickAndSort[location].selected;
+            $scope.clickAndSort[location].picked = index;
+            if ($scope.clickAndSort[location].moveTo != null) items.splice($scope.clickAndSort[location].moveTo, 0, items.splice($scope.clickAndSort[location].moveFrom, 1)[0]);
         };
     })
 

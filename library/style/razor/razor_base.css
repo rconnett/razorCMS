@@ -41,33 +41,14 @@ h6 {
     display: inline;
   }
 }
+li.dropdown .dropdown-menu {
+  margin: 0px;
+}
+li.dropdown:hover .dropdown-menu {
+  display: block !important;
+}
 .razor-admin .template-wrapper {
   padding-top: 60px;
-}
-.razor-admin .dashbar-nav {
-  margin: 0px;
-  padding: 0px;
-  list-style-type: none;
-}
-.razor-admin .dashbar-nav li {
-  height: 50px;
-  display: inline-block;
-}
-.razor-admin .dashbar-nav li:hover {
-  background-color: #f4f4f4;
-}
-.razor-admin .dashbar-nav li.active {
-  background-color: #f4f4f4;
-}
-.razor-admin .dashbar-nav li.active:hover {
-  background-color: #f4f4f4;
-}
-.razor-admin .dashbar-nav li a {
-  height: 50px;
-  line-height: 50px;
-  padding: 0px 20px;
-  display: inline-block;
-  text-decoration: none;
 }
 .razor-admin .alert-form {
   padding: 6px;
@@ -89,6 +70,55 @@ h6 {
   -moz-animation: slide-up-down 5s forwards;
   -webkit-animation: slide-up-down 5s forwards;
   -o-animation: slide-up-down 5s forwards;
+}
+.razor-admin .click-and-sort a {
+  border: 2px dashed transparent;
+  cursor: pointer;
+}
+.razor-admin .click-and-sort a:hover {
+  border: 2px dashed #BEC9FF;
+}
+.razor-admin .click-and-sort.selected a {
+  border: 2px dashed #BEC9FF;
+}
+.razor-admin .click-and-sort.selected a.add-new-menu {
+  border: 2px dashed transparent;
+}
+.razor-admin .click-and-sort.place-holder a {
+  border: 2px dashed #BEC9FF;
+  opacity: 0.4;
+}
+.razor-admin .click-and-sort.place-holder a.add-new-menu {
+  border: 2px dashed transparent;
+}
+.razor-admin .click-and-sort.place-holder:hover a {
+  opacity: 0.7;
+}
+.razor-admin .click-and-sort.place-holder:hover a.add-new-menu {
+  border: 2px dashed transparent;
+}
+.razor-admin .click-and-sort .click-and-sort-sub a {
+  border: 2px dashed transparent;
+  cursor: pointer;
+}
+.razor-admin .click-and-sort .click-and-sort-sub a:hover {
+  border: 2px dashed #BEC9FF;
+}
+.razor-admin .click-and-sort .click-and-sort-sub.selected a {
+  border: 2px dashed #BEC9FF;
+}
+.razor-admin .click-and-sort .click-and-sort-sub.place-holder a {
+  border: 2px dashed #BEC9FF;
+  opacity: 0.4;
+}
+.razor-admin .click-and-sort .click-and-sort-sub.place-holder:hover a {
+  opacity: 0.7;
+}
+.razor-admin .click-and-sort .add-new-menu {
+  border: 2px dashed transparent;
+}
+.razor-admin .click-and-sort .add-new-menu a:hover {
+  border: 2px dashed transparent;
 }
 .razor-admin .razor-admin-panel {
   margin-bottom: 5px;
@@ -166,6 +196,31 @@ h6 {
 .razor-admin .razor-admin-dashboard .dash-nav .navbar .navbar-nav li a {
   padding: 5px 10px;
 }
+.razor-admin .razor-admin-dashboard .dashbar-nav {
+  margin: 0px;
+  padding: 0px;
+  list-style-type: none;
+}
+.razor-admin .razor-admin-dashboard .dashbar-nav li {
+  height: 50px;
+  display: inline-block;
+}
+.razor-admin .razor-admin-dashboard .dashbar-nav li:hover {
+  background-color: #333;
+}
+.razor-admin .razor-admin-dashboard .dashbar-nav li.active {
+  background-color: #333;
+}
+.razor-admin .razor-admin-dashboard .dashbar-nav li.active:hover {
+  background-color: #333;
+}
+.razor-admin .razor-admin-dashboard .dashbar-nav li a {
+  height: 50px;
+  line-height: 50px;
+  padding: 0px 20px;
+  display: inline-block;
+  text-decoration: none;
+}
 .razor-admin .razor-admin-dashboard .dash-workspace {
   padding-top: 10px;
   margin-bottom: 60px;
@@ -189,11 +244,13 @@ h6 {
 .razor-admin .editable-menu-link .editable-menu-anchor {
   cursor: pointer;
 }
-.razor-admin .editable-menu-link .editable-menu-options {
+.razor-admin .editable-menu-link .editable-menu-options .first-tool {
   padding-left: 5px;
+}
+.razor-admin .editable-menu-link .editable-menu-options.tools-only {
   min-width: 135px;
 }
-.razor-admin .editable-menu-link .editable-menu-options li {
+.razor-admin .editable-menu-link .editable-menu-options .tools {
   display: inline;
 }
 .razor-admin .content-column.edit {
@@ -361,14 +418,14 @@ h6 {
   bottom: 10px;
   color: #777;
 }
-.razor-admin .multi-select .ms-selected {
+.razor-admin .multi-select .rzr-selected {
   list-style-type: none;
   width: 100%;
   display: block;
   margin: 0px 0px 3px 0px;
   padding: 0px;
 }
-.razor-admin .multi-select .ms-selected .ms-selected-item {
+.razor-admin .multi-select .rzr-selected .rzr-selected-item {
   color: #444;
   border: 1px solid #bbb;
   background-color: #ddd;
@@ -379,7 +436,7 @@ h6 {
   font-weight: bold;
   font-size: 14px;
 }
-.razor-admin .multi-select .ms-selected .ms-selected-item .ms-remove-item {
+.razor-admin .multi-select .rzr-selected .rzr-selected-item .ms-remove-item {
   margin-left: 3px;
   cursor: pointer;
 }
@@ -389,7 +446,7 @@ h6 {
   height: 29px;
   padding: 3px;
 }
-.razor-admin .multi-select .ms-options {
+.razor-admin .multi-select .rzr-options {
   list-style-type: none;
   color: #000;
   position: absolute;
@@ -402,14 +459,14 @@ h6 {
   margin-top: 3px;
   box-shadow: 0px 1px 6px 3px rgba(0, 0, 0, 0.3);
 }
-.razor-admin .multi-select .ms-options .ms-option-item {
+.razor-admin .multi-select .rzr-options .ms-option-item {
   padding: 3px;
 }
-.razor-admin .multi-select .ms-options .ms-option-item:hover {
+.razor-admin .multi-select .rzr-options .ms-option-item:hover {
   background-color: #69B0F1;
   cursor: pointer;
 }
-.razor-admin .multi-select .ms-options .ms-option-item-empty {
+.razor-admin .multi-select .rzr-options .ms-option-item-empty {
   padding: 3px;
   color: #aaa;
 }

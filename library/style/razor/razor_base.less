@@ -23,42 +23,21 @@
 	.mobile-hide-inline { display: inline; }
 }
 
+li.dropdown
+{
+	.dropdown-menu { margin: 0px; }
+
+	&:hover
+	{
+		.dropdown-menu { display: block !important; }
+	}
+}
+
 // admin specific
 .razor-admin
 {	
 	// push site down due to panel
 	.template-wrapper { padding-top: 60px; }
-
-	.dashbar-nav
-	{
-		margin: 0px;
-		padding: 0px;
-		list-style-type: none;
-
-		li
-		{ 
-			height: 50px;
-			display: inline-block;
-
-			&:hover { background-color: #f4f4f4; }
-			
-			&.active
-			{
-				background-color: #f4f4f4; 
-
-				&:hover { background-color: #f4f4f4; }
-			}
-
-			a 
-			{ 
-				height: 50px;
-				line-height: 50px;
-				padding: 0px 20px; 
-				display: inline-block;
-				text-decoration: none;
-			}
-		}
-	}
 
 	.alert-form
 	{
@@ -86,6 +65,92 @@
 	    -o-animation: slide-up-down 5s forwards;
 	}	
 
+	// click and move css
+	.click-and-sort
+	{
+		a
+		{
+			border: 2px dashed transparent;
+			cursor: pointer;
+			
+			&:hover { border: 2px dashed #BEC9FF; }
+		}
+
+		&.selected
+		{
+			a 
+			{ 
+				border: 2px dashed #BEC9FF;
+
+				&.add-new-menu { border: 2px dashed transparent; } 
+			}
+		}
+
+		&.place-holder
+		{
+			a
+			{
+				border: 2px dashed #BEC9FF;
+				opacity: 0.4;
+
+				&.add-new-menu { border: 2px dashed transparent; }
+			}
+
+			&:hover 
+			{ 
+				a 
+				{ 
+					opacity: 0.7; 
+
+					&.add-new-menu { border: 2px dashed transparent; }
+				}
+			}
+		}
+
+		// need to do this to override parent style in case of sub menus
+		.click-and-sort-sub
+		{
+			a
+			{
+				border: 2px dashed transparent;
+				cursor: pointer;
+				
+				&:hover { border: 2px dashed #BEC9FF; }
+			}
+
+			&.selected
+			{
+				a 
+				{ 
+					border: 2px dashed #BEC9FF; 
+				}
+			}
+
+			&.place-holder
+			{
+				a
+				{
+					border: 2px dashed #BEC9FF;
+					opacity: 0.4;
+				}
+
+				&:hover 
+				{ 
+					a 
+					{ 
+						opacity: 0.7; 
+					}
+				}
+			}
+		}
+
+		.add-new-menu 
+		{
+			border: 2px dashed transparent; 
+		
+			a:hover { border: 2px dashed transparent; }
+		}
+	}
 	// admin panel
 	.razor-admin-panel
 	{
@@ -187,6 +252,37 @@
 			}
 		}
 
+		.dashbar-nav
+		{
+			margin: 0px;
+			padding: 0px;
+			list-style-type: none;
+
+			li
+			{ 
+				height: 50px;
+				display: inline-block;
+
+				&:hover { background-color: #333; }
+				
+				&.active
+				{
+					background-color: #333; 
+
+					&:hover { background-color: #333; }
+				}
+
+				a 
+				{ 
+					height: 50px;
+					line-height: 50px;
+					padding: 0px 20px; 
+					display: inline-block;
+					text-decoration: none;
+				}
+			}
+		}
+
 		.dash-workspace
 		{
 			padding-top: 10px;
@@ -228,10 +324,11 @@
 		.editable-menu-anchor { cursor: pointer; }
 		.editable-menu-options 
 		{
-			padding-left: 5px; 
-			min-width: 135px;
+			.first-tool { padding-left: 5px; } 
+			
+			&.tools-only { min-width: 135px; }
 
-			li { display: inline; }
+			.tools { display: inline; }
 		}
 	}
 
@@ -451,7 +548,7 @@
 			color: #777;
 		}
 
-		.ms-selected
+		.rzr-selected
 		{
 			list-style-type: none; 
 			width: 100%; 
@@ -459,7 +556,7 @@
 			margin: 0px 0px 3px 0px; 
 			padding: 0px;
 
-			.ms-selected-item
+			.rzr-selected-item
 			{
 				color: #444; 
 				border: 1px solid #bbb; 
@@ -487,7 +584,7 @@
 			padding: 3px;
 		}
 
-		.ms-options
+		.rzr-options
 		{
 			list-style-type: none; 
 			color: #000; 

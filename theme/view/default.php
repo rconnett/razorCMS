@@ -81,10 +81,10 @@
 					<div class="row">
 						<div class="col-sm-12">
 							<div class="template-footer-menu">
-								<ul class="nav mobile-hide-block">
+								<ul class="nav nav-pills mobile-hide-block">
 									<?php $this->menu("footer"); ?>
 								</ul>
-								<ul class="nav nav-stacked mobile-show-block">
+								<ul class="nav nav-pills nav-stacked mobile-show-block">
 									<?php $this->menu("footer"); ?>
 								</ul>
 							</div>

@@ -1,4 +1,4 @@
-<?php if (!defined("RARS_BASE_PATH")) die("No direct script access to this content");
+<?php if (!defined("RARS_BASE_PATH") && !defined("RAZOR_BASE_PATH")) die("No direct script access to this content");
 
 // RazorAPI class
 class RazorAPI
