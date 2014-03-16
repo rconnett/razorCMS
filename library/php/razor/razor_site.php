@@ -16,6 +16,7 @@ class RazorSite
     private $menu = null;
     private $content = null;
     private $admin = false;
+    private $logged_in = false;
 
     function __construct()
     {
@@ -25,6 +26,21 @@ class RazorSite
 
     public function load()
     {
+        // check for admin flag
+        if ($this->link == "admin")
+        {
+            $this->link = null;
+            $this->admin = true;
+        }
+
+        // check for logged in
+        if (isset($_COOKIE["token"]))
+        {
+            include(RAZOR_BASE_PATH."library/php/razor/razor_api.php");
+            $api = new RazorAPI();
+            $this->logged_in = $api->check_access(86400);
+        }
+
         // load data
         $this->get_site_data();
         $this->get_page_data();
@@ -55,7 +71,7 @@ class RazorSite
     public function content($loc, $col)
     {
         // admin angluar loading for editor, return
-        if (!isset($_GET["preview"]) && ($this->admin || isset($_COOKIE["token"])))
+        if (!isset($_GET["preview"]) && $this->logged_in > 5)
         {
             echo <<<OUTPUT
 <div class="content-column" ng-class="{'edit': toggle}">
@@ -100,45 +116,66 @@ OUTPUT;
     public function menu($loc)
     {
         // admin angluar loading for editor, return
-        if (!isset($_GET["preview"]) && ($this->admin || isset($_COOKIE["token"])))
+        if (!isset($_GET["preview"]) && $this->logged_in > 5)
         {
             echo <<<OUTPUT
-<li ng-class="{'active': linkIsActive(mi.page_id)}" ng-repeat="mi in menus.{$loc}.menu_items" ng-if="!toggle">
-    <a ng-href="{{getMenuLink(mi.page_link)}}">
+<li ng-repeat="mi in menus.{$loc}.menu_items" ng-class="{'click-and-sort': toggle, 'active': linkIsActive(mi.page_id), 'dropdown': mi.sub_menu || toggle, 'selected': \$parent.clickAndSort['{$loc}'].selected, 'place-holder': \$parent.clickAndSort['{$loc}'].picked != \$index && \$parent.clickAndSort['{$loc}'].selected}">
+    <a ng-href="{{(!toggle ? getMenuLink(mi.page_link) : '#')}}" ng-click="clickAndSortClick('{$loc}', \$index, menus.{$loc}.menu_items)">
+        <button class="btn btn-xs btn-default" ng-if="toggle" ng-click="menus.{$loc}.menu_items.splice(\$index, 1)"><i class="fa fa-times"></i></button>
         <i class="fa fa-eye-slash" ng-hide="mi.page_active"></i>
         {{mi.page_name}}
+        <i class="fa fa-caret-down" ng-if="mi.sub_menu"></i>
     </a>
-</li>
+    <ul class="dropdown-menu">
+        <li ng-repeat="mis in mi.sub_menu" ng-class="{'click-and-sort-sub': toggle, 'active': linkIsActive(mis.page_id), 'selected': \$parent.clickAndSort['{$loc}Sub'].selected, 'place-holder': \$parent.clickAndSort['{$loc}Sub'].picked != \$index && \$parent.clickAndSort['{$loc}Sub'].selected}">
+            <a ng-href="{{(!toggle ? getMenuLink(mis.page_link) : '#')}}" ng-click="clickAndSortClick('{$loc}Sub', \$index, mi.sub_menu)">
+                <button class="btn btn-xs btn-default" ng-if="toggle" ng-click="mi.sub_menu.splice(\$index, 1)"><i class="fa fa-times"></i></button>
+                <i class="fa fa-eye-slash" ng-hide="mis.page_active"></i> 
+                {{mis.page_name}}
+            </a>
+        </li>
 
-<li class="dropdown editable-menu-link" ng-class="{'active': linkIsActive(mi.page_id)}" ng-repeat="mi in menus.{$loc}.menu_items" ng-if="toggle">
-    <a class="dropdown-toggle editable-menu-anchor">
-        <i class="fa fa-eye-slash" ng-hide="mi.page_active"></i>
-        {{mi.page_name}}
-        <i class="fa fa-caret-down"></i>
-    </a>
-    <ul class="dropdown-menu editable-menu-options">
-        <li ng-click="menus.{$loc}.menu_items.splice(\$index - 1, 0, menus.{$loc}.menu_items.splice(\$index, 1)[0])" ><button class="btn btn-default"><i class="fa fa-arrow-up"></i></button></li>
-        <li ng-click="menus.{$loc}.menu_items.splice(\$index + 1, 0, menus.{$loc}.menu_items.splice(\$index, 1)[0])"><button class="btn btn-default"><i class="fa fa-arrow-down"></i></button></li>
-        <li ng-click="menus.{$loc}.menu_items.splice(\$index, 1)"><button class="btn btn-default"><i class="fa fa-times"></i></button></li>
+        <li ng-if="toggle" class="text-center"><a href="#" class="add-new-menu" ng-click="findMenuItem('{$loc}', \$index)"><i class="fa fa-plus"></i></a></li>
     </ul>
 </li>
 
-<li ng-show="toggle"><a href="#" ng-click="findMenuItem('{$loc}')"><i class="fa fa-list"></i></a></li>
+<li ng-show="toggle" class="add-new-menu"><a href="#" ng-click="findMenuItem('{$loc}')"><i class="fa fa-plus"></i></a></li>
 OUTPUT;
             return;
         }
-
+//ng-class="{'active': linkIsActive(mi.page_id)}"
         // empty, return
         if (!isset($this->menu[$loc])) return;
 
         // else carry on with nromal php loading
         foreach ($this->menu[$loc] as $m_item)
         {
-            if (!empty($m_item["page_id"]) && ($m_item["page_id.active"] || isset($_COOKIE["token"])))
+            if (!empty($m_item["page_id"]) && $m_item["page_id.active"])
             {
-                $show_eye = (!$m_item["page_id.active"] && isset($_COOKIE["token"]) ? '<i class="fa fa-eye-slash"></i> ' : "");
-                echo '<li'.($m_item["page_id"] == $this->page["id"] ? ' class="active"' : '').'>';
-                echo '<a href="'.RAZOR_BASE_URL.$m_item["page_id.link"].'">'.$show_eye.$m_item["page_id.name"].'</a></li>';   
+                // sort any submenu items
+                if (!isset($m_item["sub_menu"]))
+                {
+                    echo '<li'.($m_item["page_id"] == $this->page["id"] ? ' class="active"' : '').'>';
+                    echo '<a href="'.RAZOR_BASE_URL.$m_item["page_id.link"].'">'.$m_item["page_id.name"].'</a>';
+                }
+                else
+                {
+                    echo '<li class="dropdown'.($m_item["page_id"] == $this->page["id"] ? ' active' : '').'">';
+                    echo '<a class="dropdown-toggle" href="'.RAZOR_BASE_URL.$m_item["page_id.link"].'">'.$m_item["page_id.name"].' <i class="fa fa-caret-down"></i></a>';
+                    echo '<ul class="dropdown-menu">';
+                    foreach ($m_item["sub_menu"] as $sm_item)
+                    {
+                        if (!empty($sm_item["page_id"]) && $sm_item["page_id.active"])
+                        {
+                            echo '<li'.($sm_item["page_id"] == $this->page["id"] ? ' class="active"' : '').'>';
+                            echo '<a href="'.RAZOR_BASE_URL.$sm_item["page_id.link"].'">'.$sm_item["page_id.name"].'</a>';
+                            echo '</li>';   
+                        }
+                    }
+                    echo "<ul>";
+                }
+
+                echo '</li>';   
             }
         }
     }
@@ -173,13 +210,6 @@ OUTPUT;
 
     private function get_page_data()
     {
-        // check for admin flag
-        if ($this->link == "admin")
-        {
-            $this->link = null;
-            $this->admin = true;
-        }
-
         $db = new RazorDB();
         $db->connect("page");
         $search = (empty($this->link) ? array("column" => "id", "value" => $this->site["home_page"]) : array("column" => "link", "value" => $this->link));
@@ -213,7 +243,17 @@ OUTPUT;
         foreach ($menus as $menu)
         {
             if (!isset($this->menu[$menu["menu_id.name"]])) $this->menu[$menu["menu_id.name"]] = array();
-            $this->menu[$menu["menu_id.name"]][] = $menu;    
+
+            if ($menu["level"] == 1) $this->menu[$menu["menu_id.name"]][] = $menu;
+
+            if ($menu["level"] == 2)
+            {
+                $parent = count($this->menu[$menu["menu_id.name"]]) - 1;
+
+                if (!isset($this->menu[$menu["menu_id.name"]][$parent]["sub_menu"])) $this->menu[$menu["menu_id.name"]][$parent]["sub_menu"] = array();
+
+                $this->menu[$menu["menu_id.name"]][$parent]["sub_menu"][] = $menu;
+            }
         }
         
         $db->disconnect();

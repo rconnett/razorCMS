@@ -1,6 +1,6 @@
 require([
 	"angular",
-	"angular-route", 
+	"angular-route",
 	"razor/services/rars", 
 	"razor/directives/form-controls", 
 	"razor/directives/notification", 

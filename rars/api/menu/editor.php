@@ -30,7 +30,6 @@ class MenuEditor extends RazorAPI
         $menus = array();
         foreach ($menu_items as $mi)
         {
-            // setup array if not set, but only setup the menus that are used on this page (still need to collect them all though in from db)
             if (!isset($menus[$mi["menu_id.name"]]))
             {
                 $menus[$mi["menu_id.name"]] = array(
@@ -40,8 +39,20 @@ class MenuEditor extends RazorAPI
                 );
             }
 
-            // now only add if created... skip menus not for this page
-            if (isset($menus[$mi["menu_id.name"]]))
+            // if (isset($menus[$mi["menu_id.name"]]))
+            // {
+            //     $menus[$mi["menu_id.name"]]["menu_items"][] = array(
+            //         "id" => $mi["id"],
+            //         "position" => $mi["position"],
+            //         "page_id" => $mi["page_id"],
+            //         "page_name" => $mi["page_id.name"],
+            //         "page_link" => $mi["page_id.link"],
+            //         "page_active" => $mi["page_id.active"],
+            //         "level" => $mi["level"]
+            //     );
+            // }
+
+            if ($mi["level"] == 1)
             {
                 $menus[$mi["menu_id.name"]]["menu_items"][] = array(
                     "id" => $mi["id"],
@@ -49,9 +60,49 @@ class MenuEditor extends RazorAPI
                     "page_id" => $mi["page_id"],
                     "page_name" => $mi["page_id.name"],
                     "page_link" => $mi["page_id.link"],
-                    "page_active" => $mi["page_id.active"]
-                );
+                    "page_active" => $mi["page_id.active"],
+                    "level" => $mi["level"]
+                );                
             }
+
+            if ($mi["level"] == 2)
+            {
+                $parent = count($menus[$mi["menu_id.name"]]["menu_items"]) - 1;
+                
+                if (!isset($menus[$mi["menu_id.name"]]["menu_items"][$parent]["sub_menu"]))
+                {
+                    $menus[$mi["menu_id.name"]]["menu_items"][$parent]["sub_menu"] = array();
+                }
+
+                $menus[$mi["menu_id.name"]]["menu_items"][$parent]["sub_menu"][] = array(
+                    "id" => $mi["id"],
+                    "position" => $mi["position"],
+                    "page_id" => $mi["page_id"],
+                    "page_name" => $mi["page_id.name"],
+                    "page_link" => $mi["page_id.link"],
+                    "page_active" => $mi["page_id.active"],
+                    "level" => $mi["level"]
+                );   
+            }
+        }
+
+        // if menu items missing, build a clean array to allow people to add new
+        $db->connect("menu");
+
+        $search = array("column" => "id", "not" => true, "value" => null);
+        $menus_clean = $db->get_rows($search)["result"];
+        
+        $db->disconnect();  
+
+        foreach ($menus_clean as $mc) 
+        {
+            if (isset($menus[$mc["name"]])) continue;
+
+            $menus[$mc["name"]] = array(
+                "id" => $mc["id"], 
+                "name" => $mc["name"],
+                "menu_items" => array()
+            );
         }
 
         // return the basic user details
@@ -63,7 +114,7 @@ class MenuEditor extends RazorAPI
     {
         // login check - if fail, return no data to stop error flagging to user
         if (!$this->check_access()) $this->response(null, null, 401);
-        
+    
         // menu item
         $db = new RazorDB();
         $db->connect("menu_item");
@@ -85,6 +136,14 @@ class MenuEditor extends RazorAPI
             foreach ($menu["menu_items"] as $mi)
             {
                 if (isset($mi["id"])) $new_menus_flat[$menu["id"]][] = $mi["id"];
+
+                if (isset($mi["sub_menu"]) & !empty($mi["sub_menu"]))
+                {
+                    foreach ($mi["sub_menu"] as $sub_menu_item)
+                    {
+                        if (isset($sub_menu_item["id"])) $new_menus_flat[$menu["id"]][] = $sub_menu_item["id"];
+                    }
+                }
             }
         }
 
@@ -102,27 +161,59 @@ class MenuEditor extends RazorAPI
         // 3. update all of sent menu data, by looping through the new $data
         foreach ($data as $new_menu)
         {
+            $pos = 1;
             // each menu
-            foreach ($new_menu["menu_items"] as $pos => $nmi)
+            foreach ($new_menu["menu_items"] as $nmi)
             {
                 if (isset($nmi["id"]) && in_array($nmi["id"], $current_menus_flat[$new_menu["id"]]))
                 {
                     // update menu item
                     $search = array("column" => "id", "value" => $nmi["id"]);
-                    $db->edit_rows($search, array("position" => $pos + 1));
+                    $db->edit_rows($search, array("position" => $pos));
                 }
                 else
                 {
                     // add new item
                     $row = array(
                         "menu_id" => (int) $new_menu["id"],
-                        "position" => $pos + 1,
+                        "position" => $pos,
                         "level" => 1,
                         "page_id" => $nmi["page_id"],
                         "link_id" => 0
                     );
 
                     $db->add_rows($row);  
+                }
+
+                $pos++;
+
+                // now check for sub menu
+                if (isset($nmi["sub_menu"]) && !empty($nmi["sub_menu"]))
+                {
+                    foreach ($nmi["sub_menu"] as $nsmi)
+                    {
+                        if (isset($nsmi["id"]) && in_array($nsmi["id"], $current_menus_flat[$new_menu["id"]]))
+                        {
+                            // update menu item
+                            $search = array("column" => "id", "value" => $nsmi["id"]);
+                            $db->edit_rows($search, array("position" => $pos));
+                        }
+                        else
+                        {
+                            // add new item
+                            $row = array(
+                                "menu_id" => (int) $new_menu["id"],
+                                "position" => $pos,
+                                "level" => 2,
+                                "page_id" => $nsmi["page_id"],
+                                "link_id" => 0
+                            );
+
+                            $db->add_rows($row);  
+                        }
+
+                        $pos++;
+                    }
                 }
             }
         }
