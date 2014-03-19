@@ -1,0 +1,82 @@
+<div class="razor-admin-extensions" ng-init="loadExtensions()">
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="accordian" ng-controller="extensionsListAccordion">
+				<div class="filter row">
+					<div class="col-sm-9">
+						<div class="input-group">
+	  						<span class="input-group-addon">Filter</span>
+							<input class="form-control" ng-model="searchFilter" placeholder="Search to filter" />
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<div class="input-group">
+							<span class="input-group-addon">Limit</span>
+							<input class="form-control" ng-model="searchLimit" ng-init="searchLimit = 50" type="number"/>
+						</div>
+					</div>
+				</div>
+				<accordion close-others="oneAtATime">
+					<accordion-group ng-repeat="e in extensions | orderBy:['type', 'name'] | filter:searchFilter | limitTo:searchLimit" is-open="isopen">
+						<accordion-heading>
+							<strong>{{e.type}}:</strong> {{e.name}}
+							<i class="expander pull-right fa" ng-class="{'fa-chevron-down': isopen, 'fa-chevron-right': !isopen}"></i>
+						</accordion-heading>
+						<div class="content">
+							<h3>Details</h3>
+							<table class="table table-condensed table-striped table-bordered">
+								<tbody>
+									<tr>
+										<td>Extension</td>
+										<td>{{e.extension}}</td>
+									</tr>
+									<tr>
+										<td>Author</td>
+										<td>{{e.handle}}</td>
+									</tr>
+									<tr>
+										<td>Type</td>
+										<td>{{e.type}}</td>
+									</tr>
+									<tr>
+										<td>Instances per Page</td>
+										<td>{{e.instances}}</td>
+									</tr>
+									<tr>
+										<td>Version</td>
+										<td>{{e.version}}</td>
+									</tr>
+									<tr>
+										<td>Created</td>
+										<td>{{e.created}}</td>
+									</tr>
+									<tr>
+										<td>Description</td>
+										<td>{{e.description}}</td>
+									</tr>
+								</tbody>
+							</table>
+							<h3 ng-if="e.settings">Settings</h3>
+							<form name="form" class="form-horizontal" role="form" ng-if="e.settings" novalidate>
+								<div class="form-group" ng-repeat="s in e.settings | orderBy:'name'">
+									<label for="setting-{{s.name}}" class="col-sm-3 control-label">{{s.name}}</label>
+									<div class="col-sm-7">
+										<input id="page-{{s.name}}" name="{{s.name}}" class="form-control" type="text" ng-model="s.value" placeholder="{{s.placeholder}}">
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-sm-offset-3 col-sm-7">
+										<button type="submit" class="btn btn-success" ng-click="saveSettings(e)">
+											<i class="fa fa-check"></i> 
+											Save Settings
+										</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</accordion-group>
+				</accordion>
+			</div>
+		</div>
+	</div>
+</div>

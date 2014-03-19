@@ -21,6 +21,7 @@
 			<accordion-group ng-repeat="page in pages | filter:searchFilter | limitTo:searchLimit" is-open="isopen">
 				<accordion-heading>
 					<button class="btn btn-sm btn-default" ng-click="addMenuItem(page)"><i class="fa fa-plus"></i></button>
+					<i class="fa fa-eye-slash" ng-hide="page.active" title="Active"></i>
 					{{page.name}}
 					<i class="expander pull-right fa button-heading" ng-class="{'fa-chevron-down': isopen, 'fa-chevron-right': !isopen}"></i>
 				</accordion-heading>

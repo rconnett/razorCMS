@@ -48,9 +48,4 @@ define(["angular", "cookie-monster"], function(angular, monster)
             return RAZOR_BASE_URL + link;
         };
     })
-
-    .controller("contentListAccordion", function($scope)
-    {
-        $scope.oneAtATime = true;
-    });
 });

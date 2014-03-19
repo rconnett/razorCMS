@@ -5,21 +5,22 @@ define(["angular", "angular-resource"], function(angular)
 	.factory("rars", function($http)
 	{
         return {
-            get: function(funcPath, id, token)
+            "get": function(funcPath, id, token)
             {
                 return $http.get(RAZOR_BASE_URL + "rars/" + funcPath + (!!id ? "/" + id : ""), {headers: {"Authorization": token}});
             },
-            post: function(funcPath, data, token)
+            "post": function(funcPath, data, token)
             {
                 return $http.post(RAZOR_BASE_URL + "rars/" + funcPath, data, {headers: {"Authorization": token}});
             },
-            put: function(funcPath, data, token)
+            "put": function(funcPath, data, token)
             {
                 return $http.put(RAZOR_BASE_URL + "rars/" + funcPath, data, {headers: {"Authorization": token}});
             },
-            delete: function(funcPath, id, token)
+            "delete": function(funcPath, id, token)
             {
-                return $http.delete(RAZOR_BASE_URL + "rars/" + funcPath + (!!id ? "/" + id : ""), {headers: {"Authorization": token}});
+                // this fixes IE8 issue
+                return $http["delete"](RAZOR_BASE_URL + "rars/" + funcPath + (!!id ? "/" + id : ""), {headers: {"Authorization": token}});
             }
         }
 	});

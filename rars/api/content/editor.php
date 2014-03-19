@@ -16,28 +16,37 @@ class ContentEditor extends RazorAPI
 
         // set options
         $options = array(
-            "join" => array("table" => "content", "join_to" => "content_id"),
             "order" => array("column" => "position", "direction" => "asc")
         );
 
         $search = array("column" => "page_id", "value" => (int) $page_id);
 
-        $results = $db->get_rows($search, $options)["result"];
+        $page_contents = $db->get_rows($search, $options)["result"];
         $db->disconnect(); 
 
         // split into content and locations
+        $db->connect("content");
         $content = array();
         $locations = array();
-        foreach ($results as $row)
+        foreach ($page_contents as $row)
         {
-            $content[$row["content_id"]] = array(
-                "content_id" => $row["content_id"],
-                "name" => $row["content_id.name"],
-                "content" => $row["content_id.content"]
-            );
+            if (!empty($row["content_id"]))
+            {
+                $options = array("limit" => 1);
+                $search = array("column" => "id", "value" => (int) $row["content_id"]);
+                $found_content = $db->get_rows($search, $options)["result"][0];
 
-            $locations[$row["location"]][$row["column"]][] = array("id" => $row["id"], "content_id" => $row["content_id"]);
-        }
+                $content[$found_content["id"]] = array(
+                    "content_id" => $found_content["id"],
+                    "name" => $found_content["name"],
+                    "content" => $found_content["content"]
+                );
+            }
+
+            $locations[$row["location"]][$row["column"]][] = array("id" => $row["id"], "content_id" => $row["content_id"], "extension" => $row["extension"]);
+        }        
+        $db->disconnect(); 
+
         
         // return the basic user details
         $this->response(array("content" => $content, "locations" => $locations), "json");
@@ -58,17 +67,20 @@ class ContentEditor extends RazorAPI
         $new_content_map = array();
         foreach ($data["content"] as $content)
         {
-            if (stripos($content["content_id"], "new-") === false)
+            if (isset($content["content_id"]))
             {
-                // update
-                $search = array("column" => "id", "value" => $content["content_id"]);
-                $db->edit_rows($search, array("content" => $content["content"], "name" => $content["name"]));
-            }
-            else
-            {
-                // add new content and map the ID to the new id for locations table
-                $row = array("content" => $content["content"], "name" => $content["name"]);
-                $new_content_map[$content["content_id"]] = $db->add_rows($row)["result"][0]["id"];   
+                if (stripos($content["content_id"], "new-") === false)
+                {
+                    // update
+                    $search = array("column" => "id", "value" => $content["content_id"]);
+                    $db->edit_rows($search, array("content" => $content["content"], "name" => $content["name"]));
+                }
+                else
+                {
+                    // add new content and map the ID to the new id for locations table
+                    $row = array("content" => $content["content"], "name" => $content["name"]);
+                    $new_content_map[$content["content_id"]] = $db->add_rows($row)["result"][0]["id"];   
+                }
             }
         }
 
@@ -95,7 +107,11 @@ class ContentEditor extends RazorAPI
                     {
                         // update
                         $search = array("column" => "id", "value" => $block["id"]);
-                        $db->edit_rows($search, array("location" => $location, "column" => (int) $column, "position" => $pos + 1));
+                        $row = array("location" => $location, "column" => (int) $column, "position" => $pos + 1);
+
+                        if (isset($block["extension"])) $row["extension"] = $block["extension"];
+                        
+                        $db->edit_rows($search, $row);
                         $page_content_map[] = $block["id"];
                     }
                     else
@@ -108,6 +124,8 @@ class ContentEditor extends RazorAPI
                             "column" => (int) $column,
                             "position" => $pos + 1
                         );
+
+                        if (isset($block["extension"])) $row["extension"] = $block["extension"];
 
                         $page_content_map[] = $db->add_rows($row)["result"][0];  
                     }
