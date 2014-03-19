@@ -46,7 +46,7 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
                 }
                 else
                 {
-                    $scope.page.theme = theme.handle + "/" + theme.theme + "/" + theme.manifest + ".manifest.json";
+                    $scope.page.theme = theme.handle + "/" + theme.extension + "/" + theme.manifest + ".manifest.json";
                     $scope.page.themeData = theme;
                 }
 
