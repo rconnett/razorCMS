@@ -46,9 +46,9 @@ class ExtensionList extends RazorAPI
             } 
 
             // sort list
-            if ($type == "theme" && $mf->type == $type) $extensions[] = $mf;
+            if ($mf->type == $type) $extensions[] = $mf;
             else if ($type == "system" && $mf->type != "theme") $extensions[] = $mf;
-            else
+            else if ($type == "all")
             {
                 $mf->type = ucfirst($mf->type);
                 $extensions[] = $mf;
