@@ -2,7 +2,7 @@
 	"manifest": "1-column",
 	"type": "theme",
 	"handle": "razorcms",
-	"theme": "default-extra",
+	"extension": "default-extra",
 	"layout": "1-column",
 	"name": "Default Extra (1 column)",
 	"author": "smiffy6969",

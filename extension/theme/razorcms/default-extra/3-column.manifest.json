@@ -2,7 +2,7 @@
 	"manifest": "3-column",
 	"type": "theme",
 	"handle": "razorcms",
-	"theme": "default-extra",
+	"extension": "default-extra",
 	"layout": "3-column",
 	"name": "Default Extra (3 column)",
 	"author": "smiffy6969",
