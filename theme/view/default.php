@@ -27,7 +27,12 @@
 		<link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>library/style/bootstrap/bootstrap.min.css">
 		<link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>library/font/font-awesome/css/font-awesome.min.css">
 		<link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>library/style/razor/razor_base.css">
+		<!--[if IE 9]><link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>library/style/razor/razor_base_ie9.css"><![endif]-->
+		<!--[if IE 8]><link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>library/style/razor/razor_base_ie8.css"><![endif]-->
 		<link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>theme/style/default.css">
+		<!--[if IE 9]><link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>theme/style/default_ie9.css"><![endif]-->
+		<!--[if IE 8]><link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>theme/style/default_ie8.css"><![endif]-->
+		
 	</head>
 
 	<?php $this->body() ?>

@@ -73,7 +73,7 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
         $scope.oneAtATime = true;
 
         //grab content list
-        rars.get("extension/list", "theme").success(function(data)
+        rars.get("extension/list", "theme", monster.get("token")).success(function(data)
         {
             $scope.themes = data.extensions;
         }); 

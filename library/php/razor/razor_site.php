@@ -61,7 +61,7 @@ class RazorSite
         if (!empty($this->page["theme"]))
         {
             $manifest = RazorFileTools::read_file_contents(RAZOR_BASE_PATH."extension/theme/{$this->page["theme"]}", "json");
-            $view_path = RAZOR_BASE_PATH."extension/theme/{$manifest->handle}/{$manifest->theme}/view/{$manifest->layout}.php";
+            $view_path = RAZOR_BASE_PATH."extension/theme/{$manifest->handle}/{$manifest->extension}/view/{$manifest->layout}.php";
 
             if (is_file($view_path)) include_once($view_path);
         }
@@ -76,11 +76,25 @@ class RazorSite
             echo <<<OUTPUT
 <div class="content-column" ng-class="{'edit': toggle}">
     <div class="content-block" ng-class="{'active': editingThis('{$loc}{$col}' + block.content_id)}" ng-repeat="block in locations.{$loc}.{$col}">
-        <input type="text" class="form-control" placeholder="Add Content Name" ng-show="toggle" ng-model="content[block.content_id].name"/>
-        
-        <div id="view-{$loc}{$col}{{block.content_id}}" class="content-view" ng-hide="editingThis('{$loc}{$col}' + block.content_id)" ng-click="startBlockEdit('{$loc}{$col}',  block.content_id)" ng-bind-html="bindHtml(content[block.content_id].content)"></div>
-        <textarea id="{$loc}{$col}{{block.content_id}}" height="800px" ng-show="editingThis('{$loc}{$col}' + block.content_id)" class="content-edit" ng-model="content[block.content_id].content" style="width:100%;"></textarea>
 
+        <input ng-if="!block.extension" type="text" class="form-control" placeholder="Add Content Name" ng-show="toggle" ng-model="content[block.content_id].name"/>
+        
+        <div ng-if="!block.extension" id="view-{$loc}{$col}{{block.content_id}}" class="content-view" ng-hide="editingThis('{$loc}{$col}' + block.content_id)" ng-click="startBlockEdit('{$loc}{$col}',  block.content_id)" ng-bind-html="bindHtml(content[block.content_id].content)"></div>
+        <textarea ng-if="!block.extension" id="{$loc}{$col}{{block.content_id}}" height="800px" ng-show="editingThis('{$loc}{$col}' + block.content_id)" class="content-edit" ng-model="content[block.content_id].content" style="width:100%;"></textarea>
+
+        <table class="table table-condensed table-bordered table-striped" ng-if="block.extension">
+            <thead>
+                <tr>
+                    <th colspan="2"><i class="fa fa-puzzle-piece"></i> Extension</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Extension</strong></td><td>{{block.extension.split('/')[2]}}</td></tr>
+                <tr><td><strong>Author</strong></td><td>{{block.extension.split('/')[1]}}</td></tr>
+                <tr><td><strong>Type</strong></td><td>{{block.extension.split('/')[0]}}</td></tr>
+            </tbody>
+        </table>
+        
         <div class="btn-toolbar" role="toolbar">
             <div class="btn-group">
                 <button class="btn btn-default" ng-click="locations.{$loc}.{$col}.splice(\$index - 1, 0, locations.{$loc}.{$col}.splice(\$index, 1)[0])" ng-show="toggle"><i class="fa fa-arrow-up"></i></button>
@@ -93,22 +107,45 @@ class RazorSite
     </div>
     <button class="btn btn-default" ng-show="toggle" ng-click="addNewBlock('{$loc}', '{$col}')"><i class="fa fa-plus"></i></button>
     <button class="btn btn-default" ng-show="toggle" ng-click="findBlock('{$loc}', '{$col}')"><i class="fa fa-search"></i></button>
+    <button class="btn btn-default" ng-show="toggle" ng-click="findExtension('{$loc}', '{$col}')"><i class="fa fa-puzzle-piece"></i></button>
 </div>
 OUTPUT;
             return;
         }
+       
+        $db = new RazorDB();
 
-        // empty, return
-        if (empty($this->content)) return;
-        
         // if not editor and not empty, output content for public
         foreach ($this->content as $c_data)
         {
             if ($c_data["location"] == $loc && $c_data["column"] == $col)
             {
-                echo '<div content-id="'.$c_data["content_id"].'">';
-                echo $c_data["content_id.content"];
-                echo '</div>';
+                if (!empty($c_data["content_id"]))
+                {
+                    // load content    
+                    echo '<div content-id="'.$c_data["content_id"].'">';
+
+                    $db->connect("content");
+                    $search = array("column" => "id", "value" => $c_data["content_id"]);
+                    $content = $db->get_rows($search)["result"][0];
+                    $db->disconnect(); 
+
+                    echo $content["content"];
+
+                    echo '</div>';
+                }
+                elseif (!empty($c_data["extension"]))
+                {
+                    // load extension
+                    $manifest = RazorFileTools::read_file_contents(RAZOR_BASE_PATH."extension/{$c_data['extension']}", "json");
+                    $view_path = RAZOR_BASE_PATH."extension/{$manifest->type}/{$manifest->handle}/{$manifest->extension}/view/{$manifest->view}.php";
+                    
+                    if (is_file($view_path))
+                    {
+                        if ($manifest->instances > 1) include($view_path);
+                        else include_once($view_path);
+                    }
+                }
             }
         }
     }
@@ -135,15 +172,15 @@ OUTPUT;
             </a>
         </li>
 
-        <li ng-if="toggle" class="text-center"><a href="#" class="add-new-menu" ng-click="findMenuItem('{$loc}', \$index)"><i class="fa fa-plus"></i></a></li>
+        <li ng-if="toggle" class="text-center"><a style="cursor: pointer;" class="add-new-menu" ng-click="findMenuItem('{$loc}', \$index)"><i class="fa fa-th-list"></i></a></li>
     </ul>
 </li>
 
-<li ng-show="toggle" class="add-new-menu"><a href="#" ng-click="findMenuItem('{$loc}')"><i class="fa fa-plus"></i></a></li>
+<li ng-show="toggle" class="add-new-menu"><a style="cursor: pointer;" ng-click="findMenuItem('{$loc}')"><i class="fa fa-th-list"></i></a></li>
 OUTPUT;
             return;
         }
-//ng-class="{'active': linkIsActive(mi.page_id)}"
+
         // empty, return
         if (!isset($this->menu[$loc])) return;
 
@@ -190,7 +227,18 @@ OUTPUT;
     {
         if (isset($_GET["preview"]) || (!$this->admin && !isset($_COOKIE["token"])))
         {
-            echo "<body>";
+            echo <<<OUTPUT
+<body>
+    <!--[if lt IE 9]>
+        <div class="ie8">
+            <p class="message">
+                <i class="fa fa-exclamation-triangle"></i> You are using an outdated version of Internet Explorer that is not supported, 
+                please update your browser or consider using an alternative, modern browser, such as 
+                <a href="http://www.google.com/chrome">Google Chome</a>.
+            </p>
+        <div>
+    <![endif]-->
+OUTPUT;
             return;
         }
 
@@ -270,7 +318,6 @@ OUTPUT;
 
         // set options
         $options = array(
-            "join" => array("table" => "content", "join_to" => "content_id"),
             "order" => array("column" => "position", "direction" => "asc")
         );
 

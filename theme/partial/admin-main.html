@@ -1,5 +1,16 @@
 <!-- admin html -->
 <body id="razor-admin" class="ng-cloak razor-admin" ng-controller="main" ng-init="init()">
+    
+    <!--[if lt IE 9]>
+        <div class="ie8 ie8-admin">
+            <p class="message">
+                <i class="fa fa-exclamation-triangle"></i> You are using an outdated version of Internet Explorer that is not supported, 
+                please update your browser or consider using an alternative, modern browser, such as 
+                <a href="http://www.google.com/chrome">Google Chome</a>.
+            </p>
+        </div>
+    <![endif]-->
+
 	<global-notification></global-notification>
 	
 	<div class="razor-admin-panel">
@@ -10,11 +21,15 @@
 							<i class="fa fa-sign-in"></i>
 						</div>
 						<div class="form-group">
-							<label class="sr-only" for="email">Email address</label>
+							<!--[if IE 9]>
+								<label for="email">Email</label>
+						    <![endif]-->
 							<input type="email" class="form-control" placeholder="Email address" ng-model="loginDetails.u">
 						</div>
 						<div class="form-group">
-							<label class="sr-only" for="password">Password</label>
+							<!--[if IE 9]>
+								<label for="password">Password</label>
+						    <![endif]-->
 							<input type="password" class="form-control" placeholder="Password" ng-model="loginDetails.p">
 						</div>
 						<button type="submit" class="btn btn-default">Sign in <i class="fa fa-spinner fa-spin" ng-show="loading"></i></button>
@@ -83,6 +98,11 @@
 								<li ng-class="{'active':activePage == 'content'}">
 									<a href="#content">
 										<i class="fa fa-th-large"></i><span class="mobile-hide-inline">  Content</span>
+									</a>
+								</li>
+								<li ng-class="{'active':activePage == 'extensions'}">
+									<a href="#extensions">
+										<i class="fa fa-puzzle-piece"></i><span class="mobile-hide-inline">  Extensions</span>
 									</a>
 								</li>
 								<li ng-class="{'active':activePage == 'profile'}">

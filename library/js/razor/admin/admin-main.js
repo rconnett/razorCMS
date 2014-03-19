@@ -80,6 +80,12 @@ define(["angular", "cookie-monster", "nicedit", "ui-bootstrap"], function(angula
                         if (data.login_error_code == 103) $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Account not activated, click link in activation email to activate."});
                         if (data.login_error_code == 104) $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Too many failed attempts, your IP has been banned."});
                     }
+                })
+                .error(function(data)
+                {
+                    $scope.showLogin = true;
+                    $scope.loading = false;
+                    $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Login failed."}); 
                 });
             }
         };
@@ -282,15 +288,26 @@ define(["angular", "cookie-monster", "nicedit", "ui-bootstrap"], function(angula
             var id = (!!block ? block.id : "new-" + new Date().getTime());
             var name = (!!block ? block.name : null);
             var content = (!!block ? block.content : null);
+            var extension = (!!block && !!block.type && !!block.handle && !!block.extension ? block.type + "/" + block.handle + "/" + block.extension + "/" + block.extension + ".manifest.json" : null);
 
             // first add content, then location
-            if (!$scope.content) $scope.content = {};
-            $scope.content[id] = {"content_id": id, "content": content, "name": name};
+            if (extension === null)
+            {
+                if (!$scope.content) $scope.content = {};
+                $scope.content[id] = {"content_id": id, "content": content, "name": name};
 
-            if (!$scope.locations) $scope.locations = {};
-            if (!$scope.locations[loc]) $scope.locations[loc] = {};
-            if (!$scope.locations[loc][col]) $scope.locations[loc][col] = [];
-            $scope.locations[loc][col].push({"id": "new", "content_id": id});
+                if (!$scope.locations) $scope.locations = {};
+                if (!$scope.locations[loc]) $scope.locations[loc] = {};
+                if (!$scope.locations[loc][col]) $scope.locations[loc][col] = [];
+                $scope.locations[loc][col].push({"id": "new", "content_id": id});
+            }
+            else
+            {
+                if (!$scope.locations) $scope.locations = {};
+                if (!$scope.locations[loc]) $scope.locations[loc] = {};
+                if (!$scope.locations[loc][col]) $scope.locations[loc][col] = [];
+                $scope.locations[loc][col].push({"id": "new", "extension": extension}); 
+            }
         };
 
         $scope.findBlock = function(loc, col)
@@ -299,6 +316,18 @@ define(["angular", "cookie-monster", "nicedit", "ui-bootstrap"], function(angula
             {
                 templateUrl: RAZOR_BASE_URL + "theme/partial/modal/content-selection.html",
                 controller: "contentListModal"
+            }).result.then(function(selected)
+            {
+                $scope.addNewBlock(loc, col, selected);
+            });
+        };
+
+        $scope.findExtension = function(loc, col)
+        {
+            $modal.open(
+            {
+                templateUrl: RAZOR_BASE_URL + "theme/partial/modal/extension-selection.html",
+                controller: "extensionListModal"
             }).result.then(function(selected)
             {
                 $scope.addNewBlock(loc, col, selected);
@@ -320,6 +349,8 @@ define(["angular", "cookie-monster", "nicedit", "ui-bootstrap"], function(angula
                     $scope.menus[loc].menu_items[parentMenuIndex].sub_menu.push({"page_id": selected.id, "page_name": selected.name, "page_link": selected.link, "page_active": selected.active});
                 }
             });
+
+            return false;
         };
 
         $scope.linkIsActive = function(page_id)
@@ -390,6 +421,41 @@ define(["angular", "cookie-monster", "nicedit", "ui-bootstrap"], function(angula
         {
             return $sce.trustAsHtml(html);
         };
+    })
+
+    .controller("contentListAccordion", function($scope)
+    {
+        $scope.oneAtATime = true;
+    })
+
+    .controller("extensionListModal", function($scope, $modalInstance, rars)
+    {
+        $scope.oneAtATime = true;
+
+        rars.get("extension/list", "system", monster.get("token")).success(function(data)
+        {
+            $scope.extensions = data.extensions;
+        }); 
+
+        $scope.cancel = function()
+        {
+            $modalInstance.dismiss('cancel');
+        };
+
+        $scope.close = function(e)
+        {
+            $modalInstance.close(e);
+        };    
+
+        $scope.addExtension = function(e) 
+        {
+            $scope.close(e);
+        }; 
+    })
+
+    .controller("extensionListAccordion", function($scope)
+    {
+        $scope.oneAtATime = true;
     })
 
     .controller("menuItemListModal", function($scope, $modalInstance)

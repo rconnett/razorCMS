@@ -19,7 +19,7 @@
 				<accordion close-others="oneAtATime">
 					<accordion-group ng-repeat="page in pages | filter:searchFilter | limitTo:searchLimit" is-open="isopen">
 						<accordion-heading>
-       						<i class="fa fa-eye" ng-show="page.active" title="Active"></i>
+       						<i class="fa fa-eye-slash" ng-hide="page.active" title="Active"></i>
        						<i class="fa fa-home" ng-show="page.id == site.home_page" title="Home Page (deletion is disabled)"></i>
 							<i class="fa fa-pencil" ng-show="isCurrentPage(page.id)" title="Currently Editing (deletion is disabled)"></i>
 							{{page.name}}
