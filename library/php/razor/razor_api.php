@@ -25,8 +25,8 @@ class RazorAPI
         }
         elseif (is_string($data))
         {
-            if (defined("RARS_CLEAN_DATA_ALLOWED_TAGS")) return addcslashes(strip_tags($data, RARS_CLEAN_DATA_ALLOWED_TAGS), "\\\'\"&\n\r");
-            else return addcslashes($data, "\\\'\"&\n\r");            
+            if (defined("RARS_CLEAN_DATA_ALLOWED_TAGS")) return addcslashes(strip_tags($data, RARS_CLEAN_DATA_ALLOWED_TAGS), "\\&\n\r");
+            else return addcslashes($data, "\\&\n\r");            
         }
         elseif (is_bool($data) || is_int($data) || is_float($data)) return $data;
         else return null;

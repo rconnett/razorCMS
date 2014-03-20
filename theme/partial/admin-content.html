@@ -17,7 +17,7 @@
 					</div>
 				</div>
 				<accordion close-others="oneAtATime">
-					<accordion-group ng-repeat="c in content | filter:searchFilter | limitTo:searchLimit" is-open="isopen">
+					<accordion-group ng-repeat="c in content | orderBy:'name' | filter:searchFilter | limitTo:searchLimit" is-open="isopen">
 						<accordion-heading>
        						<i class="fa fa-eye" ng-hide="c.used_on_pages == null" title="Active"></i>
 							{{c.name}}
