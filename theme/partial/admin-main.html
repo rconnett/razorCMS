@@ -1,6 +1,6 @@
 <!-- admin html -->
 <body id="razor-admin" class="ng-cloak razor-admin" ng-controller="main" ng-init="init()">
-    
+ 
     <!--[if lt IE 9]>
         <div class="ie8 ie8-admin">
             <p class="message">
@@ -15,27 +15,51 @@
 	
 	<div class="razor-admin-panel">
 		<div class="container">
-			<div  ng-show="showLogin">
-					<form class="form-inline login-form" role="form" ng-submit="login()">
+			<div ng-if="showLogin" class="row">
+				<form ng-if="activePage != 'password-reset'" name="form" class="form-inline login-form" role="form" ng-submit="login()" novalidate>
+					<div class="form-group">
+						<!--[if IE 9]>
+							<label for="email">Email</label>
+					    <![endif]-->
+						<input name="email" type="email" class="form-control" placeholder="Email address" ng-model="loginDetails.u" ng-class="{'input-error' :form.email.$dirty && form.email.$invalid && form.email.$error.required}" required>
+					</div>
+					<div class="form-group">
+						<!--[if IE 9]>
+							<label for="password">Password</label>
+					    <![endif]-->
+						<input name="password" type="password" class="form-control" placeholder="Password" ng-model="loginDetails.p" ng-class="{'input-error' :form.password.$dirty && form.password.$invalid && form.password.$error.required}">
+					</div>
+					<button type="submit" class="btn btn-default" ng-disabled="form.$invalid || processing || !loginDetails.p || loginDetails.p.length < 1">
+						<i class="fa fa-sign-in" ng-hide="processing"></i>
+						<i class="fa fa-spinner fa-spin" ng-show="processing"></i>
+						<span class="mobile-hide-inline"> Sign In</span>
+					</button>
+					<button type="submit" class="btn btn-default pull-right" ng-click="forgotLogin()" ng-disabled="form.$invalid || processing">
+						<i class="fa fa-question-circle"></i>
+						<span class="mobile-hide-inline"> Forgot Login</span>
+					</button>
+				</form>
+				<form ng-if="activePage == 'password-reset'" name="form" role="form" class="form-inline login-form" ng-submit="passwordReset()" novalidate>
+					<div class="form-group">
+						<!--[if IE 9]>
+							<label for="password">Password</label>
+					    <![endif]-->
+						<input name="password" type="password" class="form-control" placeholder="Password" ng-model="passwordDetails.password" ng-class="{'input-error' :form.password.$dirty && form.password.$invalid && form.password.$error.required}" required>
+					</div>
 						<div class="form-group">
-							<i class="fa fa-sign-in"></i>
-						</div>
-						<div class="form-group">
-							<!--[if IE 9]>
-								<label for="email">Email</label>
-						    <![endif]-->
-							<input type="email" class="form-control" placeholder="Email address" ng-model="loginDetails.u">
-						</div>
-						<div class="form-group">
-							<!--[if IE 9]>
-								<label for="password">Password</label>
-						    <![endif]-->
-							<input type="password" class="form-control" placeholder="Password" ng-model="loginDetails.p">
-						</div>
-						<button type="submit" class="btn btn-default">Sign in <i class="fa fa-spinner fa-spin" ng-show="loading"></i></button>
-					</form>
+						<!--[if IE 9]>
+							<label for="password">New Password</label>
+					    <![endif]-->
+						<input name="repeat_password" type="password" class="form-control" placeholder="New Password" ng-model="passwordDetails.repeat_password" ng-class="{'input-error' :form.repeat_password.$dirty && form.repeat_password.$invalid && (form.repeat_password.$error.required || form.repeatPassword.$error.confirm)}"  confirm="{{passwordDetails.password}}" required>
+					</div>
+					<button type="submit" class="btn btn-default" ng-disabled="form.$invalid || processing">
+						<i class="fa fa-key" ng-hide="processing"></i>
+						<i class="fa fa-spinner fa-spin" ng-show="processing"></i>
+						<span class="mobile-hide-inline"> Reset Password</span>
+					</button>
+				</form>
 			</div>
-			<div class="row" ng-show="user.id">
+			<div class="row" ng-if="user.id">
 				<div class="col-xs-6">
 					<i class="fa fa-dot-circle-o dashboard-icon mobile-hide-block" ng-hide="changed" ng-click="openDash()"></i>
 					<div class="editor-controls">
@@ -68,7 +92,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="razor-admin-dashboard" ng-show="dash">
+	<div class="razor-admin-dashboard" ng-if="dash && user.id">
 		<div class="dash-nav">
 			<div class="container">
 				<div class="row">

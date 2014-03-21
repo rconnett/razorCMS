@@ -231,13 +231,13 @@ class RazorAPI
         $user = $res["result"][0];
         $db->disconnect(); 
 
-        // no user found or no access in $timeout seconds
+        // no user found or no access in XXX seconds
         if ($res["count"] != 1) return false;     
         if ($user["last_accessed"] < time() - $access_timeout) return false;
 
         /* all ok, so go verify user */
 
-        // need to create a token and last logged stamp and save it in the db
+        // need to create a token and last logged stamp
         $last_logged = $user["last_logged_in"];
         $user_agent = preg_replace("/[^0-9a-zA-Z.:;-_]/", '', substr($_SERVER["HTTP_USER_AGENT"], 0, 250));
         $ip_address = preg_replace("/[^0-9.]/", '', substr($_SERVER["REMOTE_ADDR"], 0, 50));
@@ -255,7 +255,10 @@ class RazorAPI
             "access_level"      => $user["access_level"]
         );
 
-        // update access time to keep connection alive
+        // update access time to keep connection alive, only do this once an hour to keep writes to db down for user table
+        // connection will stay live for a day anyway so we do not need to be this heavy on the last access time writes
+        if ($user["last_accessed"] > time() - 3600) return $this->user["access_level"];
+
         $db = new RazorDB();
         $db->connect("user");
         $search = array("column" => "id", "value" => $this->user["id"]);

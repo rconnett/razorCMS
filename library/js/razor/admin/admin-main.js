@@ -7,12 +7,14 @@ define(["angular", "cookie-monster", "nicedit", "ui-bootstrap"], function(angula
         $scope.location = $location;
         $scope.user = null;
         $scope.loginDetails = {"u": null, "p": null};
+        $scope.passwordDetails = {"password": null, "repeat_password": null};
         $scope.editorInstance = null;
         $scope.editing = {"handle": null, "id": null, "code": null};
         $scope.toggle = null;
         $scope.changed = null;
         $scope.dash = null;
         $scope.clickAndSort = {};
+        $scope.signature = null;
 
         $scope.site = null;
         $scope.content = null;
@@ -27,7 +29,7 @@ define(["angular", "cookie-monster", "nicedit", "ui-bootstrap"], function(angula
             // nav active watcher
             $scope.$watch("location.path()", function(path)
             {
-                $scope.activePage = path.substring(1);
+                $scope.activePage = path.split("/")[1];
             });
 
             $scope.loadPage();
@@ -35,59 +37,84 @@ define(["angular", "cookie-monster", "nicedit", "ui-bootstrap"], function(angula
 
         $scope.login = function()
         {
-            if ($scope.forgotLogin)
+            $scope.processing = true;
+
+            rars.post("login", $scope.loginDetails).success(function(data)
             {
-                $scope.loading = true;
-
-                rars.post("user/reminder", {"email": $scope.loginDetails.u})
-                    .success(function(data)
-                    {
-                        $rootScope.$broadcast("global-notification", {"type": "success", "text": "Password reset link emailed, you have one hour to use link."});
-                        $scope.loading = false;
-                    })
-                    .error(function(data, header) 
-                    {
-                        $rootScope.$broadcast("global-notification", {"type": "success", "text": "Could not send password request, user not found or too many requests in last ten minutes."});
-                        $scope.loading = false;
-                    }
-                );
-            }
-            else
-            {
-                $scope.loading = true;
-
-                rars.post("login", $scope.loginDetails).success(function(data)
+                if (!!data.user)
                 {
-                    if (!!data.user)
-                    {
-                        // save cookie and redirect user based on access level
-                        monster.set("token", data.token, null, "/");
-                        $scope.user = data.user;
-                        $scope.showLogin = false;
-                        $scope.loading = false;
-                        window.location.href = RAZOR_BASE_URL + "#page";
-                    }
-                    else
-                    {
-                        // clear token and user
-                        monster.remove("token");
-
-                        $scope.showLogin = true;
-                        $scope.loading = false;
-
-                        if (data.login_error_code == 101) $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Login failed."});
-                        if (data.login_error_code == 102) $rootScope.$broadcast("global-notification", {"type": "danger", "text": "You have been locked out, try again in " + (!!data.time_left ? Math.ceil(data.time_left / 60) : 0) + "min."});
-                        if (data.login_error_code == 103) $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Account not activated, click link in activation email to activate."});
-                        if (data.login_error_code == 104) $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Too many failed attempts, your IP has been banned."});
-                    }
-                })
-                .error(function(data)
+                    // save cookie and redirect user based on access level
+                    monster.set("token", data.token, null, "/");
+                    $scope.user = data.user;
+                    $scope.showLogin = false;
+                    $scope.processing = false;
+                    window.location.href = RAZOR_BASE_URL + "#page";
+                }
+                else
                 {
+                    // clear token and user
+                    monster.remove("token");
+
                     $scope.showLogin = true;
-                    $scope.loading = false;
-                    $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Login failed."}); 
-                });
-            }
+                    $scope.processing = false;
+
+                    if (data.login_error_code == 101) $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Login failed."});
+                    if (data.login_error_code == 102) $rootScope.$broadcast("global-notification", {"type": "danger", "text": "You have been locked out, try again in " + (!!data.time_left ? Math.ceil(data.time_left / 60) : 0) + "min."});
+                    if (data.login_error_code == 103) $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Account not activated, click link in activation email to activate."});
+                    if (data.login_error_code == 104) $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Too many failed attempts, your IP has been banned."});
+                }
+            })
+            .error(function(data)
+            {
+                $scope.showLogin = true;
+                $scope.processing = false;
+                $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Login failed."}); 
+            });
+        };
+
+        $scope.forgotLogin = function()
+        {
+            $scope.processing = true;
+
+            rars.post("user/reminder", {"email": $scope.loginDetails.u})
+                .success(function(data)
+                {
+                    $rootScope.$broadcast("global-notification", {"type": "success", "text": "Password reset link emailed to you, you have one hour to use the link."});
+                    $scope.processing = false;
+                })
+                .error(function(data, header) 
+                {
+                    $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Could not send password request, user not found or too many requests in last ten minutes."});
+                    $scope.processing = false;
+                }
+            );
+        };
+
+        $scope.passwordReset = function()
+        {
+            // only runs if page set to password-reset due to ng-init and ng-if
+            // check for token, do base check on it
+            var token = $location.path().split("/")[2];
+            console.debug(token);
+            console.debug(token.length);
+            if (token.length < 20) return;
+
+            // if there, send of for reset (which is only valid for an hour anyway)
+            $scope.processing = true;
+
+            rars.post("user/password", {"signature": $scope.signature, "passwords": $scope.passwordDetails, "token": token}).success(function(data)
+            {
+                // show success message, show login form
+                $rootScope.$broadcast("global-notification", {"type": "success", "text": "Password reset complete, please log in."});
+                $scope.processing = false;
+                $scope.location.path('page');
+            })
+            .error(function(data)
+            {
+                // show failed message but give no reason why
+                $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Could not reset password, try requesting a new reset. Returning home in 5 seconds"});
+                $timeout(function() { window.location.href = RAZOR_BASE_URL }, 5000);
+            });
         };
 
     	$scope.loginCheck = function()
@@ -158,14 +185,14 @@ define(["angular", "cookie-monster", "nicedit", "ui-bootstrap"], function(angula
         $scope.openDash = function()
         {
             $scope.dash = true;
-            $scope.location.path('#page');
+            $scope.location.path('page');
         };
 
         $scope.closeDash = function()
         {
             $scope.loadPage();
             $scope.dash = false;
-            $scope.location.path('#');
+            $scope.location.path('page');
         };
 
         $scope.bindHtml = function(html)
@@ -320,6 +347,15 @@ define(["angular", "cookie-monster", "nicedit", "ui-bootstrap"], function(angula
             {
                 $scope.addNewBlock(loc, col, selected);
             });
+        };
+
+        $scope.removeContent = function(loc, col, index)
+        {
+            // remove from locations
+            var block = $scope.locations[loc][col].splice(index, 1)[0];
+
+            // remove from content if content item
+            if (!!block.content_id) delete $scope.content[block.content_id];
         };
 
         $scope.findExtension = function(loc, col)

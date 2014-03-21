@@ -18,7 +18,7 @@
 			</div>
 		</div>
 		<accordion close-others="oneAtATime">
-			<accordion-group ng-repeat="page in pages | filter:searchFilter | limitTo:searchLimit" is-open="isopen">
+			<accordion-group ng-repeat="page in pages | orderBy:'name' | filter:searchFilter | limitTo:searchLimit" is-open="isopen">
 				<accordion-heading>
 					<button class="btn btn-sm btn-default" ng-click="addMenuItem(page)"><i class="fa fa-plus"></i></button>
 					<i class="fa fa-eye-slash" ng-hide="page.active" title="Active"></i>

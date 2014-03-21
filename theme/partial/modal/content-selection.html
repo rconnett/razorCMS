@@ -18,7 +18,7 @@
 			</div>
 		</div>
 		<accordion close-others="oneAtATime">
-			<accordion-group ng-repeat="c in content | filter:searchFilter | limitTo:searchLimit" is-open="isopen">
+			<accordion-group ng-repeat="c in content | orderBy:'name' | filter:searchFilter | limitTo:searchLimit" is-open="isopen">
 				<accordion-heading>
 					<button class="btn btn-sm btn-default" ng-click="addContent(c)"><i class="fa fa-plus"></i></button>
 					{{c.name}}

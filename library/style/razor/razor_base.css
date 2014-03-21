@@ -60,6 +60,10 @@ li.dropdown:hover .dropdown-menu {
   color: #ff4700;
   text-align: center;
 }
+.input-error {
+  background-color: #f3e4e4;
+  border-color: #d88585;
+}
 .alert-form {
   padding: 6px;
   margin: 0px;
@@ -140,15 +144,12 @@ li.dropdown:hover .dropdown-menu {
   border-bottom: 1px solid #dddddd;
   position: fixed;
   width: 100%;
-  height: 58px;
+  min-height: 58px;
   z-index: 100;
 }
 .razor-admin .razor-admin-panel .login-form {
   padding-top: 10px;
   padding-bottom: 10px;
-}
-.razor-admin .razor-admin-panel .login-form .fa-sign-in {
-  font-size: 33px;
 }
 .razor-admin .razor-admin-panel .login-form .error-message {
   padding: 6px;

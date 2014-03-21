@@ -11,7 +11,7 @@ require([
 	"razor/admin/admin-pages", 
 	"razor/admin/admin-content", 
 	"razor/admin/admin-profile",
-	"razor/admin/admin-extensions" 
+	"razor/admin/admin-extensions"
 ], function(angular)
 {
     angular.module("razor.admin", [
@@ -37,7 +37,7 @@ require([
 	    .when('/extensions', {templateUrl: RAZOR_BASE_URL + 'theme/partial/admin-extensions.html', controller: "extensions"})
 	    .when('/profile', {templateUrl: RAZOR_BASE_URL + 'theme/partial/admin-profile.html', controller: "profile"})
 	    .when('/settings', {templateUrl: RAZOR_BASE_URL + 'theme/partial/admin-settings.html', controller: "settings"})
-	    .otherwise({redirectTo: '/page'});
+	    .when('/password-reset', {templateUrl: RAZOR_BASE_URL + 'theme/partial/admin-page.html', controller: "page"})
 	}]);
 
     angular.bootstrap(document.getElementById("razor-admin"), ["razor.admin"]); // Necessary because the Angular files are being loading asynchronously

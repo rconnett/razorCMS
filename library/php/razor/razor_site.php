@@ -101,7 +101,7 @@ class RazorSite
                 <button class="btn btn-default" ng-click="locations.{$loc}.{$col}.splice(\$index + 1, 0, locations.{$loc}.{$col}.splice(\$index, 1)[0])" ng-show="toggle"><i class="fa fa-arrow-down"></i></button>
             </div>
             <div class="btn-group pull-right">
-                <button class="btn btn-warning" ng-show="toggle" ng-click="locations.{$loc}.{$col}.splice(\$index, 1)"><i class="fa fa-times"></i></button>
+                <button class="btn btn-warning" ng-show="toggle" ng-click="removeContent('{$loc}', '{$col}', \$index)"><i class="fa fa-times"></i></button>
             </div>
         </div>
     </div>
