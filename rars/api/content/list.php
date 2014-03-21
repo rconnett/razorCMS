@@ -21,7 +21,8 @@ class ContentList extends RazorAPI
 
         $search = array("column" => "id", "value" => null, "not" => true);
 
-        $content = $db->get_rows($search, $options)["result"];
+        $content = $db->get_rows($search, $options);
+        $content = $content["result"];
         $db->disconnect(); 
 
         // now get all page content so we can show what pages are using this content
@@ -33,7 +34,8 @@ class ContentList extends RazorAPI
 
         $search = array("column" => "id", "value" => null, "not" => true);
 
-        $page_content = $db->get_rows($search, $options)["result"];
+        $page_content = $db->get_rows($search, $options);
+        $page_content = $page_content["result"];
         $db->disconnect(); 
 
         foreach ($content as $key => $row)

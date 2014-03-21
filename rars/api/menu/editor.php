@@ -23,7 +23,8 @@ class MenuEditor extends RazorAPI
             "order" => array("column" => "position", "direction" => "asc")
         );
         $search = array("column" => "id", "not" => true, "value" => null);
-        $menu_items = $db->get_rows($search, $options)["result"];
+        $menu_items = $db->get_rows($search, $options);
+        $menu_items = $menu_items["result"];
         
         $db->disconnect();  
 
@@ -77,7 +78,8 @@ class MenuEditor extends RazorAPI
         $db->connect("menu");
 
         $search = array("column" => "id", "not" => true, "value" => null);
-        $menus_clean = $db->get_rows($search)["result"];
+        $menus_clean = $db->get_rows($search);
+        $menus_clean = $menus_clean["result"];
         
         $db->disconnect();  
 
@@ -111,7 +113,8 @@ class MenuEditor extends RazorAPI
             "order" => array("column" => "position", "direction" => "asc")
         );
         $search = array("column" => "id", "not" => true, "value" => null);
-        $all_menu_items = $db->get_rows($search, $options)["result"];
+        $all_menu_items = $db->get_rows($search, $options);
+        $all_menu_items = $all_menu_items["result"];
 
         // 2. make flat arrays
         $new_menus_flat = array();

@@ -16,7 +16,8 @@ class SiteEditor extends RazorAPI
         $db->connect("site");
 
         $search = array("column" => "id", "value" => 1);
-        $site = $db->get_rows($search)["result"][0];
+        $site = $db->get_rows($search);
+        $site = $site["result"][0];
         
         $db->disconnect();  
 

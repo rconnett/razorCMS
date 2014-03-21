@@ -127,7 +127,8 @@ OUTPUT;
 
                     $db->connect("content");
                     $search = array("column" => "id", "value" => $c_data["content_id"]);
-                    $content = $db->get_rows($search)["result"][0];
+                    $content = $db->get_rows($search);
+                    $content = $content["result"][0];
                     $db->disconnect(); 
 
                     echo $content["content"];
@@ -285,7 +286,8 @@ OUTPUT;
         );
 
         // get all menu_links
-        $menus = $db->get_rows(array("column" => "id", "not" => true, "value" => null), $options)["result"];
+        $menus = $db->get_rows(array("column" => "id", "not" => true, "value" => null), $options);
+        $menus = $menus["result"];
 
         // sort them into name
         foreach ($menus as $menu)
@@ -323,7 +325,8 @@ OUTPUT;
 
         $search = array("column" => "page_id", "value" => $this->page["id"]);
 
-        $this->content = $db->get_rows($search, $options)["result"];
+        $content = $db->get_rows($search, $options);
+        $this->content = $content["result"];
         $db->disconnect(); 
     }
 }

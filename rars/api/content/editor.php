@@ -21,7 +21,8 @@ class ContentEditor extends RazorAPI
 
         $search = array("column" => "page_id", "value" => (int) $page_id);
 
-        $page_contents = $db->get_rows($search, $options)["result"];
+        $page_contents = $db->get_rows($search, $options);
+        $page_contents = $page_contents["result"];
         $db->disconnect(); 
 
         // split into content and locations
@@ -34,7 +35,8 @@ class ContentEditor extends RazorAPI
             {
                 $options = array("limit" => 1);
                 $search = array("column" => "id", "value" => (int) $row["content_id"]);
-                $found_content = $db->get_rows($search, $options)["result"][0];
+                $found_content = $db->get_rows($search, $options);
+                $found_content = $found_content["result"][0];
 
                 $content[$found_content["id"]] = array(
                     "content_id" => $found_content["id"],
@@ -79,7 +81,8 @@ class ContentEditor extends RazorAPI
                 {
                     // add new content and map the ID to the new id for locations table
                     $row = array("content" => $content["content"], "name" => $content["name"]);
-                    $new_content_map[$content["content_id"]] = $db->add_rows($row)["result"][0]["id"];   
+                    $result = $db->add_rows($row);
+                    $new_content_map[$content["content_id"]] = $result["result"][0]["id"];   
                 }
             }
         }
@@ -93,7 +96,8 @@ class ContentEditor extends RazorAPI
 
         // 1. first take snapshot of current
         $search = array("column" => "page_id", "value" => (int) $data["page_id"]);
-        $current_page_content = $db->get_rows($search)["result"];
+        $current_page_content = $db->get_rows($search);
+        $current_page_content = $current_page_content["result"];
 
         // 2. iterate through updating or adding, make a note of all id's
         $page_content_map = array();
@@ -127,7 +131,8 @@ class ContentEditor extends RazorAPI
 
                         if (isset($block["extension"])) $row["extension"] = $block["extension"];
 
-                        $page_content_map[] = $db->add_rows($row)["result"][0];  
+                        $result = $db->add_rows($row);
+                        $page_content_map[] = $result["result"][0];  
                     }
                 }
             }

@@ -120,7 +120,8 @@ class RazorAPI
                 array("column" => "ip_address", "value" => $ip_address), 
                 array("column" => "user_agent", "value" => $user_agent, "and" => true)
             );
-            $count = $db->get_rows($search)["count"];
+            $count = $db->get_rows($search);
+            $count = $count["count"];
             $db->disconnect(); 
 
             if ($count > 0) return RazorAPI::response(array("message" => "Login failed: ip banned", "login_error_code" => 104), "json");  

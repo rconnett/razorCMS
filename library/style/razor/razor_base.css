@@ -1,5 +1,4 @@
 /* apply razor any fixes */
-
 *,
 h1,
 h2,
@@ -13,33 +12,33 @@ h6 {
   display: none;
 }
 .mobile-show-block {
-  display: block;
+  display: block !important;
 }
 .mobile-show-inline-block {
-  display: inline-block;
+  display: inline-block !important;
 }
 .mobile-show-inline {
-  display: inline;
+  display: inline !important;
 }
 .mobile-hide-block,
 .mobile-hide-inline-block,
 .mobile-hide-inline {
-  display: none;
+  display: none !important;
 }
 @media (min-width: 830px) {
   .mobile-show-block,
   .mobile-show-inline-block,
   .mobile-show-inline {
-    display: none;
+    display: none !important;
   }
   .mobile-hide-block {
-    display: block;
+    display: block !important;
   }
   .mobile-hide-inline-block {
-    display: inline-block;
+    display: inline-block !important;
   }
   .mobile-hide-inline {
-    display: inline;
+    display: inline !important;
   }
 }
 li.dropdown .dropdown-menu {
@@ -55,14 +54,14 @@ li.dropdown:hover .dropdown-menu {
   height: 60px;
 }
 .ie8 .message {
-  background: #ffd494;
+  background: #FFD494;
   padding: 20px;
-  color: #ff4700;
+  color: #FF4700;
   text-align: center;
 }
 .input-error {
-  background-color: #f3e4e4;
-  border-color: #d88585;
+  background-color: #F3E4E4;
+  border-color: #D88585;
 }
 .alert-form {
   padding: 6px;
@@ -78,7 +77,7 @@ li.dropdown:hover .dropdown-menu {
   left: 50%;
   width: 40%;
   margin: 0px 0px 0px -20%;
-  border: 5px solid #444444;
+  border: 5px solid #444;
   z-index: 10000;
   animation: slide-up-down 5s forwards;
   -moz-animation: slide-up-down 5s forwards;
@@ -90,16 +89,16 @@ li.dropdown:hover .dropdown-menu {
   cursor: pointer;
 }
 .click-and-sort a:hover {
-  border: 2px dashed #bec9ff;
+  border: 2px dashed #BEC9FF;
 }
 .click-and-sort.selected a {
-  border: 2px dashed #bec9ff;
+  border: 2px dashed #BEC9FF;
 }
 .click-and-sort.selected a.add-new-menu {
   border: 2px dashed transparent;
 }
 .click-and-sort.place-holder a {
-  border: 2px dashed #bec9ff;
+  border: 2px dashed #BEC9FF;
   opacity: 0.4;
 }
 .click-and-sort.place-holder a.add-new-menu {
@@ -116,13 +115,13 @@ li.dropdown:hover .dropdown-menu {
   cursor: pointer;
 }
 .click-and-sort .click-and-sort-sub a:hover {
-  border: 2px dashed #bec9ff;
+  border: 2px dashed #BEC9FF;
 }
 .click-and-sort .click-and-sort-sub.selected a {
-  border: 2px dashed #bec9ff;
+  border: 2px dashed #BEC9FF;
 }
 .click-and-sort .click-and-sort-sub.place-holder a {
-  border: 2px dashed #bec9ff;
+  border: 2px dashed #BEC9FF;
   opacity: 0.4;
 }
 .click-and-sort .click-and-sort-sub.place-holder:hover a {
@@ -141,7 +140,7 @@ li.dropdown:hover .dropdown-menu {
   margin-bottom: 5px;
   background-color: rgba(255, 255, 255, 0.8);
   box-shadow: 0 2px 2px -2px rgba(0, 0, 0, 0.3);
-  border-bottom: 1px solid #dddddd;
+  border-bottom: 1px solid #ddd;
   position: fixed;
   width: 100%;
   min-height: 58px;
@@ -177,13 +176,13 @@ li.dropdown:hover .dropdown-menu {
   left: 0px;
 }
 .razor-admin .dashboard-icon:hover {
-  text-shadow: 0 0 0.3em #0d7da8;
+  text-shadow: 0 0 0.3em #0D7DA8;
 }
 .razor-admin .dashboard-icon.alt-color {
-  color: white;
+  color: #fff;
 }
 .razor-admin .dashboard-icon.alt-color:hover {
-  text-shadow: 0 0 0.3em white;
+  text-shadow: 0 0 0.3em #fff;
 }
 .razor-admin .razor-admin-dashboard {
   margin-top: 60px;
@@ -192,7 +191,7 @@ li.dropdown:hover .dropdown-menu {
   background-color: rgba(0, 0, 0, 0.9);
   height: 100%;
   z-index: 200;
-  color: white;
+  color: #fff;
   overflow-y: auto;
 }
 .razor-admin .razor-admin-dashboard .dash-nav {
@@ -200,7 +199,7 @@ li.dropdown:hover .dropdown-menu {
   top: 0px;
   width: 100%;
   height: 60px;
-  background-color: #111111;
+  background-color: #111;
   z-index: 300;
 }
 .razor-admin .razor-admin-dashboard .dash-nav .navbar {
@@ -220,13 +219,13 @@ li.dropdown:hover .dropdown-menu {
   display: inline-block;
 }
 .razor-admin .razor-admin-dashboard .dashbar-nav li:hover {
-  background-color: #333333;
+  background-color: #333;
 }
 .razor-admin .razor-admin-dashboard .dashbar-nav li.active {
-  background-color: #333333;
+  background-color: #333;
 }
 .razor-admin .razor-admin-dashboard .dashbar-nav li.active:hover {
-  background-color: #333333;
+  background-color: #333;
 }
 .razor-admin .razor-admin-dashboard .dashbar-nav li a {
   height: 50px;
@@ -234,7 +233,7 @@ li.dropdown:hover .dropdown-menu {
   padding: 0px 20px;
   display: inline-block;
   text-decoration: none;
-  color: #84c4fc;
+  color: #84C4FC;
 }
 .razor-admin .razor-admin-dashboard .dash-workspace {
   padding-top: 10px;
@@ -273,8 +272,8 @@ li.dropdown:hover .dropdown-menu {
 }
 .razor-admin .content-column.edit .content-block {
   margin-bottom: 10px;
-  background-color: white;
-  border: 1px solid #bbbbbb;
+  background-color: #fff;
+  border: 1px solid #bbb;
   opacity: 0.6;
 }
 .razor-admin .content-column.edit .content-block .btn-toolbar {
@@ -297,7 +296,7 @@ li.dropdown:hover .dropdown-menu {
 }
 .razor-admin .content-column.edit .content-block > div {
   width: 100% !important;
-  background-color: white;
+  background-color: #fff;
 }
 .razor-admin .content-column.edit .content-block > div .nicEdit-main {
   width: 99% !important;
@@ -325,7 +324,7 @@ li.dropdown:hover .dropdown-menu {
   padding-top: 5px;
 }
 .razor-admin .accordian .content {
-  color: black;
+  color: #000;
 }
 .razor-admin .accordian .content .table-data {
   margin: 20px 0px 0px 0px;
@@ -336,7 +335,7 @@ li.dropdown:hover .dropdown-menu {
   height: 250px;
   overflow: hidden;
   position: relative;
-  border: 1px solid #cccccc;
+  border: 1px solid #ccc;
 }
 .razor-admin .accordian .content .page-preview.for-menu {
   margin-top: 0px;
@@ -361,25 +360,25 @@ li.dropdown:hover .dropdown-menu {
   width: 97%;
   height: 100%;
   z-index: 1000000;
-  background-color: white;
+  background-color: #fff;
   opacity: 0;
 }
 .razor-admin .accordian .content .content-preview {
   margin-top: 20px;
   height: 250px;
   overflow: scroll;
-  border: 1px solid #cccccc;
+  border: 1px solid #ccc;
 }
 .razor-admin .accordian .content .used_on_pages {
   padding: 2px 4px;
-  border: 1px solid #cccccc;
+  border: 1px solid #ccc;
   margin: 3px;
   display: inline-block;
-  background-color: #eeeeee;
+  background-color: #eee;
 }
 .razor-admin .accordian .content .theme-screenshot {
   width: 526px;
-  border: 1px solid #bbbbbb;
+  border: 1px solid #bbb;
   padding: 3px;
 }
 .razor-admin .accordian .content table {
@@ -393,8 +392,8 @@ li.dropdown:hover .dropdown-menu {
   padding: 2px;
   width: 100px;
   height: 35px;
-  background-color: #aaaaaa;
-  border: 2px solid #555555;
+  background-color: #aaa;
+  border: 2px solid #555;
   cursor: pointer;
   border-radius: 4px;
 }
@@ -402,29 +401,29 @@ li.dropdown:hover .dropdown-menu {
   display: block;
   height: 27px;
   width: 50px;
-  background-color: #555555;
+  background-color: #555;
   float: left;
   text-align: center;
   padding-top: 5px;
   font-size: 11px;
-  color: #aaaaaa;
+  color: #aaa;
   border-radius: 2px;
 }
 .razor-admin .slide-switch.slide-switch-on {
-  background-color: #69b0f1;
+  background-color: #69B0F1;
 }
 .razor-admin .slide-switch.slide-switch-on .slide-switch-slider {
   float: right;
-  color: #69b0f1;
+  color: #69B0F1;
 }
 .razor-admin .slide-switch.slide-switch-disabled {
   opacity: 0.6;
   cursor: default;
 }
 .razor-admin .multi-select {
-  color: black;
+  color: #000;
   background-color: #f4f4f4;
-  border: 1px solid #aaaaaa;
+  border: 1px solid #aaa;
   border-radius: 4px;
   padding: 2px;
   position: relative;
@@ -434,7 +433,7 @@ li.dropdown:hover .dropdown-menu {
   position: absolute;
   right: 10px;
   bottom: 10px;
-  color: #777777;
+  color: #777;
 }
 .razor-admin .multi-select .rzr-selected {
   list-style-type: none;
@@ -444,9 +443,9 @@ li.dropdown:hover .dropdown-menu {
   padding: 0px;
 }
 .razor-admin .multi-select .rzr-selected .rzr-selected-item {
-  color: #444444;
-  border: 1px solid #bbbbbb;
-  background-color: #dddddd;
+  color: #444;
+  border: 1px solid #bbb;
+  background-color: #ddd;
   margin: 1px;
   padding: 2px 6px;
   border-radius: 3px;
@@ -466,12 +465,12 @@ li.dropdown:hover .dropdown-menu {
 }
 .razor-admin .multi-select .rzr-options {
   list-style-type: none;
-  color: black;
+  color: #000;
   position: absolute;
   min-width: 50%;
   display: block;
   z-index: 10000;
-  background-color: white;
+  background-color: #fff;
   padding: 10px;
   margin-left: -2px;
   margin-top: 3px;
@@ -481,12 +480,12 @@ li.dropdown:hover .dropdown-menu {
   padding: 3px;
 }
 .razor-admin .multi-select .rzr-options .ms-option-item:hover {
-  background-color: #69b0f1;
+  background-color: #69B0F1;
   cursor: pointer;
 }
 .razor-admin .multi-select .rzr-options .ms-option-item-empty {
   padding: 3px;
-  color: #aaaaaa;
+  color: #aaa;
 }
 @keyframes slide-up-down {
   0% {

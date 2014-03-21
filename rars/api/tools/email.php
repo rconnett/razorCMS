@@ -52,7 +52,8 @@ class ToolsEmail extends RazorAPI
             array("column" => "handle", "value" => $manifest->handle),
             array("column" => "extension", "value" => $manifest->extension)
         );
-        $extension_settings = $db->get_rows($search, $options)["result"][0]["json_settings"];
+        $extension_settings = $db->get_rows($search, $options);
+        $extension_settings = $extension_settings["result"][0]["json_settings"];
         $db->disconnect();  
 
         if (empty($extension_settings)) $this->response(null, null, 400);
@@ -61,7 +62,8 @@ class ToolsEmail extends RazorAPI
         // get site data
         $db->connect("site");
         $search = array("column" => "id", "value" => 1);
-        $site = $db->get_rows($search)["result"][0];
+        $site = $db->get_rows($search);
+        $site = $site["result"][0];
         $db->disconnect();  
                 
         // clean email data

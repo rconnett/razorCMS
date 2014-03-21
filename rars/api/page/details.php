@@ -16,7 +16,8 @@ class PageDetails extends RazorAPI
         $db->connect("page");
         $options = array("amount" => 1);
         $search = array("column" => "id", "value" => (int) $page_id);
-        $page = $db->get_rows($search, $options)["result"][0];
+        $page = $db->get_rows($search, $options);
+        $page = $page["result"][0];
         $db->disconnect(); 
 
         // return the basic user details
