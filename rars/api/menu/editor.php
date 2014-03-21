@@ -39,19 +39,6 @@ class MenuEditor extends RazorAPI
                 );
             }
 
-            // if (isset($menus[$mi["menu_id.name"]]))
-            // {
-            //     $menus[$mi["menu_id.name"]]["menu_items"][] = array(
-            //         "id" => $mi["id"],
-            //         "position" => $mi["position"],
-            //         "page_id" => $mi["page_id"],
-            //         "page_name" => $mi["page_id.name"],
-            //         "page_link" => $mi["page_id.link"],
-            //         "page_active" => $mi["page_id.active"],
-            //         "level" => $mi["level"]
-            //     );
-            // }
-
             if ($mi["level"] == 1)
             {
                 $menus[$mi["menu_id.name"]]["menu_items"][] = array(
