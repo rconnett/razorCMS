@@ -10,7 +10,13 @@
 
 class RazorErrorHandler {
 
-    private $mode = "development"; // development or production
+    private $mode = "production"; // set default state
+    
+    function __construct()
+    {
+        // detect if local host and auto switch to dev mode
+        if (strpos(RAZOR_BASE_URL, "http://localhost") === 0) $this->mode = "development";
+    }
 
     /**
      * Handle Error
