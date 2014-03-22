@@ -31,9 +31,9 @@
 		<!--[if IE 8]><link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>library/style/razor/razor_base_ie8.css"><![endif]-->
 
 		<!-- load your theme style here -->
-		<link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>/extension/theme/razorcms/razorcms-website/style/style.css">
-		<!--[if IE 9]><link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>/extension/theme/razorcms/razorcms-website/style/style_ie9.css"><![endif]-->
-		<!--[if IE 8]><link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>/extension/theme/razorcms/razorcms-website/style/style_ie8.css"><![endif]-->
+		<link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>/extension/theme/razorcms/clean-blue/style/style.css">
+		<!--[if IE 9]><link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>/extension/theme/razorcms/clean-blue/style/style_ie9.css"><![endif]-->
+		<!--[if IE 8]><link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>/extension/theme/razorcms/clean-blue/style/style_ie8.css"><![endif]-->
 	</head>
 
 	<?php $this->body() ?>

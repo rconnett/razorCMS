@@ -31,9 +31,9 @@
 		<!--[if IE 8]><link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>library/style/razor/razor_base_ie8.css"><![endif]-->
 
 		<!-- load your theme style here -->
-		<link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>/extension/theme/razorcms/clean-blue/style/style.css">
-		<!--[if IE 9]><link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>/extension/theme/razorcms/clean-blue/style/style_ie9.css"><![endif]-->
-		<!--[if IE 8]><link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>/extension/theme/razorcms/clean-blue/style/style_ie8.css"><![endif]-->
+		<link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>/extension/theme/razorcms/clean-red/style/style.css">
+		<!--[if IE 9]><link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>/extension/theme/razorcms/clean-red/style/style_ie9.css"><![endif]-->
+		<!--[if IE 8]><link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>/extension/theme/razorcms/clean-red/style/style_ie8.css"><![endif]-->
 	</head>
 
 	<?php $this->body() ?>
@@ -64,19 +64,9 @@
 			<div class="template-main">
 				<div class="container">
 					<div class="row">
-						<div class="col-sm-3">
-							<ul class="nav nav-stacked">
-								<?php $this->menu("main"); ?>
-							</ul>
-						</div>
-						<div class="col-sm-6">
+						<div class="col-sm-12">
 							<div class="template-main-content">
 								<?php $this->content("main", 1); ?>
-							</div>
-						</div>
-						<div class="col-sm-3">
-							<div class="template-main-content">
-								<?php $this->content("main", 2); ?>
 							</div>
 						</div>
 					</div>
