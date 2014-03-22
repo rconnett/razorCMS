@@ -12,33 +12,33 @@ h6 {
   display: none;
 }
 .mobile-show-block {
-  display: block !important;
+  display: block;
 }
 .mobile-show-inline-block {
-  display: inline-block !important;
+  display: inline-block;
 }
 .mobile-show-inline {
-  display: inline !important;
+  display: inline;
 }
 .mobile-hide-block,
 .mobile-hide-inline-block,
 .mobile-hide-inline {
-  display: none !important;
+  display: none;
 }
 @media (min-width: 830px) {
   .mobile-show-block,
   .mobile-show-inline-block,
   .mobile-show-inline {
-    display: none !important;
+    display: none;
   }
   .mobile-hide-block {
-    display: block !important;
+    display: block;
   }
   .mobile-hide-inline-block {
-    display: inline-block !important;
+    display: inline-block;
   }
   .mobile-hide-inline {
-    display: inline !important;
+    display: inline;
   }
 }
 li.dropdown .dropdown-menu {

@@ -10,18 +10,18 @@
 .ng-cloak { display: none; }
 
 // when mobile device
-.mobile-show-block { display: block !important; }
-.mobile-show-inline-block { display: inline-block !important; }
-.mobile-show-inline { display: inline !important; }
-.mobile-hide-block, .mobile-hide-inline-block, .mobile-hide-inline { display: none !important; }
+.mobile-show-block { display: block; }
+.mobile-show-inline-block { display: inline-block; }
+.mobile-show-inline { display: inline; }
+.mobile-hide-block, .mobile-hide-inline-block, .mobile-hide-inline { display: none; }
 
 // when not mobile device
 @media (min-width:830px)
 {
-	.mobile-show-block, .mobile-show-inline-block, .mobile-show-inline { display: none !important; }
-	.mobile-hide-block { display: block !important; }
-	.mobile-hide-inline-block { display: inline-block !important; }
-	.mobile-hide-inline { display: inline !important; }
+	.mobile-show-block, .mobile-show-inline-block, .mobile-show-inline { display: none; }
+	.mobile-hide-block { display: block; }
+	.mobile-hide-inline-block { display: inline-block; }
+	.mobile-hide-inline { display: inline; }
 }
 
 li.dropdown
