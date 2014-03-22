@@ -146,8 +146,8 @@ class ContentEditor extends RazorAPI
 
         $db->disconnect(); 
 
-        // return the basic user details
-        $this->response("success", "json");
+        // now fetch all content again and return;
+        $this->get($data["page_id"]);
     }
 }
 

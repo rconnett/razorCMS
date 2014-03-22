@@ -226,6 +226,11 @@ define(["angular", "cookie-monster", "nicedit", "ui-bootstrap"], function(angula
             // save all content for page
             rars.post("content/editor", {"locations": $scope.locations, "content": $scope.content, "page_id": RAZOR_PAGE_ID}, monster.get("token")).success(function(data)
             { 
+                // update page
+                $scope.locations = data.locations;
+                $scope.content = data.content;
+                
+                // stop edit
                 $scope.savedEditContent = true;
                 $scope.saveSuccess();
             });      
@@ -266,7 +271,7 @@ define(["angular", "cookie-monster", "nicedit", "ui-bootstrap"], function(angula
 
         $scope.stopBlockEdit = function()
         {
-            if (!!$scope.editorInstance) 
+            if (!!$scope.editorInstance && !!$scope.editorInstance.instanceById($scope.editing.handle)) 
             {
                 // copy data and end editor
                 $scope.content[$scope.editing.id].content = $scope.editorInstance.instanceById($scope.editing.handle).getContent();
