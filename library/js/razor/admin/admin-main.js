@@ -360,7 +360,7 @@ define(["angular", "cookie-monster", "nicedit", "ui-bootstrap"], function(angula
             var block = $scope.locations[loc][col].splice(index, 1)[0];
 
             // remove from content if content item
-            if (!!block.content_id) delete $scope.content[block.content_id];
+            if (typeof block.content_id == "string" && block.content_id.substring(0,3) == "new") delete $scope.content[block.content_id];
         };
 
         $scope.findExtension = function(loc, col)
