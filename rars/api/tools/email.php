@@ -18,7 +18,7 @@ class ToolsEmail extends RazorAPI
         if (empty($_SERVER["REMOTE_ADDR"]) || empty($_SERVER["HTTP_USER_AGENT"]) || empty($_SERVER["HTTP_REFERER"]) || empty($_SESSION["signature"])) $this->response(null, null, 400);
 
         // check referer matches the site
-        if ($_SERVER["HTTP_REFERER"] !== RAZOR_BASE_URL) $this->response(null, null, 400);
+        if (strpos($_SERVER["HTTP_REFERER"], RAZOR_BASE_URL) !== 0) $this->response(null, null, 400);
 
         // check data
         if (!isset($data["signature"], $data["email"], $data["message"], $data["extension"]["type"], $data["extension"]["handle"], $data["extension"]["extension"])) $this->response(null, null, 400);
