@@ -8,4 +8,4 @@
 // ---
 // ---
 // --- end headers ---
-// row:1`1`|2`1`|3``|4`Home`|5`razorCMS Home Page`|6``|7`razorcms,cms,home,page`|8`Home page for razorCMS version 3`
+// row:1`1`|2`1`|3`razorcms/basic-orange-side/1-column.manifest.json`|4`Home`|5`razorCMS Home Page`|6``|7`razorcms,cms,home,page`|8`Home page for razorCMS version 3`
