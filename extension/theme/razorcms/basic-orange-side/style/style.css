@@ -1,0 +1,86 @@
+body {
+  background-color: #FFF;
+}
+body .template-wrapper a {
+  color: #FF8220;
+}
+body .template-wrapper a:hover {
+  color: #FF7000;
+}
+body .template-wrapper .template-header {
+  background-color: #FF8220;
+  padding-top: 20px;
+  padding-bottom: 10px;
+  color: #FFD9BB;
+}
+body .template-wrapper .template-header .template-header-menu {
+  margin-bottom: 20px;
+}
+body .template-wrapper .template-header .template-header-menu .nav li a {
+  color: #FF8220;
+  border-radius: 2px;
+  background-color: #fff;
+}
+body .template-wrapper .template-header .template-header-menu .nav li:hover a {
+  color: #fff;
+  background-color: #FD9340;
+}
+body .template-wrapper .template-header .template-header-menu .nav li.active a {
+  color: #fff;
+  background-color: #FD9340;
+}
+body .template-wrapper .template-header .template-header-menu .nav li.active:hover a {
+  color: #fff;
+  background-color: #FD9340;
+}
+body .template-wrapper .template-main {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background-color: #FFF;
+}
+body .template-wrapper .template-main .nav li a {
+  color: #FF8220;
+  border-radius: 2px;
+}
+body .template-wrapper .template-main .nav li:hover a {
+  color: #fff;
+  background-color: #FD9340;
+}
+body .template-wrapper .template-main .nav li.active a {
+  color: #fff;
+  background-color: #FF8220;
+}
+body .template-wrapper .template-main .nav li.active:hover a {
+  color: #fff;
+  background-color: #FD9340;
+}
+body .template-wrapper .template-footer {
+  padding-top: 20px;
+  background-color: #FFF;
+  border-top: 1px solid #E2E2E2;
+}
+body .template-wrapper .template-footer .template-footer-menu ul {
+  margin: 0px;
+  padding: 0px;
+  list-style-type: none;
+}
+body .template-wrapper .template-footer .template-footer-menu ul li {
+  float: left;
+  margin-bottom: 20px;
+}
+body .template-wrapper .template-footer .template-footer-menu ul li a {
+  margin-right: 20px;
+  color: #FF8220;
+}
+body .template-wrapper .template-footer .template-footer-menu ul li:hover a {
+  color: #FF8220;
+  background-color: transparent;
+}
+body .template-wrapper .template-footer .template-footer-menu ul li.active a {
+  color: #FF8220;
+  background-color: transparent;
+}
+body .template-wrapper .template-footer .template-footer-menu ul li.active:hover a {
+  color: #FF8220;
+  background-color: transparent;
+}
