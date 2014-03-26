@@ -187,7 +187,7 @@ class RazorDB
 	private function data_in($data)
 	{
 		// clean unwanted carriage returns or pipe chars they hurt db, quotes, slashes and html is fine
-		return (!is_string($data) ? $data : str_replace(array('|', "\n", "\r", '`'), array(' ', ' ', ' ', "'"), $data));
+		return (!is_string($data) ? $data : str_replace(array('|', "\n", "\r", '`', '<?', '?>'), array(' ', ' ', ' ', "'"), $data));
 	}
 
 	private function data_out($data)
