@@ -4,11 +4,11 @@
 	"handle": "razorcms",
 	"extension": "default-extra",
 	"layout": "2-column",
-	"name": "Default Extra (2 column)",
+	"name": "Default Extra",
 	"author": "smiffy6969",
-	"version": 1,
+	"version": 2,
 	"created": 1394394028,
-	"description": "Variation of the clean default theme with 2 columns in the header, main and footer areas.",
+	"description": "Variation of the clean default theme.",
 	"menus": ["header","footer"],
 	"content": {"header": 2,"main": 2,"footer": 2}
 }
