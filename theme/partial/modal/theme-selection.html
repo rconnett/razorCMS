@@ -21,36 +21,44 @@
 			<!-- hard code default -->
 			<accordion-group is-open="isopen">
 				<accordion-heading>
-					<button class="btn btn-sm btn-default" ng-click="selectTheme('default')"><i class="fa fa-plus"></i></button>
 					Default
 					<i class="expander pull-right fa button-heading" ng-class="{'fa-chevron-down': isopen, 'fa-chevron-right': !isopen}"></i>
 				</accordion-heading>
 				<div class="content">
-			        <p>Standard theme provided with razorCMS.</p> 
+					<h4>
+						<button class="btn btn-sm btn-default" ng-click="selectTheme('default')"><i class="fa fa-plus"></i></button>
+						Default Theme
+						<em>(1-column)</em>
+					</h4>
 				</div>
 			</accordion-group>
 			<!-- find installed -->
 			<accordion-group ng-repeat="theme in themes | orderBy:'name' | filter:searchFilter | limitTo:searchLimit" is-open="isopen">
 				<accordion-heading>
-					<button class="btn btn-sm btn-default" ng-click="selectTheme(theme)"><i class="fa fa-plus"></i></button>
 					{{theme.name}}
-					<i class="expander pull-right fa button-heading" ng-class="{'fa-chevron-down': isopen, 'fa-chevron-right': !isopen}"></i>
+					<i class="expander pull-right fa" ng-class="{'fa-chevron-down': isopen, 'fa-chevron-right': !isopen}"></i>
 				</accordion-heading>
 				<div class="content">
-					<table class="table table-condensed table-striped table-bordered">
-						<tbody>
-							<tr><td style="width:150px;">Name</td><td>{{theme.name}}</td></tr>
-							<tr><td>Author</td><td>{{theme.handle}}</td></tr>
-							<tr><td>Version</td><td>{{theme.version}}</td></tr>
-							<tr><td>Created</td><td>{{theme.created + '000' | date:'mediumDate'}}</td></tr>
-							<tr><td>Menus</td><td><span ng-repeat="menu in theme.menus">{{($index > 0 ? ', ' + menu : menu)}}</span></td></tr>
-							<tr><td>Header Columns</td><td>{{theme.content.header}}</td></tr>
-							<tr><td>Main Columns</td><td>{{theme.content.header}}</td></tr>
-							<tr><td>Footer Columns</td><td>{{theme.content.header}}</td></tr>
-							<tr><td>Description</td><td>{{theme.description}}</td></tr>
-						</tbody>
-					</table>
-					<img class="theme-screenshot" ng-if="theme.screenshot" ng-src="{{screenshotPath(theme.screenshot)}}">
+					<h3>{{theme.name}}</h3>
+					<p>{{theme.description}}</p>
+					<p><em>Created by: {{theme.handle}}</em></p>
+					<div class="theme-block" ng-repeat="l in theme.layouts | orderBy:'layout'">
+						<h4>
+							<button class="btn btn-sm btn-primary" ng-click="selectTheme(l)"><i class="fa fa-plus"></i></button>
+							{{l.layout}}
+						</h4>
+						<table class="table table-condensed table-striped table-bordered">
+							<tbody>
+								<tr><td>Version</td><td>{{l.version}}</td></tr>
+								<tr><td>Created</td><td>{{l.created}}</td></tr>
+								<tr><td>Menus</td><td><span ng-repeat="menu in l.menus">{{($index > 0 ? ', ' + menu : menu)}}</span></td></tr>
+								<tr><td>Header Columns</td><td>{{l.content.header}}</td></tr>
+								<tr><td>Main Columns</td><td>{{l.content.main}}</td></tr>
+								<tr><td>Footer Columns</td><td>{{l.content.footer}}</td></tr>
+							</tbody>
+						</table>
+						<img class="l-screenshot" ng-if="l.screenshot" ng-src="{{screenshotPath(l.screenshot)}}">
+					</div>
 				</div>
 			</accordion-group>
 		</accordion>

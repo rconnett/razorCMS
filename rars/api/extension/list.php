@@ -46,14 +46,54 @@ class ExtensionList extends RazorAPI
             } 
 
             // sort list
-            if ($mf->type == $type) $extensions[] = $mf;
+            if ($mf->type == $type)
+            {
+                if ($mf->type == "theme")
+                {
+                    // group manifest layouts for themes
+                    if (!isset($extensions[$mf->type.$mf->handle.$mf->extension]))
+                    {
+                        $extensions[$mf->type.$mf->handle.$mf->extension] = array(
+                            "layouts" => array(),
+                            "type" => $mf->type,
+                            "handle" => $mf->handle,
+                            "description" => $mf->description,
+                            "name" => $mf->name
+                        );
+                    }
+                    
+                    $extensions[$mf->type.$mf->handle.$mf->extension]["layouts"][] = $mf;
+                }
+                else $extensions[] = $mf;
+            }
             else if ($type == "system" && $mf->type != "theme") $extensions[] = $mf;
             else if ($type == "all")
             {
                 $mf->type = ucfirst($mf->type);
-                $extensions[] = $mf;
+
+                if ($mf->type == "Theme")
+                {
+                    // group manifest layouts for themes
+                    if (!isset($extensions[$mf->type.$mf->handle.$mf->extension]))
+                    {
+                        $extensions[$mf->type.$mf->handle.$mf->extension] = array(
+                            "layouts" => array(),
+                            "type" => $mf->type,
+                            "handle" => $mf->handle,
+                            "extension" => $mf->extension,
+                            "description" => $mf->description,
+                            "name" => $mf->name
+                        );
+                    }
+                    
+                    $extensions[$mf->type.$mf->handle.$mf->extension]["layouts"][] = $mf;
+                }
+                else $extensions[] = $mf;
             }
         }
+
+        // ensure we have array return and not object
+        $extensions = array_values($extensions);
 
         $db->disconnect(); 
 

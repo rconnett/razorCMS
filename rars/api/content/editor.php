@@ -120,10 +120,10 @@ class ContentEditor extends RazorAPI
                     }
                     else
                     {
-                        // add new
+                        // add new, if new, add, if new but already present add, else add as ext
                         $row = array(
                             "page_id" => (int) $data["page_id"],
-                            "content_id" => (isset($new_content_map[$block["content_id"]]) ? $new_content_map[$block["content_id"]] : $block["content_id"]),
+                            "content_id" => (isset($block["content_id"], $new_content_map[$block["content_id"]]) ? $new_content_map[$block["content_id"]] : (isset($block["content_id"]) ? $block["content_id"] : null)),
                             "location" => $location,
                             "column" => (int) $column,
                             "position" => $pos + 1

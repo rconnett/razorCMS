@@ -1,6 +1,4 @@
 <?php
-    /* Version 1 */
-
     /* R.A.R.S. razorCMS Authenticatable Resource Server - smiffy6969 - ulsmith.net */
 
     // auto defines 
