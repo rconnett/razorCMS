@@ -35,7 +35,7 @@ class FileImage extends RazorAPI
     // add or update content
     public function post()
     {
-        if (!$this->check_access()) $this->response(null, null, 401);
+        if ((int) $this->check_access() < 10) $this->response(null, null, 401);
 
         define('NICUPLOAD_PATH', RAZOR_BASE_PATH.'storage/files/images'); // Set the path (relative or absolute) to
                                               // the directory to save image files

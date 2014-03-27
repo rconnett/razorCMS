@@ -28,7 +28,7 @@ class PageDetails extends RazorAPI
     public function post($data)
     {
         // login check - if fail, return no data to stop error flagging to user
-        if (!$this->check_access()) $this->response(null, null, 401);
+        if ((int) $this->check_access() < 10) $this->response(null, null, 401);
         if (empty($data)) $this->response(null, null, 400);
 
         // update content

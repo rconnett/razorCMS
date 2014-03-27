@@ -12,7 +12,7 @@ class ExtensionList extends RazorAPI
 
     public function get($type)
     {
-        if (!$this->check_access()) $this->response(null, null, 401);
+        if ((int) $this->check_access() < 10) $this->response(null, null, 401);
         if (empty($type) || !in_array($type, $this->types)) $this->response(null, null, 400);
 
         // first scan the folders for manifests

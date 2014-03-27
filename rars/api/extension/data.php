@@ -10,7 +10,7 @@ class ExtensionData extends RazorAPI
 
     public function post($ext)
     {
-        if (!$this->check_access()) $this->response(null, null, 401);
+        if ((int) $this->check_access() < 10) $this->response(null, null, 401);
         if (empty($ext)) $this->response(null, null, 400);
 
         $settings = array();

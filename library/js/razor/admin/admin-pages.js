@@ -61,6 +61,11 @@ define(["angular", "cookie-monster"], function(angular, monster)
                 $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Error setting home page, please try again later."});
             });
         };
+
+        $scope.showKeywords = function(keywords)
+        {
+            return keywords.replace(/,/g, ', ');
+        };
     })
 
     .controller("pagesListAccordion", function($scope)

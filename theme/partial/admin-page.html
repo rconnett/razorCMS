@@ -29,7 +29,7 @@
 				<div class="form-group">
 					<label for="page-link" class="col-sm-3 control-label">Link</label>
 					<div class="col-sm-7">
-						<input id="page-link" name="pageLink" class="form-control" type="text" ng-model="page.link" placeholder="Append this to URL to access page" ng-pattern="/^[a-zA-Z0-9-_]+(\.html|\.htm)?$/" >
+						<input id="page-link" name="pageLink" class="form-control" type="text" ng-model="page.link" placeholder="Append this to URL to access page" ng-pattern="/^[a-zA-Z0-9-_\/]+(\.html|\.htm)?$/" >
 					</div>
 					<div class="col-sm-2 error-block" ng-show="form.pageLink.$dirty && form.pageLink.$invalid">
 						<span class="alert alert-danger alert-form" ng-show="form.pageLink.$error.pattern">Invalid</span>

@@ -70,6 +70,9 @@ class RazorSite
 
     public function content($loc, $col)
     {
+        // create extension dependancy list
+        $ext_dep_list = array();
+        
         // admin angluar loading for editor, return
         if (!isset($_GET["preview"]) && $this->logged_in > 5)
         {
@@ -131,7 +134,7 @@ OUTPUT;
                     $content = $content["result"][0];
                     $db->disconnect(); 
 
-                    echo $content["content"];
+                    echo str_replace("\\n", "", $content["content"]);
 
                     echo '</div>';
                 }
@@ -141,11 +144,7 @@ OUTPUT;
                     $manifest = RazorFileTools::read_file_contents(RAZOR_BASE_PATH."extension/{$c_data['extension']}", "json");
                     $view_path = RAZOR_BASE_PATH."extension/{$manifest->type}/{$manifest->handle}/{$manifest->extension}/view/{$manifest->view}.php";
                     
-                    if (is_file($view_path))
-                    {
-                        if ($manifest->instances > 1) include($view_path);
-                        else include_once($view_path);
-                    }
+                    include($view_path);
                 }
             }
         }

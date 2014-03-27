@@ -148,7 +148,13 @@ define(["angular", "cookie-monster", "nicedit", "ui-bootstrap"], function(angula
 
         $scope.loadPage = function()
         {   
-            // all available menus
+            //get system data
+            rars.get("system/data", "all", monster.get("token")).success(function(data)
+            {
+                $scope.system = data.system;
+            });
+
+            // get site data
             rars.get("site/editor", "all").success(function(data)
             {
                 $scope.site = data.site;

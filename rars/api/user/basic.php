@@ -12,7 +12,7 @@ class UserBasic extends RazorAPI
     public function get($id)
     {
         // login check - if fail, return no data to stop error flagging to user
-        if (!$this->check_access() || $id !== "current") $this->response(null, null, 204);
+        if ((int) $this->check_access() < 10 || $id !== "current") $this->response(null, null, 204);
 
         // convert last logged for front end
         $user = $this->user;
