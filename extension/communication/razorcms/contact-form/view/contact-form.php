@@ -12,7 +12,7 @@
 ?>
 
 <!-- module output -->
-<div id="communication-razorcms-contact-form" class="ng-cloak" ng-controller="main" ng-init="init()">
+<div class="communication-razorcms-contact-form" class="ng-cloak" ng-controller="main" ng-init="init()">
 	<div class="row">
 		<div class="col-sm-12" ng-show="response || robot || error">
 			<p class="alert alert-success" ng-show="response"><i class="fa fa-check"></i> Thank you, your message has been sent.</p>
@@ -64,6 +64,12 @@
 <!-- module output -->
 
 <!-- load dependancies -->
-<link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>extension/communication/razorcms/contact-form/style/style.css">
-<script src="<?php echo RAZOR_BASE_URL ?>extension/communication/razorcms/contact-form/js/module.js"></script>
+<?php if (!in_array("communication-razorcms-contact-form-style", $ext_dep_list)): ?>
+	<?php $ext_dep_list[] = "communication-razorcms-contact-form-style" ?>
+	<link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>extension/communication/razorcms/contact-form/style/style.css">
+<?php endif ?>
+<?php if (!in_array("communication-razorcms-contact-form-module", $ext_dep_list)): ?>
+	<?php $ext_dep_list[] = "communication-razorcms-contact-form-module" ?>
+	<script src="<?php echo RAZOR_BASE_URL ?>extension/communication/razorcms/contact-form/js/module.js"></script>
+<?php endif ?>
 <!-- load dependancies -->
