@@ -1,3 +1,13 @@
+/**
+ * razorCMS FBCMS
+ *
+ * Copywrite 2014 to Present Day - Paul Smith (aka smiffy6969, razorcms)
+ *
+ * @author Paul Smith
+ * @site ulsmith.net
+ * @created Feb 2014
+ */
+ 
 define(["angular", "cookie-monster", "nicedit", "ui-bootstrap"], function(angular, monster, nicedit)
 {
     angular.module("razor.admin.main", ['ui.bootstrap'])
@@ -256,7 +266,10 @@ define(["angular", "cookie-monster", "nicedit", "ui-bootstrap"], function(angula
         {
             if (!$scope.savedEditContent || !$scope.savedEditMenu) return;
 
-            $rootScope.$broadcast("global-notification", {"type": "success", "text": "Changes saved successfully."});
+            $rootScope.$broadcast("global-notification", {"type": "success", "text": "Changes saved successfully, reloading page in 3 seconds."});
+
+            // dont want to, but the two can't exist together... we need to refresh now, this enables us to have live extensions when logged in :(
+            $timeout(function() { window.location.reload() }, 3000);
         };
 
         $scope.startBlockEdit = function(locCol, content_id)
@@ -297,27 +310,6 @@ define(["angular", "cookie-monster", "nicedit", "ui-bootstrap"], function(angula
         $scope.editingThis = function(handle)
         {
             return (handle === $scope.editing.handle ? true : false);
-        };
-
-        $scope.toggleEditor = function(locCol, content_id)
-        {
-            // if swapping from code to editor, restart editor to capture changes 
-            if ($scope.editing.code)
-            {
-                // turn on editor
-                $scope.editing.code = false;
-                $scope.editorInstance = new nicEditor({fullPanel : true, maxHeight : 500}).panelInstance(locCol + content_id);
-                angular.element(document.querySelector("#" + $scope.editing.handle)).addClass("hide");
-            }
-            else
-            {
-                // turn editor off
-                $scope.editing.code = true;
-                $scope.content[$scope.editing.id].content = $scope.editorInstance.instanceById(locCol + content_id).getContent();
-                $scope.editorInstance.removeInstance(locCol + content_id);
-                $scope.editorInstance = null;
-                angular.element(document.querySelector("#" + $scope.editing.handle)).removeClass("hide");
-            }
         };
 
         $scope.addNewBlock = function(loc, col, block)

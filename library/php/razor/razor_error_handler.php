@@ -1,13 +1,15 @@
 <?php if (!defined("RAZOR_BASE_PATH")) die("No direct script access to this content");
 
 /**
- * Razor class - Error and Exception Handler
+ * razorCMS FBCMS
+ *
+ * Copywrite 2014 to Present Day - Paul Smith (aka smiffy6969, razorcms)
  *
  * @author Paul Smith
- * @date March 2012
- * @path class/razor_error_handler.cls.php
+ * @site ulsmith.net
+ * @created Feb 2014
  */
-
+ 
 class RazorErrorHandler {
 
     private $mode = "production"; // set default state

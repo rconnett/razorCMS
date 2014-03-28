@@ -1,7 +1,15 @@
 <?php if (!defined("RARS_BASE_PATH")) die("No direct script access to this content");
 
-// Paul Smith: Adapted from the following script
-
+/**
+ * razorCMS FBCMS
+ *
+ * Copywrite 2014 to Present Day - Paul Smith (aka smiffy6969, razorcms)
+ *
+ * @author Paul Smith - adapted from nicedit script, details below
+ * @site ulsmith.net
+ * @created Feb 2014
+ */
+ 
 /* NicEdit - Micro Inline WYSIWYG
  * Copyright 2007-2009 Brian Kirchoff
  *

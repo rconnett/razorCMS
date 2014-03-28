@@ -34,7 +34,7 @@ Due to the system not using any database backend, installation is a breeze:-
 2. Unpack.
 3. Upload the unpacked files (ensuring you select the .htaccess file too).
 4. Using your web browser, navigate to the location you installed razorCMS.
-5. Add '/admin' to the end of the URL (without the quotes).
+5. Add '/login' to the end of the URL (without the quotes).
 6. Login in with the following credentials:-
 	Username/email: razorcms@razorcms.co.uk
 	Password: password

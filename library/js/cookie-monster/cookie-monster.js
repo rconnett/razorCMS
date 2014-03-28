@@ -1,3 +1,10 @@
+/*!
+ * Adapted for razorcms by Paul Smith
+ * cookie-monster - a simple cookie library
+ * https://github.com/jgallen23/cookie-monster
+ * copyright Greg Allen 2013
+ * MIT License
+*/
 (function (name, context, definition) {
   if (typeof module != 'undefined' && module.exports) module.exports = definition()
   else if (typeof define == 'function' && define.amd) define(definition)

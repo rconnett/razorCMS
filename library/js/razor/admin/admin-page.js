@@ -1,3 +1,13 @@
+/**
+ * razorCMS FBCMS
+ *
+ * Copywrite 2014 to Present Day - Paul Smith (aka smiffy6969, razorcms)
+ *
+ * @author Paul Smith
+ * @site ulsmith.net
+ * @created Feb 2014
+ */
+ 
 define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 {
     angular.module("razor.admin.page", ["ui.bootstrap"])
@@ -16,12 +26,12 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 
                 if ($scope.themeChanged)
                 {
-                    $rootScope.$broadcast("global-notification", {"type": "success", "text": "Page details saved, theme changed, reloading page in 5 seconds."});
+                    $rootScope.$broadcast("global-notification", {"type": "success", "text": "Page details saved, theme changed, reloading page in 3 seconds."});
                     
                     $timeout(function() 
                     {
                         window.location = RAZOR_BASE_URL + $scope.page.link;
-                    }, 5000);
+                    }, 3000);
                 }
                 else $rootScope.$broadcast("global-notification", {"type": "success", "text": "Page details saved."});
 	        }).error(function() 

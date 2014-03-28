@@ -1,6 +1,15 @@
 <?php
-    /* R.A.R.S. razorCMS Authenticatable Resource Server - smiffy6969 - ulsmith.net */
 
+/**
+ * razorCMS FBCMS
+ *
+ * Copywrite 2014 to Present Day - Paul Smith (aka smiffy6969, razorcms)
+ *
+ * @author Paul Smith
+ * @site ulsmith.net
+ * @created Feb 2014
+ */
+ 
     // auto defines 
     define("RARS_BASE_PATH", str_replace(array("index.php"), "", $_SERVER["SCRIPT_FILENAME"]));
     define("RARS_BASE_URL", "http://".$_SERVER["SERVER_NAME"].($_SERVER["SERVER_PORT"] == "80" || $_SERVER["SERVER_PORT"] == "8080" ? "" : ":{$_SERVER["SERVER_PORT"]}").str_replace(array("index.php"), "", $_SERVER["SCRIPT_NAME"]));

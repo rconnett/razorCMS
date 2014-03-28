@@ -1,5 +1,15 @@
 <?php if (!defined("RARS_BASE_PATH")) die("No direct script access to this content");
 
+/**
+ * razorCMS FBCMS
+ *
+ * Copywrite 2014 to Present Day - Paul Smith (aka smiffy6969, razorcms)
+ *
+ * @author Paul Smith
+ * @site ulsmith.net
+ * @created Feb 2014
+ */
+ 
 class MenuEditor extends RazorAPI
 {
     function __construct()

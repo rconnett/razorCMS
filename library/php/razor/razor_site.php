@@ -1,13 +1,15 @@
 <?php if (!defined("RAZOR_BASE_PATH")) die("No direct script access to this content");
 
 /**
- * Razor Page Class - Used to render the public facing website
+ * razorCMS FBCMS
+ *
+ * Copywrite 2014 to Present Day - Paul Smith (aka smiffy6969, razorcms)
  *
  * @author Paul Smith
- * @date Feb 2014
- * @path lib/razor_page.php
+ * @site ulsmith.net
+ * @created Feb 2014
  */
-
+ 
 class RazorSite
 {
 	private $link = null;
@@ -15,7 +17,7 @@ class RazorSite
     private $page = null;
     private $menu = null;
     private $content = null;
-    private $admin = false;
+    private $login = false;
     private $logged_in = false;
 
     function __construct()
@@ -27,10 +29,10 @@ class RazorSite
     public function load()
     {
         // check for admin flag
-        if ($this->link == "admin")
+        if ($this->link == "login")
         {
             $this->link = null;
-            $this->admin = true;
+            $this->login = true;
         }
 
         // check for logged in
@@ -53,6 +55,7 @@ class RazorSite
         // is 404 ?
         if (empty($this->page) || (!isset($_COOKIE["token"]) && !$this->page["active"]))
         { 
+            header("HTTP/1.0 404 Not Found");
             include_once(RAZOR_BASE_PATH."theme/view/404.php");
             return;
         }
@@ -77,7 +80,7 @@ class RazorSite
         if (!isset($_GET["preview"]) && $this->logged_in > 5)
         {
             echo <<<OUTPUT
-<div class="content-column" ng-class="{'edit': toggle}">
+<div class="content-column" ng-if="changed" ng-class="{'edit': toggle}">
     <div class="content-block" ng-class="{'active': editingThis('{$loc}{$col}' + block.content_id)}" ng-repeat="block in locations.{$loc}.{$col}">
 
         <input ng-if="!block.extension" type="text" class="form-control" placeholder="Add Content Name" ng-show="toggle" ng-model="content[block.content_id].name"/>
@@ -113,7 +116,7 @@ class RazorSite
     <button class="btn btn-default" ng-show="toggle" ng-click="findExtension('{$loc}', '{$col}')"><i class="fa fa-puzzle-piece"></i></button>
 </div>
 OUTPUT;
-            return;
+
         }
        
         $db = new RazorDB();
@@ -126,7 +129,7 @@ OUTPUT;
                 if (!empty($c_data["content_id"]))
                 {
                     // load content    
-                    echo '<div content-id="'.$c_data["content_id"].'">';
+                    echo '<div ng-if="!changed" content-id="'.$c_data["content_id"].'">';
 
                     $db->connect("content");
                     $search = array("column" => "id", "value" => $c_data["content_id"]);
@@ -144,7 +147,9 @@ OUTPUT;
                     $manifest = RazorFileTools::read_file_contents(RAZOR_BASE_PATH."extension/{$c_data['extension']}", "json");
                     $view_path = RAZOR_BASE_PATH."extension/{$manifest->type}/{$manifest->handle}/{$manifest->extension}/view/{$manifest->view}.php";
                     
+                    echo '<div ng-if="!changed">';
                     include($view_path);
+                    echo '</div>';
                 }
             }
         }
@@ -156,7 +161,7 @@ OUTPUT;
         if (!isset($_GET["preview"]) && $this->logged_in > 5)
         {
             echo <<<OUTPUT
-<li ng-repeat="mi in menus.{$loc}.menu_items" ng-class="{'click-and-sort': toggle, 'active': linkIsActive(mi.page_id), 'dropdown': mi.sub_menu || toggle, 'selected': \$parent.clickAndSort['{$loc}'].selected, 'place-holder': \$parent.clickAndSort['{$loc}'].picked != \$index && \$parent.clickAndSort['{$loc}'].selected}">
+<li ng-if="changed" ng-repeat="mi in menus.{$loc}.menu_items" ng-class="{'click-and-sort': toggle, 'active': linkIsActive(mi.page_id), 'dropdown': mi.sub_menu || toggle, 'selected': \$parent.clickAndSort['{$loc}'].selected, 'place-holder': \$parent.clickAndSort['{$loc}'].picked != \$index && \$parent.clickAndSort['{$loc}'].selected}">
     <a ng-href="{{(!toggle ? getMenuLink(mi.page_link) : '#')}}" ng-click="clickAndSortClick('{$loc}', \$index, menus.{$loc}.menu_items)">
         <button class="btn btn-xs btn-default" ng-if="toggle" ng-click="menus.{$loc}.menu_items.splice(\$index, 1)"><i class="fa fa-times"></i></button>
         <i class="fa fa-eye-slash" ng-hide="mi.page_active"></i>
@@ -178,7 +183,6 @@ OUTPUT;
 
 <li ng-show="toggle" class="add-new-menu"><a style="cursor: pointer;" ng-click="findMenuItem('{$loc}')"><i class="fa fa-th-list"></i></a></li>
 OUTPUT;
-            return;
         }
 
         // empty, return
@@ -192,12 +196,12 @@ OUTPUT;
                 // sort any submenu items
                 if (!isset($m_item["sub_menu"]))
                 {
-                    echo '<li'.($m_item["page_id"] == $this->page["id"] ? ' class="active"' : '').'>';
+                    echo '<li ng-if="!changed" '.($m_item["page_id"] == $this->page["id"] ? ' class="active"' : '').'>';
                     echo '<a href="'.RAZOR_BASE_URL.$m_item["page_id.link"].'">'.$m_item["page_id.name"].'</a>';
                 }
                 else
                 {
-                    echo '<li class="dropdown'.($m_item["page_id"] == $this->page["id"] ? ' active' : '').'">';
+                    echo '<li ng-if="!changed" class="dropdown'.($m_item["page_id"] == $this->page["id"] ? ' active' : '').'">';
                     echo '<a class="dropdown-toggle" href="'.RAZOR_BASE_URL.$m_item["page_id.link"].'">'.$m_item["page_id.name"].' <i class="fa fa-caret-down"></i></a>';
                     echo '<ul class="dropdown-menu">';
                     foreach ($m_item["sub_menu"] as $sm_item)
@@ -219,13 +223,13 @@ OUTPUT;
 
     public function data_main()
     {
-        if (isset($_GET["preview"]) || (!$this->admin && !isset($_COOKIE["token"]))) return;
+        if (isset($_GET["preview"]) || (!$this->login && !isset($_COOKIE["token"]))) return;
         echo 'data-main="admin"';
     }
 
     public function body()
     {
-        if (isset($_GET["preview"]) || (!$this->admin && !isset($_COOKIE["token"])))
+        if (isset($_GET["preview"]) || (!$this->login && !isset($_COOKIE["token"])))
         {
             echo <<<OUTPUT
 <body>

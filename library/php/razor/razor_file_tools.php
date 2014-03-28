@@ -1,13 +1,15 @@
 <?php if (!defined("RAZOR_BASE_PATH")) die("No direct script access to this content");
 
 /**
- * Razor file tools static class - General file tools
+ * razorCMS FBCMS
+ *
+ * Copywrite 2014 to Present Day - Paul Smith (aka smiffy6969, razorcms)
  *
  * @author Paul Smith
- * @date March 2013
- * @path class/razor_file_tools.cls.php
+ * @site ulsmith.net
+ * @created Feb 2014
  */
-
+ 
 class RazorFileTools
 {
     /**

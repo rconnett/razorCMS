@@ -1,14 +1,15 @@
 <?php if (!defined('RAZOR_BASE_PATH')) exit('No direct script access allowed');
 
 /**
- * razorDB database class
+ * razorCMS FBCMS
+ *
+ * Copywrite 2014 to Present Day - Paul Smith (aka smiffy6969, razorcms)
  *
  * @author Paul Smith
- * @date July 2012
- * @revision 1.0
- * @path lib/razor_db.lib.php
+ * @site ulsmith.net
+ * @created Feb 2014
  */
-
+ 
 class RazorDB 
 {
 	private $connected = null;

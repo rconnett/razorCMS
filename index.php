@@ -1,4 +1,15 @@
 <?php
+
+/**
+ * razorCMS FBCMS
+ *
+ * Copywrite 2014 to Present Day - Paul Smith (aka smiffy6969, razorcms)
+ *
+ * @author Paul Smith
+ * @site ulsmith.net
+ * @created Feb 2014
+ */
+ 
     // set session
     session_start();
     session_regenerate_id();
