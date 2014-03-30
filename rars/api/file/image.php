@@ -45,11 +45,15 @@ class FileImage extends RazorAPI
     {
         if ((int) $this->check_access() < 10) $this->response(null, null, 401);
 
+
         define('NICUPLOAD_PATH', RAZOR_BASE_PATH.'storage/files/images'); // Set the path (relative or absolute) to
                                               // the directory to save image files
 
         define('NICUPLOAD_URI', RAZOR_BASE_URL.'storage/files/images');   // Set the URL (relative or absolute) to
                                               // the directory defined above
+
+        if (!is_dir(RAZOR_BASE_PATH.'storage/files')) mkdir(RAZOR_BASE_PATH.'storage/files');
+        if (!is_dir(RAZOR_BASE_PATH.'storage/files/images')) mkdir(RAZOR_BASE_PATH.'storage/files/images');
 
         $nicupload_allowed_extensions = array('jpg','jpeg','png','gif','bmp');
 
