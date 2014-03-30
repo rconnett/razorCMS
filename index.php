@@ -16,7 +16,7 @@
 	
     // sidewide constants
     define("RAZOR_BASE_PATH", str_replace(array("index.php"), "", $_SERVER["SCRIPT_FILENAME"]));
-    $port = ($_SERVER["SERVER_PORT"] == "80" || $_SERVER["SERVER_PORT"] == "8080" ? "" : ":{$_SERVER["SERVER_PORT"]}");
+    $port = ($_SERVER["SERVER_PORT"] == "80" ? "" : ":{$_SERVER["SERVER_PORT"]}");
     define("RAZOR_BASE_URL", "http://".$_SERVER["SERVER_NAME"].$port.str_replace(array("index.php"), "", $_SERVER["SCRIPT_NAME"]));
     define("RAZOR_USERS_IP", $_SERVER["REMOTE_ADDR"]);
     define("RAZOR_USERS_UAGENT", $_SERVER["HTTP_USER_AGENT"]);
