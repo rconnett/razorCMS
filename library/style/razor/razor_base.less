@@ -7,9 +7,14 @@
  * @site ulsmith.net
  * @created Feb 2014
  */
- 
+
+// load in bootstrap and fontawesome and configure
+@import "../bootstrap/bootstrap.less";
+@import "../../font/font-awesome/less/font-awesome.less";
+@fa-font-path: "../../../library/font/font-awesome/fonts"; // default for extensions, override in default.less
+
 // fix for ui-bootstrap cursor issue
-// .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
 // fix for open sans issue and bootstrap
 *, h1, h2, h3, h4, h5, h6 { font-family: 'Open Sans', Arial; }

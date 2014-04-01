@@ -6,7 +6,7 @@
 	"layout": "3-column",
 	"name": "Default Extra",
 	"author": "smiffy6969",
-	"version": 2,
+	"version": 3,
 	"created": 1394394028,
 	"description": "Variation of the clean default theme.",
 	"menus": ["header","footer"],
