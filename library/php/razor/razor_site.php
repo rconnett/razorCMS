@@ -157,6 +157,9 @@ OUTPUT;
 
     public function menu($loc)
     {
+        // first, check if menu present, if not create it
+        if ($this->add_new_menu($loc)) $this->get_menu_data();;
+
         // admin angluar loading for editor, return
         if (!isset($_GET["preview"]) && $this->logged_in > 5)
         {
@@ -310,6 +313,20 @@ OUTPUT;
         }
         
         $db->disconnect();
+    }
+
+    private function add_new_menu($loc)
+    {
+        // check if menu exists in db, if yes return false to carry on
+        if (isset($this->menu[$loc])) return false;
+
+        // create new menu
+        $db = new RazorDB();
+        $db->connect("menu");
+        $db->add_rows(array("name" => $loc));
+        $db->disconnect(); 
+
+        return true;
     }
 
     private function get_content_data()
