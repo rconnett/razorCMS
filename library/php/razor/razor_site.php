@@ -13,6 +13,7 @@
 class RazorSite
 {
 	private $link = null;
+    private $all_menus = null;
     private $site = null;
     private $page = null;
     private $menu = null;
@@ -44,6 +45,7 @@ class RazorSite
         }
 
         // load data
+        $this->get_all_menus();
         $this->get_site_data();
         $this->get_page_data();
         $this->get_menu_data();
@@ -340,7 +342,7 @@ OUTPUT;
     private function add_new_menu($loc)
     {
         // check if menu exists in db, if yes return false to carry on
-        if (isset($this->menu[$loc])) return false;
+        if (in_array($loc, $this->all_menus)) return false;
 
         // create new menu
         $db = new RazorDB();
@@ -370,6 +372,17 @@ OUTPUT;
         $content = $db->get_rows($search, $options);
         $this->content = $content["result"];
         $db->disconnect(); 
+    }
+
+    private function get_all_menus()
+    {
+        $db = new RazorDB();
+        $db->connect("menu");
+        $search = array("column" => "id", "not" => true, "value" => null);
+        $menus = $db->get_rows($search);
+        $all_menus = array();
+        foreach ($menus["result"] as $menu) $all_menus[] = $menu["name"];
+        $this->all_menus = $all_menus;
     }
 }
 /* EOF */
