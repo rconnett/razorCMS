@@ -12,9 +12,9 @@ define(["angular", "cookie-monster"], function(angular, monster)
 {
     angular.module("razor.admin.settings", [])
 
-    .controller("settings", function($scope, rars, $rootScope)
+    .controller("settings", function($scope, rars, $rootScope, $http)
     {
-       $scope.save = function()
+       	$scope.save = function()
         {
         	$scope.processing = true;
 
@@ -28,5 +28,23 @@ define(["angular", "cookie-monster"], function(angular, monster)
 	        	$scope.processing = false; 
 	        });
         };
+
+        $scope.checkVersion = function()
+        {
+        	$scope.upgrade = null;
+        	$scope.noUpgrade = null;
+        	$scope.error = null;
+
+	        rars.get("tools/version", "current").success(function(data)
+	        {
+	        	$scope.current = data;
+
+				if ($scope.system.version < data.version || $scope.system.milestone < data.milestone || $scope.system.release < data.release) $scope.noUpgrade = true;
+				else $scope.upgrade = true;
+	        }).error(function(data)
+	        {
+	        	$scope.error = true;
+	        });
+	    };
     });
 });

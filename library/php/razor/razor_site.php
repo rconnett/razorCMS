@@ -234,8 +234,29 @@ OUTPUT;
     {
         if (isset($_GET["preview"]) || (!$this->login && !isset($_COOKIE["token"])))
         {
+            // start by opening body
+            echo "<body>";
+
+            // if public viewable only, allow google tracking code to be used
+            if (!isset($_GET["preview"]) && !empty($this->site["google_analytics_code"]))
+            {
+                echo <<<OUTPUT
+    <!-- google tracking script -->
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', '{$this->site["google_analytics_code"]}', '{$_SERVER["SERVER_NAME"]}');
+            ga('send', 'pageview');
+        </script>
+    <!-- google tracking script -->
+OUTPUT;
+            }
+
+            // add in IE8 and below header
             echo <<<OUTPUT
-<body>
     <!--[if lt IE 9]>
         <div class="ie8">
             <p class="message">
@@ -246,6 +267,7 @@ OUTPUT;
         <div>
     <![endif]-->
 OUTPUT;
+
             return;
         }
 
