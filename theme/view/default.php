@@ -30,7 +30,8 @@
 		<link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>theme/style/default.css">
 		<!--[if IE 9]><link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>theme/style/default_ie9.css"><![endif]-->
 		<!--[if IE 8]><link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>theme/style/default_ie8.css"><![endif]-->
-		
+
+		<link rel="shortcut icon" href="<?php echo RAZOR_BASE_URL ?>/theme/image/favicon.ico" type="image/x-icon">
 	</head>
 
 	<?php $this->body() ?>
