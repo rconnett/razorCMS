@@ -36,7 +36,7 @@ class ToolsVersion extends RazorAPI
             );             
 
             $version_file = @file_get_contents($this->check_url, false, $ctx);
-            if (empty($version_file))
+            if (!empty($version_file))
             {
                 $version = json_decode($version_file);
                 $this->response($version, "json");
