@@ -11,7 +11,7 @@
 // load in bootstrap and fontawesome and configure
 @import "../bootstrap/bootstrap.less";
 @import "../../font/font-awesome/less/font-awesome.less";
-@fa-font-path: "../../../library/font/font-awesome/fonts"; // default for extensions, override in default.less
+@fa-font-path: "../../../library/font/font-awesome/fonts";
 
 // fix for ui-bootstrap cursor issue
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
@@ -52,6 +52,86 @@ li.dropdown
 	&:hover
 	{
 		.dropdown-menu { display: block !important; }
+	}
+}
+
+.razor-logo
+{
+	&.razor-logo-block
+	{
+		display: inline-block;		
+	}
+
+	&.razor-logo-600
+	{
+		min-height: 600px; 
+		min-width: 600px;
+		&.razor-logo-black { background: url(../../images/blade-black-600.png) center no-repeat; }
+		&.razor-logo-green { background: url(../../images/blade-dark-green-600.png) center no-repeat; }
+		&.razor-logo-white { background: url(../../images/blade-white-600.png) center no-repeat; }
+		&.razor-logo-black-circle { background: url(../../images/blade-black-600-circle.png) center no-repeat; }
+		&.razor-logo-green-circle { background: url(../../images/blade-dark-green-600-circle.png) center no-repeat; }
+		&.razor-logo-white-circle { background: url(../../images/blade-white-600-circle.png) center no-repeat; }
+	}
+
+	&.razor-logo-400
+	{
+		min-height: 400px; 
+		min-width: 400px;
+		&.razor-logo-black { background: url(../../images/blade-black-400.png) center no-repeat; }
+		&.razor-logo-green { background: url(../../images/blade-dark-green-400.png) center no-repeat; }
+		&.razor-logo-white { background: url(../../images/blade-white-400.png) center no-repeat; }
+		&.razor-logo-black-circle { background: url(../../images/blade-black-400-circle.png) center no-repeat; }
+		&.razor-logo-green-circle { background: url(../../images/blade-dark-green-400-circle.png) center no-repeat; }
+		&.razor-logo-white-circle { background: url(../../images/blade-white-400-circle.png) center no-repeat; }
+	}
+
+	&.razor-logo-200
+	{
+		min-height: 200px; 
+		min-width: 200px;
+		&.razor-logo-black { background: url(../../images/blade-black-200.png) center no-repeat; }
+		&.razor-logo-green { background: url(../../images/blade-dark-green-200.png) center no-repeat; }
+		&.razor-logo-white { background: url(../../images/blade-white-200.png) center no-repeat; }
+		&.razor-logo-black-circle { background: url(../../images/blade-black-200-circle.png) center no-repeat; }
+		&.razor-logo-green-circle { background: url(../../images/blade-dark-green-200-circle.png) center no-repeat; }
+		&.razor-logo-white-circle { background: url(../../images/blade-white-200-circle.png) center no-repeat; }
+	}
+
+	&.razor-logo-100
+	{
+		min-height: 100px; 
+		min-width: 100px;
+		&.razor-logo-black { background: url(../../images/blade-black-100.png) center no-repeat; }
+		&.razor-logo-green { background: url(../../images/blade-dark-green-100.png) center no-repeat; }
+		&.razor-logo-white { background: url(../../images/blade-white-100.png) center no-repeat; }
+		&.razor-logo-black-circle { background: url(../../images/blade-black-100-circle.png) center no-repeat; }
+		&.razor-logo-green-circle { background: url(../../images/blade-dark-green-100-circle.png) center no-repeat; }
+		&.razor-logo-white-circle { background: url(../../images/blade-white-100-circle.png) center no-repeat; }
+	}
+
+	&.razor-logo-50
+	{
+		min-height: 50px; 
+		min-width: 50px;
+		&.razor-logo-black { background: url(../../images/blade-black-50.png) center no-repeat; }
+		&.razor-logo-green { background: url(../../images/blade-dark-green-50.png) center no-repeat; }
+		&.razor-logo-white { background: url(../../images/blade-white-50.png) center no-repeat; }
+		&.razor-logo-black-circle { background: url(../../images/blade-black-50-circle.png) center no-repeat; }
+		&.razor-logo-green-circle { background: url(../../images/blade-dark-green-50-circle.png) center no-repeat; }
+		&.razor-logo-white-circle { background: url(../../images/blade-white-50-circle.png) center no-repeat; }
+	}
+
+	&.razor-logo-25
+	{
+		min-height: 25px; 
+		min-width: 25px;
+		&.razor-logo-black { background: url(../../images/blade-black-25.png) center no-repeat; }
+		&.razor-logo-green { background: url(../../images/blade-dark-green-25.png) center no-repeat; }
+		&.razor-logo-white { background: url(../../images/blade-white-25.png) center no-repeat; }
+		&.razor-logo-black-circle { background: url(../../images/blade-black-25-circle.png) center no-repeat; }
+		&.razor-logo-green-circle { background: url(../../images/blade-dark-green-25-circle.png) center no-repeat; }
+		&.razor-logo-white-circle { background: url(../../images/blade-white-25-circle.png) center no-repeat; }
 	}
 }
 
@@ -264,17 +344,11 @@ li.dropdown
 		font-size: 40px; 
 		cursor: pointer;
 		position: fixed;
-		top: 0px;
-		left: 0px;
+		top: 3px;
+		left: 4px;
+		opacity: 0.7;
 
-		&:hover { text-shadow: 0 0 0.3em #0D7DA8; }
-
-		&.alt-color
-		{
-			color: #fff;
-
-			&:hover { text-shadow: 0 0 0.3em #fff; }
-		}
+		&:hover { opacity: 1; }
 	}
 
 	.razor-admin-dashboard

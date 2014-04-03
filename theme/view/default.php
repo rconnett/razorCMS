@@ -24,6 +24,7 @@
 		<script src="<?php echo RAZOR_BASE_URL ?>library/js/require-config.js"></script>
 
 		<!-- load bootstrap, style overrides and public css -->
+		<link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>library/style/razor/razor_base.css">
 		<!--[if IE 9]><link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>library/style/razor/razor_base_ie9.css"><![endif]-->
 		<!--[if IE 8]><link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>library/style/razor/razor_base_ie8.css"><![endif]-->
 		
@@ -31,7 +32,7 @@
 		<!--[if IE 9]><link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>theme/style/default_ie9.css"><![endif]-->
 		<!--[if IE 8]><link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>theme/style/default_ie8.css"><![endif]-->
 
-		<link rel="shortcut icon" href="<?php echo RAZOR_BASE_URL ?>/theme/image/favicon.ico" type="image/x-icon">
+		<link rel="shortcut icon" href="<?php echo RAZOR_BASE_URL ?>library/images/favicon.ico" type="image/x-icon">
 	</head>
 
 	<?php $this->body() ?>
