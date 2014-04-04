@@ -21,7 +21,7 @@
     define("RARS_ACCESS_LOCKOUT", 600); // how many seconds to lockout for after above failures detected
     define("RARS_ACCESS_TIMEOUT", 86400); // the amount of time the login will stay alive
     define("RARS_ACCESS_BAN_ATTEMPS", 250); // the amount of atempts an IP can have without a successful login, before being banned completely from logging in, 0 to turn off.
-    define("RARS_CLEAN_DATA_ALLOWED_TAGS", "<b><i><h1><h2><h3><h4><h5><h6><p><strong><em><table><thead><tbody><tfooter><tr><th><td><ul><ol><li><a><br><div><header><footer><span><img>"); // will add extra checking to data coming in, checking strings and removing any not listed, comment out to turn off.
+    // define("RARS_CLEAN_DATA_ALLOWED_TAGS", "<b><i><h1><h2><h3><h4><h5><h6><p><strong><em><table><thead><tbody><tfooter><tr><th><td><ul><ol><li><a><br><div><header><footer><span><img>"); // will add extra checking to data coming in, checking strings and removing any not listed, comment out to turn off.
 
     // include error handler
 	include_once(RAZOR_BASE_PATH.'library/php/razor/razor_file_tools.php');
