@@ -8,7 +8,7 @@
 						<p class="system-version" ng-init="checkVersion()">
 							<span>{{system.version}}.{{system.milestone}}.{{system.release}}</span>
 							<span class="alert alert-info" ng-hide="upgrade || noUpgrade || error">
-								<i class="fa fa-spinner fa-spin"></i>
+								<i class="fa fa-refresh"></i>
 								Checking version...
 							</span>
 							<span class="alert alert-success" ng-show="noUpgrade">

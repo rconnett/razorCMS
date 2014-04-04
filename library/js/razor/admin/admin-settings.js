@@ -39,8 +39,10 @@ define(["angular", "cookie-monster"], function(angular, monster)
 	        {
 	        	$scope.current = data;
 
-				if ($scope.system.version < data.version || $scope.system.milestone < data.milestone || $scope.system.release < data.release) $scope.noUpgrade = true;
-				else $scope.upgrade = true;
+	        	if (data.version > $scope.system.version) $scope.upgrade = true;
+	        	else if (data.milestone > $scope.system.milestone) $scope.upgrade = true;
+	        	else if (data.release > $scope.system.release) $scope.upgrade = true;
+	        	else $scope.noUpgrade = true;
 	        }).error(function(data)
 	        {
 	        	$scope.error = true;
