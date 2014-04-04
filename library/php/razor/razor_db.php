@@ -188,13 +188,13 @@ class RazorDB
 	private function data_in($data)
 	{
 		// clean unwanted carriage returns or pipe chars they hurt db, quotes, slashes and html is fine
-		return (!is_string($data) ? $data : str_replace(array('|', "\n", "\r", '`', '<?', '?>'), array(' ', ' ', ' ', "'"), $data));
+		return (!is_string($data) ? $data : str_replace(array('|', "\n", "\r", "/*", "*/", '`', '<?', '?>'), array('[[pipe]]', '[[slash-n]]', '[[slash-r]]', '[[comment-on]]', '[[comment-off]]', "'", '', ''), $data));
 	}
 
 	private function data_out($data)
 	{
-		// no conversion needed at present
-		return substr($data, 0, -1);
+		$data = substr($data, 0, -1);
+		return (!is_string($data) ? $data : str_replace(array('[[pipe]]', '[[slash-n]]', '[[slash-r]]', '[[comment-on]]', '[[comment-off]]'), array('|', "\n", "\r", "/*", "*/"), $data));
 	}
 
 	private function headers()
@@ -1400,9 +1400,9 @@ class RazorDB
 							if ($column['column'] > 1) $row_data.= '|';
 
 							// make change if one
-							$row_data.= $column['column'].'`'.(isset($changes[$column['name']]) ? $changes[$column['name']] : $match[$column['name']]).'`';
+							$row_data.= $column['column'].'`'.$this->data_in((isset($changes[$column['name']]) ? $changes[$column['name']] : $match[$column['name']])).'`';
 							// update matches
-							$temp_match[$column['name']] = (isset($changes[$column['name']]) ? $changes[$column['name']] : $match[$column['name']]);
+							$temp_match[$column['name']] = $this->data_out($this->data_in((isset($changes[$column['name']]) ? $changes[$column['name']] : $match[$column['name']])));
 						}
 						$matches[] = $temp_match;
 
