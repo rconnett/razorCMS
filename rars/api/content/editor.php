@@ -77,23 +77,26 @@ class ContentEditor extends RazorAPI
 
         // update or add content
         $new_content_map = array();
-        foreach ($data["content"] as $content)
+        foreach ($data["content"] as $key => $content)
         {
-            if (isset($content["content_id"]))
+            if (!isset($content["content_id"]) || !isset($content["content"]) || empty($content["content"]))
             {
-                if (stripos($content["content_id"], "new-") === false)
-                {
-                    // update
-                    $search = array("column" => "id", "value" => $content["content_id"]);
-                    $db->edit_rows($search, array("content" => $content["content"], "name" => $content["name"]));
-                }
-                else
-                {
-                    // add new content and map the ID to the new id for locations table
-                    $row = array("content" => $content["content"], "name" => $content["name"]);
-                    $result = $db->add_rows($row);
-                    $new_content_map[$content["content_id"]] = $result["result"][0]["id"];   
-                }
+                unset($data["content"][$key]);
+                continue;
+            }
+
+            if (stripos($content["content_id"], "new-") === false)
+            {
+                // update
+                $search = array("column" => "id", "value" => $content["content_id"]);
+                $db->edit_rows($search, array("content" => $content["content"], "name" => $content["name"]));
+            }
+            else
+            {
+                // add new content and map the ID to the new id for locations table
+                $row = array("content" => $content["content"], "name" => $content["name"]);
+                $result = $db->add_rows($row);
+                $new_content_map[$content["content_id"]] = $result["result"][0]["id"];   
             }
         }
 
@@ -131,18 +134,23 @@ class ContentEditor extends RazorAPI
                     else
                     {
                         // add new, if new, add, if new but already present add, else add as ext
-                        $row = array(
-                            "page_id" => (int) $data["page_id"],
-                            "content_id" => (isset($block["content_id"], $new_content_map[$block["content_id"]]) ? $new_content_map[$block["content_id"]] : (isset($block["content_id"]) ? $block["content_id"] : null)),
-                            "location" => $location,
-                            "column" => (int) $column,
-                            "position" => $pos + 1
-                        );
+                        $new_content_id = (isset($block["content_id"], $new_content_map[$block["content_id"]]) ? $new_content_map[$block["content_id"]] : (isset($block["content_id"]) && is_numeric($block["content_id"]) ? $block["content_id"] : null));
 
-                        if (isset($block["extension"])) $row["extension"] = $block["extension"];
+                        if (!empty($new_content_id) || isset($block["extension"]))
+                        {
+                            $row = array(
+                                "page_id" => (int) $data["page_id"],
+                                "content_id" => $new_content_id,
+                                "location" => $location,
+                                "column" => (int) $column,
+                                "position" => $pos + 1
+                            );
 
-                        $result = $db->add_rows($row);
-                        $page_content_map[] = $result["result"][0];  
+                            if (isset($block["extension"])) $row["extension"] = $block["extension"];
+
+                            $result = $db->add_rows($row);
+                            $page_content_map[] = $result["result"][0];
+                        }
                     }
                 }
             }
