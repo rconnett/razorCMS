@@ -12,7 +12,7 @@
  
 class ToolsVersion extends RazorAPI
 {
-    private $check_url = "http://v3.razorcms.co.uk/rars/live/version/current";
+    private $check_url = "http://www.razorcms.co.uk/rars/live/version/current";
 
     function __construct()
     {
