@@ -67,6 +67,9 @@ class ContentEditor extends RazorAPI
                 $manifest = RazorFileTools::read_file_contents(RAZOR_BASE_PATH."extension/{$row['extension']}", "json");
                 if (isset($manifest->content_settings) && !empty($manifest->content_settings))
                 {
+                    // create object
+                    if (!is_object($location_data["settings"])) $location_data["settings"] = new stdClass();
+
                     // copy settings
                     $location_data["extension_content_settings"] = $manifest->content_settings;
                     

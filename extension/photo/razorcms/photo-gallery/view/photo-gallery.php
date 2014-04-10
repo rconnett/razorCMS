@@ -6,7 +6,7 @@
 	// grab settings for this content area and from that, find folder to use
 	$content_ext_settings = json_decode($c_data["json_settings"]);
 
-	$photos = array();
+	$photos = "[]";
 	if (isset($content_ext_settings->album_name))
 	{
 		// check if folders exist
@@ -48,17 +48,17 @@
 
 <!-- module output -->
 <div class="photo-razorcms-photo-gallery" class="ng-cloak" ng-controller="photoGallery" ng-init="init(<?php echo $photos ?>)">
-	<div class="photo-gallery-frame text-center" style="height: <?php echo $m["frame_height"] ?>px; width: <?php echo $m["frame_width"] ?>px;">
+	<div class="photo-gallery-frame text-center" style="height: <?php echo $m["frame_height"] ?>; width: <?php echo $m["frame_width"] ?>;">
 		<div class="photo-gallery-canvas">
 			<i class="fa fa-chevron-circle-left photo-control change-left" ng-click="scrollPhotos('left')"></i>
 			<i class="fa fa-chevron-circle-right photo-control change-right" ng-click="scrollPhotos('right')"></i>
-			<div class="center-box" style="line-height: <?php echo $m["frame_height"] ?>px;">
+			<div class="center-box" style="line-height: <?php echo $m["frame_height"] ?>;">
 				<img ng-show="photoFrame" ng-src="{{photoFrame}}" ng-init="photoFrame = photos[position]">
 				<i ng-if="!photoFrame" class="fa fa-picture-o photo-placeholder"></i>
 			</div>
 		</div>
 	</div>
-	<div class="photo-gallery-controls" style="width: <?php echo $m["frame_width"] ?>px;">
+	<div class="photo-gallery-controls" style="width: <?php echo $m["frame_width"] ?>;">
 		<i class="fa fa-chevron-circle-left photo-control slide-left" ng-click="scrollThumbs('left')"></i>
 		<i class="fa fa-chevron-circle-right photo-control slide-right" ng-click="scrollThumbs('right')"></i>
 		<div class="photo-gallery-slider">
