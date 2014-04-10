@@ -49,7 +49,7 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
                     $scope.user = data.user;
                     $scope.showLogin = false;
                     $scope.processing = false;
-                    window.location.href = RAZOR_BASE_URL + "#page";
+                    window.location.href = RAZOR_BASE_URL;
                 }
                 else
                 {
