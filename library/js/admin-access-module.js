@@ -15,7 +15,7 @@ require([
 	"razor/directives/form-controls", 
 	"razor/directives/notification", 
 	"razor/directives/validation",
-	"razor/admin/admin-main", 
+	"razor/admin/admin-access", 
 	"razor/admin/admin-settings", 
 	"razor/admin/admin-page", 
 	"razor/admin/admin-pages", 
@@ -24,13 +24,13 @@ require([
 	"razor/admin/admin-extensions"
 ], function(angular)
 {
-    angular.module("razor.admin", [
+    angular.module("razor.access", [
     	"ngRoute",
     	"razor.services.rars", 
     	"razor.directives.formControls", 
     	"razor.directives.notification", 
     	"razor.directives.validation", 
-    	"razor.admin.main",
+    	"razor.admin.access",
     	"razor.admin.settings", 
     	"razor.admin.page", 
     	"razor.admin.pages", 
@@ -50,5 +50,5 @@ require([
 	    .when('/password-reset', {templateUrl: RAZOR_BASE_URL + 'theme/partial/admin-page.html', controller: "page"})
 	}]);
 
-    angular.bootstrap(document.getElementById("razor-admin"), ["razor.admin"]); // Necessary because the Angular files are being loading asynchronously
+    angular.bootstrap(document.getElementById("razor-access"), ["razor.access"]); // Necessary because the Angular files are being loading asynchronously
 });

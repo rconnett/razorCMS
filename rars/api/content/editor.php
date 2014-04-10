@@ -55,11 +55,33 @@ class ContentEditor extends RazorAPI
                 );
             }
 
-            $locations[$row["location"]][$row["column"]][] = array("id" => $row["id"], "content_id" => $row["content_id"], "extension" => $row["extension"]);
+            $location_data = array(
+                "id" => $row["id"], 
+                "content_id" => $row["content_id"], 
+                "extension" => $row["extension"],
+                "settings" => json_decode($row["json_settings"])
+            );
+
+            if (!empty($row["extension"]))
+            {
+                $manifest = RazorFileTools::read_file_contents(RAZOR_BASE_PATH."extension/{$row['extension']}", "json");
+                if (isset($manifest->content_settings) && !empty($manifest->content_settings))
+                {
+                    // copy settings
+                    $location_data["extension_content_settings"] = $manifest->content_settings;
+                    
+                    // if no settings present, add defaults from manifest
+                    foreach ($manifest->content_settings as $cs)
+                    {
+                        if (!isset($location_data["settings"]->{$cs->name})) $location_data["settings"]->{$cs->name} = $cs->value;
+                    }
+                }
+            }
+
+            $locations[$row["location"]][$row["column"]][] = $location_data;
         }        
         $db->disconnect(); 
 
-        
         // return the basic user details
         $this->response(array("content" => $content, "locations" => $locations), "json");
     }
@@ -124,7 +146,7 @@ class ContentEditor extends RazorAPI
                     {
                         // update
                         $search = array("column" => "id", "value" => $block["id"]);
-                        $row = array("location" => $location, "column" => (int) $column, "position" => $pos + 1);
+                        $row = array("location" => $location, "column" => (int) $column, "position" => $pos + 1, "json_settings" => json_encode($block["settings"]));
 
                         if (isset($block["extension"])) $row["extension"] = $block["extension"];
                         
@@ -146,7 +168,11 @@ class ContentEditor extends RazorAPI
                                 "position" => $pos + 1
                             );
 
-                            if (isset($block["extension"])) $row["extension"] = $block["extension"];
+                            if (isset($block["extension"]))
+                            {
+                                $row["extension"] = $block["extension"];
+                                $row["json_settings"] = (isset($block["settings"]) ? json_encode($block["settings"]) : null);
+                            }
 
                             $result = $db->add_rows($row);
                             $page_content_map[] = $result["result"][0];
@@ -164,8 +190,8 @@ class ContentEditor extends RazorAPI
 
         $db->disconnect(); 
 
-        // now fetch all content again and return;
-        $this->get($data["page_id"]);
+        // return the basic user details
+        $this->response("success", "json");
     }
 }
 
