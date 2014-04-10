@@ -32,8 +32,6 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
             {
                 if (path) $scope.activePage = path.split("/")[1];
             });
-
-            $scope.load();
         };
 
         $scope.login = function()
@@ -127,6 +125,7 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
                     $scope.user = data.user;
                     $scope.loggedIn = true;
                     $scope.showLogin = false;
+                    $scope.load();
                 }
                 else
                 {
