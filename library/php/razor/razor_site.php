@@ -79,7 +79,7 @@ class RazorSite
         $ext_dep_list = array();
         
         // admin angluar loading for editor, return
-        if (!isset($_GET["preview"]) && $this->logged_in > 5)
+        if (isset($_GET["edit"]) && $this->logged_in > 5)
         {
             echo <<<OUTPUT
 <div class="content-column" ng-if="changed" ng-class="{'edit': toggle}">
@@ -90,18 +90,101 @@ class RazorSite
         <div ng-if="!block.extension" id="view-{$loc}{$col}{{block.content_id}}" class="content-view" ng-hide="editingThis('{$loc}{$col}' + block.content_id)" ng-click="startBlockEdit('{$loc}{$col}',  block.content_id)" ng-bind-html="bindHtml(content[block.content_id].content)"></div>
         <textarea ng-if="!block.extension" id="{$loc}{$col}{{block.content_id}}" height="800px" ng-show="editingThis('{$loc}{$col}' + block.content_id)" class="content-edit" ng-model="content[block.content_id].content" style="width:100%;"></textarea>
 
-        <table class="table table-condensed table-bordered table-striped" ng-if="block.extension">
-            <thead>
-                <tr>
-                    <th colspan="2"><i class="fa fa-puzzle-piece"></i> Extension</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td><strong>Extension</strong></td><td>{{block.extension.split('/')[2]}}</td></tr>
-                <tr><td><strong>Author</strong></td><td>{{block.extension.split('/')[1]}}</td></tr>
-                <tr><td><strong>Type</strong></td><td>{{block.extension.split('/')[0]}}</td></tr>
-            </tbody>
-        </table>
+        <div class="content-settings" ng-if="block.extension">
+            <form class="form-horizontal" role="form" name="form" novalidate>
+                <h3 class="extension-title"><i class="fa fa-puzzle-piece"></i> Extension</h3>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Type</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" value="{{block.extension.split('/')[0]}}" disabled>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Handle</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" value="{{block.extension.split('/')[1]}}" disabled>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Extension</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" value="{{block.extension.split('/')[2]}}" disabled>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="block.extension_content_settings[0]">
+                    <label class="col-sm-3 control-label">{{block.extension_content_settings[0].label}}</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" placeholder="{{block.extension_content_settings[0].placeholder}}" name="input0" ng-model="block.settings[block.extension_content_settings[0].name]" ng-pattern="{{block.extension_content_settings[0].regex}}" >
+                    </div>
+                    <div class="col-sm-2 error-block" ng-show="form.input0.\$dirty && form.input0.\$invalid">
+                        <span class="alert alert-danger alert-form" ng-show="form.input0.\$error.pattern">Invalid</span>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="block.extension_content_settings[1]">
+                    <label class="col-sm-3 control-label">{{block.extension_content_settings[1].label}}</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" placeholder="{{block.extension_content_settings[1].placeholder}}" name="input1" ng-model="block.settings[block.extension_content_settings[1].name]" ng-pattern="{{block.extension_content_settings[1].regex}}" >
+                    </div>
+                    <div class="col-sm-2 error-block" ng-show="form.input1.\$dirty && form.input1.\$invalid">
+                        <span class="alert alert-danger alert-form" ng-show="form.input1.\$error.pattern">Invalid</span>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="block.extension_content_settings[2]">
+                    <label class="col-sm-3 control-label">{{block.extension_content_settings[2].label}}</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" placeholder="{{block.extension_content_settings[2].placeholder}}" name="input2" ng-model="block.settings[block.extension_content_settings[2].name]" ng-pattern="{{block.extension_content_settings[2].regex}}" >
+                    </div>
+                    <div class="col-sm-2 error-block" ng-show="form.input2.\$dirty && form.input2.\$invalid">
+                        <span class="alert alert-danger alert-form" ng-show="form.input2.\$error.pattern">Invalid</span>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="block.extension_content_settings[3]">
+                    <label class="col-sm-3 control-label">{{block.extension_content_settings[3].label}}</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" placeholder="{{block.extension_content_settings[3].placeholder}}" name="input3" ng-model="block.settings[block.extension_content_settings[3].name]" ng-pattern="{{block.extension_content_settings[3].regex}}" >
+                    </div>
+                    <div class="col-sm-2 error-block" ng-show="form.input3.\$dirty && form.input3.\$invalid">
+                        <span class="alert alert-danger alert-form" ng-show="form.input3.\$error.pattern">Invalid</span>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="block.extension_content_settings[4]">
+                    <label class="col-sm-3 control-label">{{block.extension_content_settings[4].label}}</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" placeholder="{{block.extension_content_settings[4].placeholder}}" name="input4" ng-model="block.settings[block.extension_content_settings[4].name]" ng-pattern="{{block.extension_content_settings[4].regex}}" >
+                    </div>
+                    <div class="col-sm-2 error-block" ng-show="form.input4.\$dirty && form.input4.\$invalid">
+                        <span class="alert alert-danger alert-form" ng-show="form.input4.\$error.pattern">Invalid</span>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="block.extension_content_settings[5]">
+                    <label class="col-sm-3 control-label">{{block.extension_content_settings[5].label}}</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" placeholder="{{block.extension_content_settings[5].placeholder}}" name="input5" ng-model="block.settings[block.extension_content_settings[5].name]" ng-pattern="{{block.extension_content_settings[5].regex}}" >
+                    </div>
+                    <div class="col-sm-2 error-block" ng-show="form.input5.\$dirty && form.input5.\$invalid">
+                        <span class="alert alert-danger alert-form" ng-show="form.input5.\$error.pattern">Invalid</span>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="block.extension_content_settings[6]">
+                    <label class="col-sm-3 control-label">{{block.extension_content_settings[6].label}}</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" placeholder="{{block.extension_content_settings[6].placeholder}}" name="input6" ng-model="block.settings[block.extension_content_settings[6].name]" ng-pattern="{{block.extension_content_settings[6].regex}}" >
+                    </div>
+                    <div class="col-sm-2 error-block" ng-show="form.input6.\$dirty && form.input6.\$invalid">
+                        <span class="alert alert-danger alert-form" ng-show="form.input6.\$error.pattern">Invalid</span>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="block.extension_content_settings[7]">
+                    <label class="col-sm-3 control-label">{{block.extension_content_settings[7].label}}</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" placeholder="{{block.extension_content_settings[7].placeholder}}" name="input7" ng-model="block.settings[block.extension_content_settings[7].name]" ng-pattern="{{block.extension_content_settings[7].regex}}" >
+                    </div>
+                    <div class="col-sm-2 error-block" ng-show="form.input7.\$dirty && form.input7.\$invalid">
+                        <span class="alert alert-danger alert-form" ng-show="form.input7.\$error.pattern">Invalid</span>
+                    </div>
+                </div>
+            </form>      
+        </div>
         
         <div class="btn-toolbar" role="toolbar">
             <div class="btn-group">
@@ -118,7 +201,7 @@ class RazorSite
     <button class="btn btn-default" ng-show="toggle" ng-click="findExtension('{$loc}', '{$col}')"><i class="fa fa-puzzle-piece"></i></button>
 </div>
 OUTPUT;
-
+            return;
         }
        
         $db = new RazorDB();
@@ -163,7 +246,7 @@ OUTPUT;
         if ($this->add_new_menu($loc)) $this->get_menu_data();;
 
         // admin angluar loading for editor, return
-        if (!isset($_GET["preview"]) && $this->logged_in > 5)
+        if (isset($_GET["edit"]) && $this->logged_in > 5)
         {
             echo <<<OUTPUT
 <li ng-if="changed" ng-repeat="mi in menus.{$loc}.menu_items" ng-class="{'click-and-sort': toggle, 'active': linkIsActive(mi.page_id), 'dropdown': mi.sub_menu || toggle, 'selected': \$parent.clickAndSort['{$loc}'].selected, 'place-holder': \$parent.clickAndSort['{$loc}'].picked != \$index && \$parent.clickAndSort['{$loc}'].selected}">
@@ -228,12 +311,23 @@ OUTPUT;
 
     public function data_main()
     {
+        // public or preview
         if (isset($_GET["preview"]) || (!$this->login && !isset($_COOKIE["token"]))) return;
-        echo 'data-main="admin"';
+        
+        // logged in
+        if (!isset($_GET["edit"]) || $this->logged_in < 6)
+        {
+            echo 'data-main="admin-access-module"';
+            return;
+        }
+
+        // admin editable
+        echo 'data-main="admin-edit-module"';
     }
 
     public function body()
     {
+        // public or preview
         if (isset($_GET["preview"]) || (!$this->login && !isset($_COOKIE["token"])))
         {
             // start by opening body
@@ -273,7 +367,14 @@ OUTPUT;
             return;
         }
 
-        include(RAZOR_BASE_PATH."theme/partial/admin-main.html");
+        // logged in
+        if (!isset($_GET["edit"]) || $this->logged_in < 6)
+        {
+            include(RAZOR_BASE_PATH."theme/partial/admin-access.php");
+            return true;
+        }
+
+        include(RAZOR_BASE_PATH."theme/partial/admin-edit.php");
         return true;
     }
 
