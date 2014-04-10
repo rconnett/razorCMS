@@ -13,6 +13,6 @@
 		{"type": "rars", "name": "RARS Tools - Email", "path": "rars/api/tools/email.php"}
 	],
 	"settings": [
-		{"name": "email", "placeholder": "Email address to send messages to", "value": ""}
+		{"name": "email", "label": "Email Address", "placeholder": "Email address to send messages to", "value": "", "regex": "/^\\\\S+@\\\\S+\\\\.\\\\S+$/"}
 	]
 }
