@@ -94,8 +94,7 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
             // only runs if page set to password-reset due to ng-init and ng-if
             // check for token, do base check on it
             var token = $location.path().split("/")[2];
-            console.debug(token);
-            console.debug(token.length);
+
             if (token.length < 20) return;
 
             // if there, send of for reset (which is only valid for an hour anyway)
