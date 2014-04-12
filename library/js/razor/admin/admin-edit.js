@@ -217,6 +217,7 @@ define(["angular", "cookie-monster", "nicedit", "ui-bootstrap"], function(angula
                 if (!$scope.locations) $scope.locations = {};
                 if (!$scope.locations[loc]) $scope.locations[loc] = {};
                 if (!$scope.locations[loc][col]) $scope.locations[loc][col] = [];
+
                 $scope.locations[loc][col].push({"id": "new", "content_id": id});
             }
             else
@@ -224,7 +225,24 @@ define(["angular", "cookie-monster", "nicedit", "ui-bootstrap"], function(angula
                 if (!$scope.locations) $scope.locations = {};
                 if (!$scope.locations[loc]) $scope.locations[loc] = {};
                 if (!$scope.locations[loc][col]) $scope.locations[loc][col] = [];
-                $scope.locations[loc][col].push({"id": "new", "extension": extension}); 
+
+                var newBlock = {"id": "new", "extension": extension, "settings": null, "extension_content_settings": null};
+                if (!!block.content_settings)
+                {
+                    // save manifest
+                    newBlock.extension_content_settings = block.content_settings;
+
+                    // build default values from manifest
+                    var settings = {};
+                    angular.forEach(block.content_settings, function(set, key)
+                    {
+                        // set values
+                        settings[set.name] = set.value;
+                    });
+                    newBlock.settings = settings;
+                }
+
+                $scope.locations[loc][col].push(newBlock); 
             }
         };
 
