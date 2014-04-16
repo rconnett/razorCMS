@@ -40,6 +40,39 @@ class FileImage extends RazorAPI
         parent::__construct();
     }
 
+    // get a list of images from the nicEdit path
+    public function get()
+    {
+        if ((int) $this->check_access() < 10) $this->response(null, null, 401);
+
+        $root_path = RAZOR_BASE_PATH.'storage/files/images'; // Set the nicEdit images path
+        $root_url = RAZOR_BASE_URL.'storage/files/images';   // Set the nicEdit images URL
+        $image_files = array("jpg", "jpeg", "png", "gif"); // restrict image files to certain extensions
+  
+        // check if folders exist
+        if (!is_dir($root_path)) $this->response(null, null, 401);
+
+        // grab folder here, load in the files for a particular folder
+        $files = RazorFileTools::read_dir_contents($root_path, $type = 'files');
+
+        // remove anything not an image file ext
+        foreach ($files as $key => $file)
+        {
+            $path_parts = explode('.', $file);
+            if (!in_array(end($path_parts), $image_files))
+            {
+                unset($files[$key]);
+                continue;
+            }
+
+            $files[$key] = array("url" => "{$root_url}/{$file}", "name" => $file);
+        }
+        sort($files);
+
+        // json encode
+        $this->response(array("imageList" => array_values($files)), "json");
+    }
+
     // add or update content
     public function post()
     {

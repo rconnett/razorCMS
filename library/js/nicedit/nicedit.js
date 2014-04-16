@@ -1,4 +1,5 @@
-/* NicEdit - Micro Inline WYSIWYG
+ /*
+ * NicEdit - Micro Inline WYSIWYG
  * Copyright 2007-2008 Brian Kirchoff
  *
  * NicEdit is distributed under the terms of the MIT license
@@ -269,7 +270,7 @@ var nicEditorConfig = bkClass.extend({
 		'hr' : {name : __('Horizontal Rule'), command : 'insertHorizontalRule', noActive : true}
 	},
 	iconsPath : RAZOR_BASE_URL + 'library/images/nicEditorIcons.gif',
-	buttonList : ['save','bold','italic','underline','left','center','right','justify','ol','ul','fontSize','fontFamily','fontFormat','indent','outdent','image','upload','link','unlink','forecolor','bgcolor'],
+	buttonList : ['save','bold','italic','underline','left','center','right','justify','ol','ul','fontSize','fontFamily','fontFormat','indent','outdent','image','upload','browser','link','unlink','forecolor','bgcolor'],
 	iconList : {"xhtml":1,"bgcolor":2,"forecolor":3,"bold":4,"center":5,"hr":6,"indent":7,"italic":8,"justify":9,"left":10,"ol":11,"outdent":12,"removeformat":13,"right":14,"save":25,"strikethrough":16,"subscript":17,"superscript":18,"ul":19,"underline":20,"image":21,"link":22,"unlink":23,"close":24,"arrow":26,"upload":27}
 	
 });
@@ -1558,3 +1559,182 @@ var nicTableButton = nicEditorAdvancedButton.extend({
 });
 
 nicEditors.registerPlugin(nicPlugin,nicTableOptions);
+
+/* nicImageBrowser - courtesy of razorCMS */
+/* Author: Paul Smith (smiffy6969) */
+/* www.razorcms.co.uk */
+
+/* CONFIG */
+var razorImageBrowserOptions = {
+	buttons : {
+		'browser' : {name : 'Image Browser', type : 'razorImageBrowserButton'}
+	},
+	iconFiles: {
+		'browser': RAZOR_BASE_URL + 'library/images/nicEditorImageBrowserIcon.gif'
+	}	
+};
+
+/* FUNCTION */
+var razorImageBrowserButton = nicEditorAdvancedButton.extend(
+{	
+	imageListURI: RAZOR_BASE_URL + 'rars/file/image',
+	images: [],
+	selectedImage: 0,
+
+	addPane : function() 
+	{
+	    if (typeof window.FormData === "undefined") return this.onError("Unsupported browser, use a modern browser like Chrome, Firefox, or Safari.");
+
+	    var container = new bkElement('div').setStyle({ padding: '10px' }).appendTo(this.pane.pane);
+		new bkElement('div').setStyle({ fontSize: '14px', fontWeight : 'bold', paddingBottom: '5px' }).setContent('Browse Images').appendTo(container);
+
+	    // fetch files
+		this.getList();
+	},
+
+	onError : function(msg) {
+		this.removePane();
+		alert(msg || "Failed to find image list.");
+	},
+
+	getList : function() {
+		var xhr = new XMLHttpRequest();
+
+		xhr.open("GET", this.ne.options.imageListURI || this.imageListURI);
+		xhr.setRequestHeader("Authorization", this.ne.options.authToken);
+
+		xhr.onload = function() 
+		{
+			try 
+			{ 
+				var res = JSON.parse(xhr.responseText); 
+				this.images = res.imageList;
+			} 
+			catch(e) { return this.onError(); }
+		
+
+			this.onResponse();
+		}.closure(this);
+
+		xhr.onerror = this.onError.closure(this);
+		xhr.send();
+	},
+
+  	addActions: function(fileList) 
+  	{
+  		if (this.images.length <= 0) return;
+
+  		var scope = this;
+  		var scrollWidth = 70 * this.images.length;
+  		
+  		// select image left
+  		document.querySelector("#image-browser-select-left").onclick = function()
+		{		
+			if (scope.selectedImage <= 0) return;
+
+			// update selected image index and reload viewer image
+			scope.selectedImage--;
+			document.querySelector("#image-browser-viewer-image").setAttribute("src", scope.images[scope.selectedImage].url);
+		};
+
+  		// select image right
+  		document.querySelector("#image-browser-select-right").onclick = function()
+		{
+			if (scope.selectedImage >= scope.images.length - 1) return;
+
+			// update selected image index and reload viewer image
+			scope.selectedImage++;
+			document.querySelector("#image-browser-viewer-image").setAttribute("src", scope.images[scope.selectedImage].url);
+		};
+
+  		// scroll image left
+  		document.querySelector("#image-browser-scroll-left").onclick = function()
+		{
+			var mLeftPixels = document.querySelector("#image-browser-thumbs").style.marginLeft;
+			var mLeft = (!mLeftPixels ? 0 : parseInt(mLeftPixels.substring(0, mLeftPixels.length - 2)));
+
+			if (mLeft >= 0) return;
+
+			document.querySelector("#image-browser-thumbs").style.marginLeft = (mLeft + 65) + "px";
+		};
+
+  		// scroll image right
+  		document.querySelector("#image-browser-scroll-right").onclick = function()
+		{
+			var mLeftPixels = document.querySelector("#image-browser-thumbs").style.marginLeft;
+			var mLeft = (!mLeftPixels ? 0 : parseInt(mLeftPixels.substring(0, mLeftPixels.length - 2)));
+
+			if (mLeft < (0 - scrollWidth) + 260) return;
+
+			document.querySelector("#image-browser-thumbs").style.marginLeft = (mLeft - 65) + "px";
+		};
+
+  		// scroll image right
+  		document.querySelector("#image-browser-viewer-image").onclick = function()
+		{
+			var src = document.querySelector("#image-browser-viewer-image").getAttribute("src");
+			scope.onSelected({
+				"url": src,
+			});
+		};
+
+		// choose thumbnail
+		var thumbs = document.querySelectorAll(".nicEdit-thumbnail-image");
+		for (var i = 0; i < thumbs.length; i++) {
+			thumbs[i].onclick = function(ev)
+			{
+				scope.selectedImage = parseInt(ev.target.getAttribute("alt"));
+				document.querySelector("#image-browser-viewer-image").setAttribute("src", scope.images[scope.selectedImage].url);
+			};
+		};
+  	},
+
+  	onResponse: function() 
+  	{
+  		if (this.images.length <= 0)
+  		{
+  			new bkElement('p').setStyle({}).setContent("No images uploaded.").appendTo(this.pane.pane);
+  			return;
+  		}
+
+  		// work out width of scroller
+  		var scrollWidth = 70 * this.images.length;
+
+	    // add viewer
+	    var viewer = new bkElement('div').setAttributes({"id": "image-browser-viewer"}).setStyle({"text-align": "center"}).appendTo(this.pane.pane);
+		new bkElement('img').setStyle({"max-width": "100%", "max-height": "100px", "border": "1px solid #bbb", "cursor": "pointer"}).setAttributes({"id": "image-browser-viewer-image", "src": this.images[this.selectedImage].url}).appendTo(viewer);
+		new bkElement('i').setStyle({"background-color": "#999", "color": "#fff", "padding-top": "1px", "width": "20px", "height": "20px", "position": "absolute", "top": "90px", "left": "3px", "cursor": "pointer"}).setAttributes({"id": "image-browser-select-left", "src": this.images[this.selectedImage].url}).setContent("<").appendTo(viewer);
+		new bkElement('i').setStyle({"background-color": "#999", "color": "#fff", "padding-top": "1px", "width": "20px", "height": "20px", "position": "absolute", "top": "90px", "right": "3px", "cursor": "pointer"}).setAttributes({"id": "image-browser-select-right", "src": this.images[this.selectedImage].url}).setContent(">").appendTo(viewer);
+		new bkElement('i').setStyle({"background-color": "#999", "color": "#fff", "padding-top": "1px", "width": "20px", "height": "20px", "position": "absolute", "bottom": "40px", "left": "3px", "cursor": "pointer"}).setAttributes({"id": "image-browser-scroll-left", "src": this.images[this.selectedImage].url}).setContent("<").appendTo(viewer);
+		new bkElement('i').setStyle({"background-color": "#999", "color": "#fff", "padding-top": "1px", "width": "20px", "height": "20px", "position": "absolute", "bottom": "40px", "right": "3px", "cursor": "pointer"}).setAttributes({"id": "image-browser-scroll-right", "src": this.images[this.selectedImage].url}).setContent(">").appendTo(viewer);
+
+		// add thumbs holder
+	    var thumbnails = new bkElement('div').setStyle({"height": "80px", "margin-left": "30px", "padding-top": '10px', "list-style-type": "none", "width": "200px", "overflow": "hidden"}).appendTo(this.pane.pane);
+	    var thumbs = new bkElement('ul').setAttributes({"id": "image-browser-thumbs"}).setStyle({"height": "70px", "padding": "0px", "list-style-type": "none", "width": scrollWidth + "px"}).appendTo(thumbnails);
+
+	    // add thumbs
+		for (var i = 0; i < this.images.length; i++) 
+		{
+			var listItem = new bkElement('li').setStyle({"width": "60px", "display": "inline-block", "float": "left", "margin": "2px"}).appendTo(thumbs); 
+			var listLink = new bkElement('a').appendTo(listItem);
+			new bkElement('img').setStyle({"display": "block", "width": "60px", "height": "100%", "max-width": "100%", "max-height": "60px", "border": "1px solid #bbb", "cursor": "pointer"}).addClass("thumbnail-image").setAttributes({"src": this.images[i].url, "alt": i}).appendTo(listLink);
+		};
+
+		// add actions for viewer
+		this.addActions();
+  	},
+
+	onSelected : function(options) {
+		this.removePane();
+		var src = options['url'];
+		this.ne.selectedInstance.restoreRng();
+		var tmp = 'javascript:nicImTemp();';
+		this.ne.nicCommand("insertImage", src);
+		this.im = this.findElm('IMG','src', src);
+		this.im.setAttributes({src: options['url']});
+	},
+});
+
+nicEditors.registerPlugin(nicPlugin,razorImageBrowserOptions);
+
+/* end - nicBrowser */
