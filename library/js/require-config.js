@@ -16,7 +16,10 @@ require.config({
 		"angular": "angular/angular_1_2_14.min",
 		"angular-route": "angular/angular-route.min",
 		"angular-resource": "angular/angular-resource.min",
+		"angular-sanitize": "angular/angular-sanitize.min",
 		"angular-cookies": "angular/angular-cookies.min",
+		"text-angular": "text-angular/text-angular",
+		"text-angular-sanitize": "text-angular/text-angular-sanitize",
 		"ui-bootstrap": "ui-bootstrap/ui-bootstrap-custom-tpls-0.10.0.min",
 		"cookie-monster": "cookie-monster/cookie-monster",
 		"nicedit": "nicedit/nicedit"
@@ -26,7 +29,10 @@ require.config({
 		"angular": { exports: "angular" },
 		"angular-route": { deps: ["angular"] },
 		"angular-resource": { deps: ["angular"] },
+		"angular-sanitize": { deps: ["angular"] },
 		"angular-cookies": { deps: ["angular"] },
+		"text-angular-sanitize": { deps: ["angular"] },
+		"text-angular": { deps: ["angular", "text-angular-sanitize", "ui-bootstrap"] },
 		"ui-bootstrap": { deps: ["angular"] }
 	}
 });

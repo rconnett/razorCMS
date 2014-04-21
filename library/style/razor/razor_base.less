@@ -466,8 +466,6 @@ li.dropdown
 		}
 	}
 
-	// editor stuff below this
-
 	// editable menu stuff
 	.editable-menu-link
 	{
@@ -491,42 +489,58 @@ li.dropdown
 
 			.content-block
 			{
-				margin-bottom: 10px;
-				background-color: #fff;
-				border: 1px solid #bbb;
-				opacity: 0.6;
+				margin-bottom: 20px;
+			}
 
-				.btn-toolbar
+			.content-edit
+			{
+				.ta-toolbar
 				{
-					margin: 0px 0px 2px -2px;
-					background-color: transparent;
+					margin-top: 3px;
+					margin-bottom: 3px;
 				}
 
-				&:hover, &.active { opacity: 1; }	
-				
-				.content-view
-				{
-					height: auto;
-					min-height: 50px;
-					width: 100%;
-				}
-
-				textarea
-				{
-					height: auto;
-					min-height: 150px;
-					width: 100%;
-				}
-
-				&> div
-				{
-					width: 100% !important;
-					background-color: #fff;
-
-					.nicEdit-main
+				&.disabled
+				{					
+					.ta-editor 
 					{
-						width: 99% !important;
+						border: 1px solid #ccc;
 					}
+				}
+			}
+		}
+
+		.content-edit
+		{
+			background-color: transparent;
+			
+			.ta-editor {
+				background-color: transparent;
+				min-height: 10px;
+				height: auto;
+				overflow: auto;
+				font-family: inherit;
+				font-size: 100%;
+			}
+
+			&.disabled
+			{
+				-webkit-box-shadow: none;
+				-moz-box-shadow: none;
+				-ms-box-shadow: none;
+				-o-box-shadow: none;
+				box-shadow: none;
+				
+				.ta-toolbar { display: none; }
+				.ta-editor 
+				{
+					background-color: transparent;
+					border: none;
+					-webkit-box-shadow: none;
+					-moz-box-shadow: none;
+					-ms-box-shadow: none;
+					-o-box-shadow: none;
+					box-shadow: none;
 				}
 			}
 		}
@@ -807,50 +821,4 @@ li.dropdown
 	    85% { bottom:-10px; }
 	    100% { bottom:-200px; }
 	}
-
-	// slide down animation (draw open)
-	// @keyframes draw-open 
-	// {
-	//     0% { top:-200px; }  
-	//     85% { top:-50px; }
-	//     100% { top:0px; }
-	// }
-	// @-moz-keyframes draw-open
-	// {
-	//     0% { top:-200px; }  
-	//     85% { top:-50px; }
-	//     100% { top:0px; }
-	// }
-	// @-webkit-keyframes draw-open
-	// {
-	//     0% { top:-200px; }  
-	//     85% { top:-50px; }
-	//     100% { top:0px; }
-	// }
-	// @-o-keyframes draw-open
-	// {
-	//     0% { top:-200px; }  
-	//     85% { top:-50px; }
-	//     100% { top:0px; }
-	// }
-	// @keyframes draw-open 
-	// {
-	//     0% { height:0px; }  
-	//     100% { height:400px; }
-	// }
-	// @-moz-keyframes draw-open
-	// {
-	//     0% { height:0px; }  
-	//     100% { height:400px; }
-	// }
-	// @-webkit-keyframes draw-open
-	// {
-	//     0% { height:0px; }  
-	//     100% { height:400px; }
-	// }
-	// @-o-keyframes draw-open
-	// {
-	//     0% { height:0px; }  
-	//     100% { height:400px; }
-	// }
 }

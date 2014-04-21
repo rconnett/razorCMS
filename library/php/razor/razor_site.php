@@ -85,10 +85,18 @@ class RazorSite
 <div class="content-column" ng-if="changed" ng-class="{'edit': toggle}">
     <div class="content-block" ng-class="{'active': editingThis('{$loc}{$col}' + block.content_id)}" ng-repeat="block in locations.{$loc}.{$col}">
 
-        <input ng-if="!block.extension" type="text" class="form-control" placeholder="Add Content Name" ng-show="toggle" ng-model="content[block.content_id].name"/>
-        
-        <div ng-if="!block.extension" id="view-{$loc}{$col}{{block.content_id}}" class="content-view" ng-hide="editingThis('{$loc}{$col}' + block.content_id)" ng-click="startBlockEdit('{$loc}{$col}',  block.content_id)" ng-bind-html="bindHtml(content[block.content_id].content)"></div>
-        <textarea ng-if="!block.extension" id="{$loc}{$col}{{block.content_id}}" height="800px" ng-show="editingThis('{$loc}{$col}' + block.content_id)" class="content-edit" ng-model="content[block.content_id].content" style="width:100%;"></textarea>
+        <div class="input-group">
+            <span class="input-group-btn">
+                <button class="btn btn-default" ng-click="locations.{$loc}.{$col}.splice(\$index - 1, 0, locations.{$loc}.{$col}.splice(\$index, 1)[0])" ng-show="toggle"><i class="fa fa-arrow-up"></i></button>
+                <button class="btn btn-default" ng-click="locations.{$loc}.{$col}.splice(\$index + 1, 0, locations.{$loc}.{$col}.splice(\$index, 1)[0])" ng-show="toggle"><i class="fa fa-arrow-down"></i></button>
+            </span>
+            <input ng-if="!block.extension" type="text" class="form-control" placeholder="Add Content Name" ng-show="toggle" ng-model="content[block.content_id].name"/>
+            <span class="input-group-btn">
+                <button class="btn btn-warning" ng-show="toggle" ng-click="removeContent('{$loc}', '{$col}', \$index)"><i class="fa fa-times"></i></button>
+            </span>
+        </div>
+
+        <div text-angular name="{$loc}{$col}{{block.content_id}}" ng-if="!block.extension" ta-disabled="!editingThis('{$loc}{$col}' + block.content_id)" class="content-edit" ng-model="content[block.content_id].content" ng-click="startBlockEdit('{$loc}{$col}',  block.content_id)" ></div>
 
         <div class="content-settings" ng-if="block.extension">
             <form class="form-horizontal" role="form" name="form" novalidate>
@@ -184,16 +192,6 @@ class RazorSite
                     </div>
                 </div>
             </form>      
-        </div>
-        
-        <div class="btn-toolbar" role="toolbar">
-            <div class="btn-group">
-                <button class="btn btn-default" ng-click="locations.{$loc}.{$col}.splice(\$index - 1, 0, locations.{$loc}.{$col}.splice(\$index, 1)[0])" ng-show="toggle"><i class="fa fa-arrow-up"></i></button>
-                <button class="btn btn-default" ng-click="locations.{$loc}.{$col}.splice(\$index + 1, 0, locations.{$loc}.{$col}.splice(\$index, 1)[0])" ng-show="toggle"><i class="fa fa-arrow-down"></i></button>
-            </div>
-            <div class="btn-group pull-right">
-                <button class="btn btn-warning" ng-show="toggle" ng-click="removeContent('{$loc}', '{$col}', \$index)"><i class="fa fa-times"></i></button>
-            </div>
         </div>
     </div>
     <button class="btn btn-default" ng-show="toggle" ng-click="addNewBlock('{$loc}', '{$col}')"><i class="fa fa-plus"></i></button>
