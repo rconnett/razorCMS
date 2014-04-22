@@ -8,7 +8,7 @@
  * @created Feb 2014
  */
  
-define(["angular", "cookie-monster", "nicedit", "text-angular-sanitize", "text-angular", "ui-bootstrap"], function(angular, monster, nicedit)
+define(["angular", "cookie-monster", "text-angular-sanitize", "text-angular", "ui-bootstrap"], function(angular, monster)
 {
     angular.module("razor.admin.edit", ['ui.bootstrap', 'textAngular'])
 
