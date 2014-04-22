@@ -8,15 +8,14 @@
  * @created Feb 2014
  */
  
-define(["angular", "cookie-monster", "nicedit", "ui-bootstrap"], function(angular, monster, nicedit)
+define(["angular", "cookie-monster", "nicedit", "text-angular-sanitize", "text-angular", "ui-bootstrap"], function(angular, monster, nicedit)
 {
-    angular.module("razor.admin.edit", ['ui.bootstrap'])
+    angular.module("razor.admin.edit", ['ui.bootstrap', 'textAngular'])
 
     .controller("edit", function($scope, rars, $modal, $sce, $timeout, $rootScope, $http)
     {
         $scope.user = null;
-        $scope.editorInstance = null;
-        $scope.editing = {"handle": null, "id": null, "code": null};
+        $scope.editing = {"handle": null, "id": null};
         $scope.toggle = true;
         $scope.changed = true;
         $scope.clickAndSort = {};
@@ -118,18 +117,15 @@ define(["angular", "cookie-monster", "nicedit", "ui-bootstrap"], function(angula
 
         $scope.stopEdit = function()
         {
-            // stop any edits
-            $scope.stopBlockEdit();
-
+            // clear edit stuff
+            $scope.editing = {"handle": null, "id": null};
             $scope.toggle = false; 
         };
 
         $scope.saveEdit = function()
         {
-            // stop any edits
-            $scope.stopBlockEdit();
-
-            $scope.savedEditContent = false;
+            // clear edit stuff
+            $scope.editing = {"handle": null, "id": null};
             $scope.savedEditContent = false;
 
             // save all content for page
@@ -164,35 +160,11 @@ define(["angular", "cookie-monster", "nicedit", "ui-bootstrap"], function(angula
         {
             if (!$scope.toggle) return;
 
-            // stop any edits
-            $scope.stopBlockEdit();
-
-            // load editor
-            $scope.editing.handle = locCol + content_id;
-            $scope.editing.id = content_id;
-
-            $scope.editorInstance = new nicEditor({fullPanel : true, uploadURI : RAZOR_BASE_URL + "rars/file/image", authToken : monster.get("token")}).panelInstance($scope.editing.handle);
-            // hide text-area
-            angular.element(document.querySelector("#" + $scope.editing.handle)).addClass("hide");
-        };
-
-        $scope.stopBlockEdit = function()
-        {
-            if (!!$scope.editorInstance && !!$scope.editorInstance.instanceById($scope.editing.handle)) 
-            {
-                // copy data and end editor
-                $scope.content[$scope.editing.id].content = $scope.editorInstance.instanceById($scope.editing.handle).getContent();
-                
-                // end editor
-                $scope.editorInstance.removeInstance($scope.editing.handle);
-
-                // show text-area
-                angular.element(document.querySelector("#" + $scope.editing.handle)).removeClass("hide");
-            }
-
             // clear edit stuff
-            $scope.editing = {"handle": null, "id": null, "code": null};
-            $scope.editorInstance = null;
+            $scope.editing = {
+                "handle": locCol + content_id, 
+                "id": content_id,
+            };
         };
 
         $scope.editingThis = function(handle)
