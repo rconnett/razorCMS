@@ -18,8 +18,8 @@ require.config({
 		"angular-resource": "angular/angular-resource.min",
 		"angular-sanitize": "angular/angular-sanitize.min",
 		"angular-cookies": "angular/angular-cookies.min",
-		"text-angular": "text-angular/text-angular",
-		"text-angular-sanitize": "text-angular/text-angular-sanitize",
+		"text-angular": "text-angular/text-angular-custom",
+		"text-angular-sanitize": "text-angular/text-angular-sanitize-custom",
 		"ui-bootstrap": "ui-bootstrap/ui-bootstrap-custom-tpls-0.10.0.min",
 		"cookie-monster": "cookie-monster/cookie-monster",
 		"nicedit": "nicedit/nicedit"

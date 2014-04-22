@@ -135,6 +135,26 @@ li.dropdown
 	}
 }
 
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 999px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+
 .ie8
 {
 	&.ie8-admin
@@ -489,15 +509,16 @@ li.dropdown
 
 			.content-block
 			{
-				margin-bottom: 20px;
+				margin-bottom: 10px;
 			}
 
 			.content-edit
 			{
+				padding-top: 3px;
+				
 				.ta-toolbar
 				{
-					margin-top: 3px;
-					margin-bottom: 3px;
+					.btn-group { margin-bottom: 3px };
 				}
 
 				&.disabled
@@ -516,12 +537,14 @@ li.dropdown
 			
 			.ta-editor {
 				background-color: transparent;
-				min-height: 10px;
+				min-height: 50px;
 				height: auto;
 				overflow: auto;
 				font-family: inherit;
 				font-size: 100%;
 			}
+
+			.ta-html { height: 250px; }
 
 			&.disabled
 			{
