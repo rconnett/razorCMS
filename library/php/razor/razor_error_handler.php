@@ -112,7 +112,8 @@ class RazorErrorHandler {
         // display error on screen
         $this->display_error($error);
 
-        return true;
+        if (class_exists("RazorAPI")) RazorAPI::response(null, null, 500);
+        else return true;
     }
 
 
