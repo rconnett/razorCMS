@@ -62,6 +62,10 @@ class FileImage extends RazorAPI
     {
         if ((int) $this->check_access() < 10) $this->response(null, null, 401);
 
+        // check if folders exist
+        if (!is_dir(RAZOR_BASE_PATH."storage/files")) mkdir(RAZOR_BASE_PATH."storage/files");
+        if (!is_dir(RAZOR_BASE_PATH."storage/files/images")) mkdir(RAZOR_BASE_PATH."storage/files/images");
+
         $files = array();
         foreach ($_FILES as $file)
         {
