@@ -1300,7 +1300,15 @@ li.dropdown:hover .dropdown-menu{display:block !important}
 .click-and-sort .click-and-sort-sub.place-holder a{border:2px dashed #bec9ff;opacity:.4}
 .click-and-sort .click-and-sort-sub.place-holder:hover a{opacity:.7}
 .click-and-sort .add-new-menu{border:2px dashed transparent}.click-and-sort .add-new-menu a:hover{border:2px dashed transparent}
-.razor-admin .template-wrapper,.razor-access .template-wrapper{padding-top:60px}
+.upgrade-message{font-size:18px}
+.progress-box{margin:10px 0 10px 0}.progress-box .progress-ring{margin:2px;border:10px solid #ccc;display:inline-block}.progress-box .progress-ring.ring-1{width:80px;height:80px;border-radius:40px;font-size:40px;text-align:center;color:#277baa}
+.progress-box .progress-ring.ring-2{width:104px;height:104px;border-radius:52px}
+.progress-box .progress-ring.ring-3{width:128px;height:128px;border-radius:64px}
+.progress-box .progress-ring.ring-4{width:152px;height:152px;border-radius:76px}
+.progress-box .progress-ring.ring-5{width:176px;height:176px;border-radius:88px}
+.progress-box .progress-ring.ring-pulse{-webkit-animation:ring-pulse 1s ease-in-out;-webkit-animation-iteration-count:infinite}
+.progress-box .progress-ring.ring-active{border-color:#409ccf}
+@-webkit-keyframes ring-pulse{0%{border-color:#ccc} 50%{border-color:#409ccf} 100%{border-color:#ccc}}.razor-admin .template-wrapper,.razor-access .template-wrapper{padding-top:60px}
 .razor-admin .version-tag,.razor-access .version-tag{position:fixed;bottom:0;right:0;color:#fff;padding:3px;font-size:12px}
 .razor-admin .razor-admin-panel,.razor-access .razor-admin-panel{margin-bottom:5px;background-color:rgba(255,255,255,0.8);box-shadow:0 2px 2px -2px rgba(0,0,0,0.3);border-bottom:1px solid #ddd;position:fixed;width:100%;min-height:58px;z-index:100}.razor-admin .razor-admin-panel .login-form,.razor-access .razor-admin-panel .login-form{padding-top:10px;padding-bottom:10px}.razor-admin .razor-admin-panel .login-form .error-message,.razor-access .razor-admin-panel .login-form .error-message{padding:6px}
 .razor-admin .razor-admin-panel .account-details,.razor-access .razor-admin-panel .account-details{padding:0 0 5px 0}.razor-admin .razor-admin-panel .account-details span,.razor-access .razor-admin-panel .account-details span{display:block;font-size:12px}.razor-admin .razor-admin-panel .account-details span.name,.razor-access .razor-admin-panel .account-details span.name{font-weight:bold;font-size:25px}

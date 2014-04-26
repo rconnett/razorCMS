@@ -295,6 +295,72 @@ li.dropdown
 	}
 }
 
+.upgrade-message { font-size: 18px; }
+
+.progress-box
+{
+	margin: 10px 0 10px 0;
+
+	.progress-ring
+	{
+		margin: 2px;
+		border: 10px solid #ccc;
+		display: inline-block;
+
+		&.ring-1
+		{
+			width: 80px;
+			height: 80px;
+			border-radius: 40px;
+			font-size: 40px;
+			text-align: center;
+			color: #277BAA;
+		}
+
+		&.ring-2
+		{
+			width: 104px;
+			height: 104px;
+			border-radius: 52px;
+		}
+
+		&.ring-3
+		{
+			width: 128px;
+			height: 128px;
+			border-radius: 64px;
+		}
+
+		&.ring-4
+		{
+			width: 152px;
+			height: 152px;
+			border-radius: 76px;
+		}
+
+		&.ring-5
+		{
+			width: 176px;
+			height: 176px;
+			border-radius: 88px;
+		}
+
+		&.ring-pulse
+		{
+		    -webkit-animation: ring-pulse 1s ease-in-out;
+		    -webkit-animation-iteration-count: infinite; 
+		}
+
+		&.ring-active { border-color: #409CCF; }
+	}
+}
+
+@-webkit-keyframes ring-pulse 
+{
+    0% { border-color: #ccc; }
+    50% { border-color: #409CCF; }
+    100% { border-color: #ccc; }
+}
 
 // admin specific
 .razor-admin, .razor-access
