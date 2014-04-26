@@ -203,6 +203,7 @@ li.dropdown
 	z-index: 10000;
 
     animation: slide-up-down 5s forwards;
+    -ms-animation: slide-up-down 5s forwards;
     -moz-animation: slide-up-down 5s forwards;
     -webkit-animation: slide-up-down 5s forwards;
     -o-animation: slide-up-down 5s forwards;
@@ -347,6 +348,14 @@ li.dropdown
 
 		&.ring-pulse
 		{
+		    animation: ring-pulse 1s ease-in-out;
+		    animation-iteration-count: infinite; 
+		    -ms-animation: ring-pulse 1s ease-in-out;
+		    -ms-animation-iteration-count: infinite; 
+		    -moz-animation: ring-pulse 1s ease-in-out;
+		    -moz-animation-iteration-count: infinite; 
+		    -o-animation: ring-pulse 1s ease-in-out;
+		    -o-animation-iteration-count: infinite; 
 		    -webkit-animation: ring-pulse 1s ease-in-out;
 		    -webkit-animation-iteration-count: infinite; 
 		}
@@ -355,6 +364,34 @@ li.dropdown
 	}
 }
 
+
+@keyframes ring-pulse 
+{
+    0% { border-color: #ccc; }
+    50% { border-color: #409CCF; }
+    100% { border-color: #ccc; }
+}
+
+@-ms-keyframes ring-pulse 
+{
+    0% { border-color: #ccc; }
+    50% { border-color: #409CCF; }
+    100% { border-color: #ccc; }
+}
+
+@-moz-keyframes ring-pulse 
+{
+    0% { border-color: #ccc; }
+    50% { border-color: #409CCF; }
+    100% { border-color: #ccc; }
+}
+
+@-o-keyframes ring-pulse 
+{
+    0% { border-color: #ccc; }
+    50% { border-color: #409CCF; }
+    100% { border-color: #ccc; }
+}
 @-webkit-keyframes ring-pulse 
 {
     0% { border-color: #ccc; }
@@ -883,6 +920,13 @@ li.dropdown
 
 	// slide up then down animation (mainly for notifications)
 	@keyframes slide-up-down 
+	{
+	    0% { bottom:-200px; }  
+	    5% { bottom:-10px; }   
+	    85% { bottom:-10px; }
+	    100% { bottom:-200px; }
+	}
+	@-ms-keyframes slide-up-down
 	{
 	    0% { bottom:-200px; }  
 	    5% { bottom:-10px; }   

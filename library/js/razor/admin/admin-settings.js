@@ -149,6 +149,7 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
                 {
                     $scope.stage = 4;
                     $scope.upgrading = 4;
+                    $scope.completeUpgrade();
                 }
             }, 5000);
 
@@ -159,6 +160,7 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
                 {
                     $scope.stage = 4;
                     $scope.upgrading = 4;
+                    $scope.completeUpgrade();
                 }
             }).error(function(data)
             {
@@ -166,15 +168,9 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
             });
         };
     
-        $scope.checkSystem = function()
-        {
-            $scope.upgrading = 5;
-            window.open(RAZOR_BASE_URL, "_blank");
-        };
-    
         $scope.completeUpgrade = function()
         {
-            $scope.stage = 5;
+            $scope.stage = 4;
             $scope.upgrading = 6;
 
             // use timer to slow down
@@ -185,6 +181,7 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
                 timed = true;
                 if (finished)
                 {
+                    $scope.stage = 5;
                     $scope.reloadSystem();
                 }
             }, 5000);
@@ -194,6 +191,7 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
                 finished = true;
                 if (time)
                 {
+                    $scope.stage = 5;
                     $scope.reloadSystem();
                 }
             }).error(function(data)
@@ -205,7 +203,7 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
         $scope.reloadSystem = function()
         {
             $scope.upgrading = 7;
-            $scope.refreshSeconds = 10;
+            $scope.refreshSeconds = 20;
             $scope.clrInt = setInterval(function()
             {
                 // decrease timer
