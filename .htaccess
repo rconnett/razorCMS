@@ -19,13 +19,11 @@ deny from all
 ForceType application/x-httpd-php
 </Files>
 
-DirectoryIndex index.html index.htm index.php index default.html default.htm default.php
+DirectoryIndex index.html index.htm index.php index default.html default.htm default.php default
 
 RewriteEngine On
-RewriteRule ^sitemap_index.xml ars/seo/sitemap [L,QSA]
-RewriteRule ^sitemap([0-9]*).xml ars/seo/sitemap/$1 [L,QSA]
+RewriteRule ^sitemap_index.xml rars/seo/sitemap [L,QSA]
+RewriteRule ^sitemap([0-9]*).xml rars/seo/sitemap/$1 [L,QSA]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} (html|/)
-RewriteCond %{REQUEST_URI} !/subfolder
 RewriteRule ^(.*)$ index.php?path=$1 [L,QSA]
