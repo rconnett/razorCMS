@@ -5,7 +5,7 @@
 				<div class="form-group">
 					<label for="system-version" class="col-sm-3 control-label">System Version</label>
 					<div class="col-sm-7">
-						<p class="system-version" ng-init="checkVersion()">
+						<span class="system-version" ng-init="checkVersion()">
 							<span>{{system.version}}.{{system.milestone}}.{{system.release}}</span>
 							<span class="alert alert-info" ng-hide="upgrade || noUpgrade || error">
 								<i class="fa fa-refresh"></i>
@@ -17,13 +17,14 @@
 							</span>
 							<span class="alert alert-danger" ng-show="upgrade">
 								<i class="fa fa-times"></i>
-								You need to upgrade, visit <a href="http://www.razorcms.co.uk">www.razorcms.co.uk</a> to upgrade to {{current.version}}.{{current.milestone}}.{{current.release}}.
+								Please upgrade to {{current.version}}.{{current.milestone}}.{{current.release}}.
 							</span>
 							<span class="alert alert-info" ng-show="error">
 								<i class="fa fa-exclamation-triangle"></i>
 								Cannot contact server, try again later.
 							</span>
-						</p>
+						</span>
+						<button class="btn btn-warning pull-right" ng-click="upgradeVersion()" ng-show="upgrade"><i class="fa fa-gears"></i> Upgrade</button>
 					</div>
 					<div class="col-sm-2 error-block" ng-show="form.name.$dirty && form.name.$invalid">
 						<span class="alert alert-danger alert-form" ng-show="form.name.$error.required">Required</span>
