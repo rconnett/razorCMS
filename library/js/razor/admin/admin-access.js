@@ -22,6 +22,12 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 
         $scope.site = null;
         $scope.page = null;
+        $scope.system = null;
+        
+        $scope.latestVersion = null;
+        $scope.upgrade = null;
+        $scope.noUpgrade = null;
+        $scope.versionError = null;
 
         $scope.init = function()
         {
@@ -151,6 +157,19 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
             rars.get("system/data", "all", monster.get("token")).success(function(data)
             {
                 $scope.system = data.system;
+
+                rars.get("tools/version", "current").success(function(data)
+                {
+                    $scope.latestVersion = data;
+
+                    if (data.version > $scope.system.version) $scope.upgrade = true;
+                    else if (data.milestone > $scope.system.milestone) $scope.upgrade = true;
+                    else if (data.release > $scope.system.release) $scope.upgrade = true;
+                    else $scope.noUpgrade = true;
+                }).error(function(data)
+                {
+                    $scope.versionError = true;
+                });
             });
 
             // get site data

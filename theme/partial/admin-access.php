@@ -132,6 +132,7 @@
 										<li ng-class="{'active':activePage == 'settings'}">
 											<a href="#settings">
 												<i class="fa fa-cog"></i><span class="mobile-hide-inline">  Settings</span>
+												<i class="fa fa-exclamation-triangle" ng-show="upgrade" style="color: #f00;"></i>
 											</a>
 										</li>
 									</ul>

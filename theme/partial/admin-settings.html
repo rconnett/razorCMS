@@ -5,7 +5,7 @@
 				<div class="form-group">
 					<label for="system-version" class="col-sm-3 control-label">System Version</label>
 					<div class="col-sm-7">
-						<span class="system-version" ng-init="checkVersion()">
+						<span class="system-version">
 							<span>{{system.version}}.{{system.milestone}}.{{system.release}}</span>
 							<span class="alert alert-info" ng-hide="upgrade || noUpgrade || error">
 								<i class="fa fa-refresh"></i>
@@ -17,7 +17,7 @@
 							</span>
 							<span class="alert alert-danger" ng-show="upgrade">
 								<i class="fa fa-times"></i>
-								Please upgrade to {{current.version}}.{{current.milestone}}.{{current.release}}.
+								Please upgrade to {{latestVersion.version}}.{{latestVersion.milestone}}.{{latestVersion.release}}.
 							</span>
 							<span class="alert alert-info" ng-show="error">
 								<i class="fa fa-exclamation-triangle"></i>

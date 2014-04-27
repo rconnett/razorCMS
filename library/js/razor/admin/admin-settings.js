@@ -14,7 +14,7 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 
     .controller("settings", function($scope, rars, $rootScope, $http, $modal)
     {
-        $scope.current = null;
+        // $scope.current = null;
 
        	$scope.save = function()
         {
@@ -30,26 +30,6 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 	        	$scope.processing = false; 
 	        });
         };
-
-        $scope.checkVersion = function()
-        {
-        	$scope.upgrade = null;
-        	$scope.noUpgrade = null;
-        	$scope.error = null;
-
-	        rars.get("tools/version", "current").success(function(data)
-	        {
-	        	$scope.current = data;
-
-	        	if (data.version > $scope.system.version) $scope.upgrade = true;
-	        	else if (data.milestone > $scope.system.milestone) $scope.upgrade = true;
-	        	else if (data.release > $scope.system.release) $scope.upgrade = true;
-	        	else $scope.noUpgrade = true;
-	        }).error(function(data)
-	        {
-	        	$scope.error = true;
-	        });
-	    };
 
         $scope.upgradeVersion = function()
         {            
