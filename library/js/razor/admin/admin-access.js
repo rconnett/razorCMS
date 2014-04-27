@@ -162,10 +162,12 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
                 {
                     $scope.latestVersion = data;
 
-                    if (data.version > $scope.system.version) $scope.upgrade = true;
-                    else if (data.milestone > $scope.system.milestone) $scope.upgrade = true;
-                    else if (data.release > $scope.system.release) $scope.upgrade = true;
+                    var latestBuild = (data.version * 1000000) + (data.milestone * 1000) + data.release;
+                    var systemBuild = ($scope.system.version * 1000000) + ($scope.system.milestone * 1000) + $scope.system.release;
+
+                    if (latestBuild > systemBuild) $scope.upgrade = true;
                     else $scope.noUpgrade = true;
+
                 }).error(function(data)
                 {
                     $scope.versionError = true;
