@@ -39,7 +39,7 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
                 controller: "upgradeVersionModal",
                 resolve: {
                     sys: function(){ return $scope.system; },
-                    cur: function(){ return $scope.current; }
+                    cur: function(){ return $scope.latestVersion; }
                 }
             }).result.then(function(response)
             {
