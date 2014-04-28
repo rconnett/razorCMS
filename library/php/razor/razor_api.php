@@ -35,8 +35,9 @@ class RazorAPI
         }
         elseif (is_string($data))
         {
-            if (defined("RARS_CLEAN_DATA_ALLOWED_TAGS")) return addcslashes(strip_tags($data, RARS_CLEAN_DATA_ALLOWED_TAGS), "\\&\n\r");
-            else return addcslashes($data, "\\&\n\r");            
+            // we do not have to do much checking here, the db class protects itself against harmfull chars
+            if (defined("RARS_CLEAN_DATA_ALLOWED_TAGS")) return strip_tags($data, RARS_CLEAN_DATA_ALLOWED_TAGS);
+            else return $data;            
         }
         elseif (is_bool($data) || is_int($data) || is_float($data)) return $data;
         else return null;
