@@ -5,7 +5,8 @@
 	<p class="alert alert-info text-center" ng-hide="upgrading"><i class="fa fa-exclamation-circle"></i> Please note, any customisations to system code, will be overwritten.</p>
 	<div class="text-center">
 		<button class="btn btn-lg btn-primary" ng-hide="upgrading" ng-click="downloadVersion()"><i class="fa fa-gears"></i> Start Upgrade</button>
-		<a ng-href="{{backupLink}}" class="btn btn-default" ng-show="upgrading >= 3" ng-disable="!backupLink"><i class="fa fa-download"></i> Download System Backup</a>
+		<a ng-href="{{backupLink}}" class="btn btn-default" ng-show="backupAvailable" ng-disable="!backupLink"><i class="fa fa-download"></i> Download System Backup</a>
+		<button class="btn btn-primary" ng-show="backupAvailable" ng-click="continueUpgrade()"><i class="fa fa-check"></i> Continue</button>
 		<a ng-href="{{razorBaseUrl()}}" class="btn btn-success" ng-show="upgrading == 7"><i class="fa fa-refresh"></i> Upgrade Complete, Refresh in <span class="seconds-counter">20</span> sec</a>
 	</div>
 	<div class="text-center progress-box" ng-show="stage < 6">
@@ -29,7 +30,7 @@
 		<i>Upgrading to version {{getVersion().cur.version}}.{{getVersion().cur.milestone}}.{{getVersion().cur.release}}.</i>
 	</p>
 	<p ng-show="upgrading == 4" class="upgrade-message text-center">
-		<i><strong>Waiting for user to respond</strong>, please click the button to check your site before continuing, then either revert the upgrade or finish.</i>
+		<i>Download the backup now if you wish to keep this, then click continue.</i>
 	</p>
 	<p ng-show="upgrading == 5" class="upgrade-message text-center">
 		<i>Finish upgrade or revert changes?</i>

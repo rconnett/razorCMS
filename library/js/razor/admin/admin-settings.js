@@ -100,19 +100,25 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
             $timeout(function()
             {
                 timed = true;
-                if (finished) $scope.upgradeSystem();
+                if (finished) $scope.backupAvailable = true;
             }, 5000);
 
             rars.get("file/backup", "full", monster.get("token")).success(function(data)
             {
                 $scope.backupLink = data.backup;
                 finished = true;
-                if (timed) $scope.upgradeSystem();
+                if (timed) $scope.backupAvailable = true;
             }).error(function(data)
             {
                 $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Error creating backup."});
             });
         };
+
+        $scope.continueUpgrade = function()
+        {
+            $scope.backupAvailable = false; 
+            $scope.upgradeSystem();
+        }
     
         $scope.upgradeSystem = function()
         {
