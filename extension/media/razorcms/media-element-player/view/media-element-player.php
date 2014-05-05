@@ -2,7 +2,7 @@
 
 <?php
 	// restrict file searching to specific files
-	$media_files = array(".mp4", ".mp3", ".ogg", ".ogv", ".webm");
+	$media_files = array("mp4", "mp3", "ogg", "ogv", "webm", "m4a");
 	
 	// grab settings for this content area and from that, find folder to use
 	$content_ext_settings = json_decode($c_data["json_settings"]);
@@ -23,10 +23,13 @@
 		if (isset($content_ext_settings->media_type) && in_array($content_ext_settings->media_type, $media_files))
 		{
 			$type = $content_ext_settings->media_type;
-			if ($type == ".ogv" || $type == ".mp4" || $type == ".webm") $video = true;
 		}
-		if (empty($type) && in_array(strtolower(substr($content_ext_settings->track_name, -4)), $media_files)) $type = strtolower(substr($content_ext_settings->track_name, -4));
 
+		if (empty($type) && isset($content_ext_settings->track_name))
+		{
+			$path_parts = explode(".", $content_ext_settings->track_name);
+			if (in_array(strtolower(end($path_parts)), $media_files)) $type = strtolower(end($path_parts));
+		}
 
 		if (isset($content_ext_settings->track_name))
 		{
@@ -47,7 +50,8 @@
 		// remove anything not an image file ext
 		foreach ($files as $key => $file)
 		{
-			if (!in_array(strtolower(substr($file, -4)), $media_files) || substr($file, -4) != (!empty($type) ? $type : ".mp3")) continue;
+			$file_parts = explode(".", $file);
+			if (!in_array(strtolower(end($file_parts)), $media_files) || end($file_parts) != (!empty($type) ? $type : "mp3")) continue;
 
 			$playlist[$key] = array(
 				"url" => RAZOR_BASE_URL."storage/files/razorcms/media-element-player/{$content_ext_settings->playlist_name}/{$file}",
@@ -58,7 +62,14 @@
 		$playlist = array_values($playlist);
 
 		// one final type check
-		if (empty($type) && in_array(strtolower(substr($playlist[0]["name"], -4)), $media_files)) $type = strtolower(substr($playlist[0]["name"], -4));
+		if (empty($type) && isset($playlist[0]["name"])) 
+		{
+			$path_parts = explode(".", $content_ext_settings->track_name);
+			if (in_array(strtolower(end($playlist[0]["name"])), $media_files)) $type = strtolower(end($playlist[0]["name"]));
+		}
+
+		// detect element to show
+		if (!empty($type)) if ($type == "ogv" || $type == "mp4" || $type == "webm") $video = true;
 	}
 
 	sort($playlist);
