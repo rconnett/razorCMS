@@ -38,7 +38,7 @@
 				<div class="form-group">
 					<label for="page-keywords" class="col-sm-3 control-label">Keywords</label>
 					<div class="col-sm-7">
-						<input id="page-keywords" name="pageKeywords" class="form-control" type="text" ng-model="page.keywords" placeholder="Comma seperated words (search engines)" ng-pattern="/^[a-zA-Z-,]+$/">
+						<input id="page-keywords" name="pageKeywords" class="form-control" type="text" ng-model="page.keywords" placeholder="Comma seperated words (search engines)">
 					</div>
 					<div class="col-sm-2 error-block" ng-show="form.pageKeywords.$dirty && form.pageKeywords.$invalid">
 						<span class="alert alert-danger alert-form" ng-show="form.pageKeywords.$error.pattern">Invalid</span>
