@@ -1234,6 +1234,7 @@ button.close{padding:0;cursor:pointer;background:transparent;border:0;-webkit-ap
 .nav,.pagination,.carousel,.panel-title a{cursor:pointer}
 *,h1,h2,h3,h4,h5,h6{font-family:'Open Sans',Arial}
 .ng-cloak{display:none}
+.pull-center{display:block;margin-left:auto;margin-right:auto}
 .mobile-show-block{display:block}
 .mobile-show-inline-block{display:inline-block}
 .mobile-show-inline{display:inline}
