@@ -20,10 +20,11 @@ ForceType application/x-httpd-php
 </Files>
 
 AddType video/ogv .ogv
-AddType video/ogg .ogg
 AddType video/mp4 .mp4
-AddType audio/mp3 .mp3
 AddType video/webm .webm
+AddType audio/ogg .ogg
+AddType audio/mp3 .mp3
+AddType audio/m4a .m4a
 AddType image/svg+xml svg
 
 DirectoryIndex index.html index.htm index.php index default.html default.htm default.php default
