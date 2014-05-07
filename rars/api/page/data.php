@@ -30,7 +30,7 @@ class PageData extends RazorAPI
 
         // check link unique
         $options = array("amount" => 1);
-        $search = array("column" => "link", "value" => $data["link"]);
+        $search = array("column" => "link", "value" => (isset($data["link"]) ? $data["link"] : ""));
         $count = $db->get_rows($search, $options);
         if ($count["count"] > 0) $this->response(array("error" => "duplicate link found", "code" => 101), 'json', 409);
 

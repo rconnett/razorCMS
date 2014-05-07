@@ -255,11 +255,12 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
                 $rootScope.$broadcast("global-notification", {"type": "success", "text": "New page saved successfully."});
                 $scope.processing = false;
                 $scope.completed = true;
-            }).error(function()
+            }).error(function(data)
             {
-                if (!data.code) $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Could not save page, please try again later."});
-                else if (data.code == 101) $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Link is not unique, already being used by another page."});
+                if (!data.response.code) $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Could not save page, please try again later."});
+                else if (data.response.code == 101) $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Link is not unique, already being used by another page."});
                 $scope.processing = false;
+                console.debug(1212);
             }); 
         };  
 
