@@ -42,7 +42,7 @@ td,th{padding:0}
 @media print{*{text-shadow:none !important;color:#000 !important;background:transparent !important;box-shadow:none !important} a,a:visited{text-decoration:underline} a[href]:after{content:" (" attr(href) ")"} abbr[title]:after{content:" (" attr(title) ")"} a[href^="javascript:"]:after,a[href^="#"]:after{content:""} pre,blockquote{border:1px solid #999;page-break-inside:avoid} thead{display:table-header-group} tr,img{page-break-inside:avoid} img{max-width:100% !important} p,h2,h3{orphans:3;widows:3} h2,h3{page-break-after:avoid} select{background:#fff !important} .navbar{display:none} .table td,.table th{background-color:#fff !important} .btn>.caret,.dropup>.btn>.caret{border-top-color:#000 !important} .label{border:1px solid #000} .table{border-collapse:collapse !important} .table-bordered th,.table-bordered td{border:1px solid #ddd !important}}*{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
 *:before,*:after{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
 html{font-size:62.5%;-webkit-tap-highlight-color:rgba(0,0,0,0)}
-body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:14px;line-height:1.428571429;color:#333;background-color:#fff}
+body{font-family:'Open Sans',Arial;font-size:14px;line-height:1.428571429;color:#333;background-color:#fff}
 input,button,select,textarea{font-family:inherit;font-size:inherit;line-height:inherit}
 a{color:#428bca;text-decoration:none}a:hover,a:focus{color:#2a6496;text-decoration:underline}
 a:focus{outline:thin dotted;outline:5px auto -webkit-focus-ring-color;outline-offset:-2px}
@@ -54,7 +54,7 @@ img{vertical-align:middle}
 .img-circle{border-radius:50%}
 hr{margin-top:20px;margin-bottom:20px;border:0;border-top:1px solid #eee}
 .sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);border:0}
-h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6{font-family:inherit;font-weight:500;line-height:1.1;color:inherit}h1 small,h2 small,h3 small,h4 small,h5 small,h6 small,.h1 small,.h2 small,.h3 small,.h4 small,.h5 small,.h6 small,h1 .small,h2 .small,h3 .small,h4 .small,h5 .small,h6 .small,.h1 .small,.h2 .small,.h3 .small,.h4 .small,.h5 .small,.h6 .small{font-weight:normal;line-height:1;color:#999}
+h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6{font-family:'Open Sans',Arial;font-weight:500;line-height:1.1;color:inherit}h1 small,h2 small,h3 small,h4 small,h5 small,h6 small,.h1 small,.h2 small,.h3 small,.h4 small,.h5 small,.h6 small,h1 .small,h2 .small,h3 .small,h4 .small,h5 .small,h6 .small,.h1 .small,.h2 .small,.h3 .small,.h4 .small,.h5 .small,.h6 .small{font-weight:normal;line-height:1;color:#999}
 h1,.h1,h2,.h2,h3,.h3{margin-top:20px;margin-bottom:10px}h1 small,.h1 small,h2 small,.h2 small,h3 small,.h3 small,h1 .small,.h1 .small,h2 .small,.h2 .small,h3 .small,.h3 .small{font-size:65%}
 h4,.h4,h5,.h5,h6,.h6{margin-top:10px;margin-bottom:10px}h4 small,.h4 small,h5 small,.h5 small,h6 small,.h6 small,h4 .small,.h4 .small,h5 .small,.h5 .small,h6 .small,.h6 .small{font-size:75%}
 h1,.h1{font-size:36px}
@@ -1232,7 +1232,8 @@ button.close{padding:0;cursor:pointer;background:transparent;border:0;-webkit-ap
 .fa-turkish-lira:before,.fa-try:before{content:"\f195"}
 .fa-plus-square-o:before{content:"\f196"}
 .nav,.pagination,.carousel,.panel-title a{cursor:pointer}
-*,h1,h2,h3,h4,h5,h6{font-family:'Open Sans',Arial}
+*{font-family:'Open Sans',Arial}
+h1,h2,h3,h4,h5,h6{font-family:'Open Sans',Arial}
 .ng-cloak{display:none}
 .pull-center{display:block;margin-left:auto;margin-right:auto}
 .mobile-show-block{display:block}
@@ -1249,42 +1250,42 @@ button.close{padding:0;cursor:pointer;background:transparent;border:0;-webkit-ap
 @media (min-width:830px){.mobile-show-block,.mobile-show-inline-block,.mobile-show-inline{display:none} .mobile-hide-block{display:block} .mobile-hide-inline-block{display:inline-block} .mobile-hide-inline{display:inline}}li.dropdown .dropdown-menu{margin:0}
 li.dropdown:hover .dropdown-menu{display:block !important}
 .razor-logo.razor-logo-block{display:inline-block}
-.razor-logo.razor-logo-600{min-height:600px;min-width:600px}.razor-logo.razor-logo-600.razor-logo-black{background:url(../../images/blade-black-600.png) center no-repeat}
-.razor-logo.razor-logo-600.razor-logo-green{background:url(../../images/blade-dark-green-600.png) center no-repeat}
-.razor-logo.razor-logo-600.razor-logo-white{background:url(../../images/blade-white-600.png) center no-repeat}
-.razor-logo.razor-logo-600.razor-logo-black-circle{background:url(../../images/blade-black-600-circle.png) center no-repeat}
-.razor-logo.razor-logo-600.razor-logo-green-circle{background:url(../../images/blade-dark-green-600-circle.png) center no-repeat}
-.razor-logo.razor-logo-600.razor-logo-white-circle{background:url(../../images/blade-white-600-circle.png) center no-repeat}
-.razor-logo.razor-logo-400{min-height:400px;min-width:400px}.razor-logo.razor-logo-400.razor-logo-black{background:url(../../images/blade-black-400.png) center no-repeat}
-.razor-logo.razor-logo-400.razor-logo-green{background:url(../../images/blade-dark-green-400.png) center no-repeat}
-.razor-logo.razor-logo-400.razor-logo-white{background:url(../../images/blade-white-400.png) center no-repeat}
-.razor-logo.razor-logo-400.razor-logo-black-circle{background:url(../../images/blade-black-400-circle.png) center no-repeat}
-.razor-logo.razor-logo-400.razor-logo-green-circle{background:url(../../images/blade-dark-green-400-circle.png) center no-repeat}
-.razor-logo.razor-logo-400.razor-logo-white-circle{background:url(../../images/blade-white-400-circle.png) center no-repeat}
-.razor-logo.razor-logo-200{min-height:200px;min-width:200px}.razor-logo.razor-logo-200.razor-logo-black{background:url(../../images/blade-black-200.png) center no-repeat}
-.razor-logo.razor-logo-200.razor-logo-green{background:url(../../images/blade-dark-green-200.png) center no-repeat}
-.razor-logo.razor-logo-200.razor-logo-white{background:url(../../images/blade-white-200.png) center no-repeat}
-.razor-logo.razor-logo-200.razor-logo-black-circle{background:url(../../images/blade-black-200-circle.png) center no-repeat}
-.razor-logo.razor-logo-200.razor-logo-green-circle{background:url(../../images/blade-dark-green-200-circle.png) center no-repeat}
-.razor-logo.razor-logo-200.razor-logo-white-circle{background:url(../../images/blade-white-200-circle.png) center no-repeat}
-.razor-logo.razor-logo-100{min-height:100px;min-width:100px}.razor-logo.razor-logo-100.razor-logo-black{background:url(../../images/blade-black-100.png) center no-repeat}
-.razor-logo.razor-logo-100.razor-logo-green{background:url(../../images/blade-dark-green-100.png) center no-repeat}
-.razor-logo.razor-logo-100.razor-logo-white{background:url(../../images/blade-white-100.png) center no-repeat}
-.razor-logo.razor-logo-100.razor-logo-black-circle{background:url(../../images/blade-black-100-circle.png) center no-repeat}
-.razor-logo.razor-logo-100.razor-logo-green-circle{background:url(../../images/blade-dark-green-100-circle.png) center no-repeat}
-.razor-logo.razor-logo-100.razor-logo-white-circle{background:url(../../images/blade-white-100-circle.png) center no-repeat}
-.razor-logo.razor-logo-50{min-height:50px;min-width:50px}.razor-logo.razor-logo-50.razor-logo-black{background:url(../../images/blade-black-50.png) center no-repeat}
-.razor-logo.razor-logo-50.razor-logo-green{background:url(../../images/blade-dark-green-50.png) center no-repeat}
-.razor-logo.razor-logo-50.razor-logo-white{background:url(../../images/blade-white-50.png) center no-repeat}
-.razor-logo.razor-logo-50.razor-logo-black-circle{background:url(../../images/blade-black-50-circle.png) center no-repeat}
-.razor-logo.razor-logo-50.razor-logo-green-circle{background:url(../../images/blade-dark-green-50-circle.png) center no-repeat}
-.razor-logo.razor-logo-50.razor-logo-white-circle{background:url(../../images/blade-white-50-circle.png) center no-repeat}
-.razor-logo.razor-logo-25{min-height:25px;min-width:25px}.razor-logo.razor-logo-25.razor-logo-black{background:url(../../images/blade-black-25.png) center no-repeat}
-.razor-logo.razor-logo-25.razor-logo-green{background:url(../../images/blade-dark-green-25.png) center no-repeat}
-.razor-logo.razor-logo-25.razor-logo-white{background:url(../../images/blade-white-25.png) center no-repeat}
-.razor-logo.razor-logo-25.razor-logo-black-circle{background:url(../../images/blade-black-25-circle.png) center no-repeat}
-.razor-logo.razor-logo-25.razor-logo-green-circle{background:url(../../images/blade-dark-green-25-circle.png) center no-repeat}
-.razor-logo.razor-logo-25.razor-logo-white-circle{background:url(../../images/blade-white-25-circle.png) center no-repeat}
+.razor-logo.razor-logo-600{min-height:600px;min-width:600px}.razor-logo.razor-logo-600.razor-logo-black{background:url("../../../library/images/blade-black-600.png") center no-repeat}
+.razor-logo.razor-logo-600.razor-logo-green{background:url("../../../library/images/blade-dark-green-600.png") center no-repeat}
+.razor-logo.razor-logo-600.razor-logo-white{background:url("../../../library/images/blade-white-600.png") center no-repeat}
+.razor-logo.razor-logo-600.razor-logo-black-circle{background:url("../../../library/images/blade-black-600-circle.png") center no-repeat}
+.razor-logo.razor-logo-600.razor-logo-green-circle{background:url("../../../library/images/blade-dark-green-600-circle.png") center no-repeat}
+.razor-logo.razor-logo-600.razor-logo-white-circle{background:url("../../../library/images/blade-white-600-circle.png") center no-repeat}
+.razor-logo.razor-logo-400{min-height:400px;min-width:400px}.razor-logo.razor-logo-400.razor-logo-black{background:url("../../../library/images/blade-black-400.png") center no-repeat}
+.razor-logo.razor-logo-400.razor-logo-green{background:url("../../../library/images/blade-dark-green-400.png") center no-repeat}
+.razor-logo.razor-logo-400.razor-logo-white{background:url("../../../library/images/blade-white-400.png") center no-repeat}
+.razor-logo.razor-logo-400.razor-logo-black-circle{background:url("../../../library/images/blade-black-400-circle.png") center no-repeat}
+.razor-logo.razor-logo-400.razor-logo-green-circle{background:url("../../../library/images/blade-dark-green-400-circle.png") center no-repeat}
+.razor-logo.razor-logo-400.razor-logo-white-circle{background:url("../../../library/images/blade-white-400-circle.png") center no-repeat}
+.razor-logo.razor-logo-200{min-height:200px;min-width:200px}.razor-logo.razor-logo-200.razor-logo-black{background:url("../../../library/images/blade-black-200.png") center no-repeat}
+.razor-logo.razor-logo-200.razor-logo-green{background:url("../../../library/images/blade-dark-green-200.png") center no-repeat}
+.razor-logo.razor-logo-200.razor-logo-white{background:url("../../../library/images/blade-white-200.png") center no-repeat}
+.razor-logo.razor-logo-200.razor-logo-black-circle{background:url("../../../library/images/blade-black-200-circle.png") center no-repeat}
+.razor-logo.razor-logo-200.razor-logo-green-circle{background:url("../../../library/images/blade-dark-green-200-circle.png") center no-repeat}
+.razor-logo.razor-logo-200.razor-logo-white-circle{background:url("../../../library/images/blade-white-200-circle.png") center no-repeat}
+.razor-logo.razor-logo-100{min-height:100px;min-width:100px}.razor-logo.razor-logo-100.razor-logo-black{background:url("../../../library/images/blade-black-100.png") center no-repeat}
+.razor-logo.razor-logo-100.razor-logo-green{background:url("../../../library/images/blade-dark-green-100.png") center no-repeat}
+.razor-logo.razor-logo-100.razor-logo-white{background:url("../../../library/images/blade-white-100.png") center no-repeat}
+.razor-logo.razor-logo-100.razor-logo-black-circle{background:url("../../../library/images/blade-black-100-circle.png") center no-repeat}
+.razor-logo.razor-logo-100.razor-logo-green-circle{background:url("../../../library/images/blade-dark-green-100-circle.png") center no-repeat}
+.razor-logo.razor-logo-100.razor-logo-white-circle{background:url("../../../library/images/blade-white-100-circle.png") center no-repeat}
+.razor-logo.razor-logo-50{min-height:50px;min-width:50px}.razor-logo.razor-logo-50.razor-logo-black{background:url("../../../library/images/blade-black-50.png") center no-repeat}
+.razor-logo.razor-logo-50.razor-logo-green{background:url("../../../library/images/blade-dark-green-50.png") center no-repeat}
+.razor-logo.razor-logo-50.razor-logo-white{background:url("../../../library/images/blade-white-50.png") center no-repeat}
+.razor-logo.razor-logo-50.razor-logo-black-circle{background:url("../../../library/images/blade-black-50-circle.png") center no-repeat}
+.razor-logo.razor-logo-50.razor-logo-green-circle{background:url("../../../library/images/blade-dark-green-50-circle.png") center no-repeat}
+.razor-logo.razor-logo-50.razor-logo-white-circle{background:url("../../../library/images/blade-white-50-circle.png") center no-repeat}
+.razor-logo.razor-logo-25{min-height:25px;min-width:25px}.razor-logo.razor-logo-25.razor-logo-black{background:url("../../../library/images/blade-black-25.png") center no-repeat}
+.razor-logo.razor-logo-25.razor-logo-green{background:url("../../../library/images/blade-dark-green-25.png") center no-repeat}
+.razor-logo.razor-logo-25.razor-logo-white{background:url("../../../library/images/blade-white-25.png") center no-repeat}
+.razor-logo.razor-logo-25.razor-logo-black-circle{background:url("../../../library/images/blade-black-25-circle.png") center no-repeat}
+.razor-logo.razor-logo-25.razor-logo-green-circle{background:url("../../../library/images/blade-dark-green-25-circle.png") center no-repeat}
+.razor-logo.razor-logo-25.razor-logo-white-circle{background:url("../../../library/images/blade-white-25-circle.png") center no-repeat}
 .btn-file{position:relative;overflow:hidden}
 .btn-file input[type=file]{position:absolute;top:0;right:0;min-width:100%;min-height:100%;font-size:999px;text-align:right;filter:alpha(opacity=0);opacity:0;outline:none;background:#fff;cursor:inherit;display:block}
 .ie8.ie8-admin{position:fixed;z-index:10000;width:100%;height:60px}
@@ -1311,11 +1312,11 @@ li.dropdown:hover .dropdown-menu{display:block !important}
 .progress-box .progress-ring.ring-active{border-color:#409ccf}
 @keyframes ring-pulse{0%{border-color:#ccc} 50%{border-color:#409ccf} 100%{border-color:#ccc}}@-ms-keyframes ring-pulse{0%{border-color:#ccc} 50%{border-color:#409ccf} 100%{border-color:#ccc}}@-moz-keyframes ring-pulse{0%{border-color:#ccc} 50%{border-color:#409ccf} 100%{border-color:#ccc}}@-o-keyframes ring-pulse{0%{border-color:#ccc} 50%{border-color:#409ccf} 100%{border-color:#ccc}}@-webkit-keyframes ring-pulse{0%{border-color:#ccc} 50%{border-color:#409ccf} 100%{border-color:#ccc}}.razor-admin .template-wrapper,.razor-access .template-wrapper{padding-top:60px}
 .razor-admin .version-tag,.razor-access .version-tag{position:fixed;bottom:0;right:0;color:#fff;padding:3px;font-size:12px}
-.razor-admin .razor-admin-panel,.razor-access .razor-admin-panel{margin-bottom:5px;background-color:rgba(255,255,255,0.8);box-shadow:0 2px 2px -2px rgba(0,0,0,0.3);border-bottom:1px solid #ddd;position:fixed;width:100%;min-height:58px;z-index:100}.razor-admin .razor-admin-panel .login-form,.razor-access .razor-admin-panel .login-form{padding-top:10px;padding-bottom:10px}.razor-admin .razor-admin-panel .login-form .error-message,.razor-access .razor-admin-panel .login-form .error-message{padding:6px}
+.razor-admin .razor-admin-panel,.razor-access .razor-admin-panel{margin-bottom:5px;background-color:rgba(255,255,255,0.8);box-shadow:0 2px 2px -2px rgba(0,0,0,0.3);border-bottom:1px solid #ddd;position:fixed;width:100%;min-height:58px;z-index:1000}.razor-admin .razor-admin-panel .login-form,.razor-access .razor-admin-panel .login-form{padding-top:10px;padding-bottom:10px}.razor-admin .razor-admin-panel .login-form .error-message,.razor-access .razor-admin-panel .login-form .error-message{padding:6px}
 .razor-admin .razor-admin-panel .account-details,.razor-access .razor-admin-panel .account-details{padding:0 0 5px 0}.razor-admin .razor-admin-panel .account-details span,.razor-access .razor-admin-panel .account-details span{display:block;font-size:12px}.razor-admin .razor-admin-panel .account-details span.name,.razor-access .razor-admin-panel .account-details span.name{font-weight:bold;font-size:25px}
 .razor-admin .razor-admin-panel .editor-controls,.razor-access .razor-admin-panel .editor-controls{margin-top:12px}
 .razor-admin .dashboard-icon,.razor-access .dashboard-icon{padding:7px;font-size:40px;cursor:pointer;position:fixed;top:3px;left:4px;opacity:.7}.razor-admin .dashboard-icon:hover,.razor-access .dashboard-icon:hover{opacity:1}
-.razor-admin .razor-admin-dashboard,.razor-access .razor-admin-dashboard{margin-top:60px;position:fixed;width:100%;background-color:rgba(0,0,0,0.9);height:100%;z-index:200;color:#fff;overflow-y:auto}.razor-admin .razor-admin-dashboard .dash-nav,.razor-access .razor-admin-dashboard .dash-nav{position:fixed;top:0;width:100%;height:60px;background-color:#111;z-index:300}.razor-admin .razor-admin-dashboard .dash-nav .navbar,.razor-access .razor-admin-dashboard .dash-nav .navbar{min-height:inherit;margin-top:10px}.razor-admin .razor-admin-dashboard .dash-nav .navbar .navbar-nav li a,.razor-access .razor-admin-dashboard .dash-nav .navbar .navbar-nav li a{padding:5px 10px}
+.razor-admin .razor-admin-dashboard,.razor-access .razor-admin-dashboard{margin-top:60px;position:fixed;width:100%;background-color:rgba(0,0,0,0.9);height:100%;z-index:1010;color:#fff;overflow-y:auto}.razor-admin .razor-admin-dashboard .dash-nav,.razor-access .razor-admin-dashboard .dash-nav{position:fixed;top:0;width:100%;height:60px;background-color:#111;z-index:1020}.razor-admin .razor-admin-dashboard .dash-nav .navbar,.razor-access .razor-admin-dashboard .dash-nav .navbar{min-height:inherit;margin-top:10px}.razor-admin .razor-admin-dashboard .dash-nav .navbar .navbar-nav li a,.razor-access .razor-admin-dashboard .dash-nav .navbar .navbar-nav li a{padding:5px 10px}
 .razor-admin .razor-admin-dashboard .dashbar-nav,.razor-access .razor-admin-dashboard .dashbar-nav{margin:0;padding:0;list-style-type:none}.razor-admin .razor-admin-dashboard .dashbar-nav li,.razor-access .razor-admin-dashboard .dashbar-nav li{height:50px;display:inline-block}.razor-admin .razor-admin-dashboard .dashbar-nav li:hover,.razor-access .razor-admin-dashboard .dashbar-nav li:hover{background-color:#333}
 .razor-admin .razor-admin-dashboard .dashbar-nav li.active,.razor-access .razor-admin-dashboard .dashbar-nav li.active{background-color:#333}.razor-admin .razor-admin-dashboard .dashbar-nav li.active:hover,.razor-access .razor-admin-dashboard .dashbar-nav li.active:hover{background-color:#333}
 .razor-admin .razor-admin-dashboard .dashbar-nav li a,.razor-access .razor-admin-dashboard .dashbar-nav li a{height:50px;line-height:50px;padding:0 15px;display:inline-block;text-decoration:none;color:#84c4fc}
