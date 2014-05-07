@@ -10,6 +10,9 @@
  
 require([
 	"angular",
+    "ui-bootstrap",
+    "jquery",
+    "jquery-bootstrap",
 	"razor/services/rars", 
 	"razor/directives/form-controls", 
 	"razor/directives/notification", 

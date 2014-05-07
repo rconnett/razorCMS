@@ -11,6 +11,9 @@
 require([
 	"angular",
 	"angular-route",
+    "ui-bootstrap",
+    "jquery",
+    "jquery-bootstrap",
 	"razor/services/rars", 
 	"razor/directives/form-controls", 
 	"razor/directives/notification", 

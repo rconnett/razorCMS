@@ -317,8 +317,12 @@ OUTPUT;
     public function data_main()
     {
         // public or preview
-        if (isset($_GET["preview"]) || (!$this->login && !isset($_COOKIE["token"]))) return;
-        
+        if (isset($_GET["preview"]) || (!$this->login && !isset($_COOKIE["token"]))) 
+        {
+            echo 'data-main="base-module"';
+            return;
+        }
+
         // logged in
         if (!isset($_GET["edit"]) || $this->logged_in < 6)
         {
