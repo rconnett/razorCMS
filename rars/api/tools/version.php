@@ -12,7 +12,7 @@
  
 class ToolsVersion extends RazorAPI
 {
-    private $check_url = "http://www.razorcms.co.uk/rars/live/version/current";
+    private $check_url = "http://www.razorcms.co.uk/rars/live/version/";
 
     function __construct()
     {
@@ -23,6 +23,8 @@ class ToolsVersion extends RazorAPI
     public function get($id)
     {
         if ($id != "current") $this->response(null, null, 400); 
+
+        $host = (isset($_SERVER["SERVER_NAME"]) ? urlencode($_SERVER["SERVER_NAME"]) : (isset($_SERVER["HTTP_HOST"]) ? urlencode($_SERVER["HTTP_HOST"]) : "current"));
 
         $headers = @get_headers($this->check_url);
         
@@ -35,7 +37,7 @@ class ToolsVersion extends RazorAPI
                 ) 
             );             
 
-            $version_file = @file_get_contents($this->check_url, false, $ctx);
+            $version_file = @file_get_contents($this->check_url.$host, false, $ctx);
             if (!empty($version_file))
             {
                 $version = json_decode($version_file);
