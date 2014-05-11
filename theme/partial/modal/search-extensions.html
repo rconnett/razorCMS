@@ -21,9 +21,9 @@
 			<i class="fa fa-refresh fa-spin fa-5x"></i>
 		</div>
 		<accordion close-others="oneAtATime" ng-if="repo">
-			<accordion-group ng-repeat="ext in repo.extensions | orderBy:['category', 'name'] | filter:searchFilter | limitTo:searchLimit" is-open="isopen">
+			<accordion-group ng-repeat="ext in repo.extensions | orderBy:['type', 'extension'] | filter:searchFilter | limitTo:searchLimit" is-open="isopen">
 				<accordion-heading ng-click="getExtensionDetails(ext)">
-					<i class="category-icon fa fa-fw" ng-class="(repo.categories | filter:ext.category:name)[0].icon"></i>
+					<i class="category-icon fa fa-fw" ng-class="(cats.categories | filter:ext.type:name)[0].icon"></i>
 					{{ext.displayName}}
 					<i class="expander pull-right fa" ng-class="{'fa-chevron-down': isopen, 'fa-chevron-right': !isopen}"></i>
 				</accordion-heading>
@@ -35,7 +35,7 @@
 					</div>
 					
 					<div class="extension-info" ng-if="extensionDetails">
-						<button class="btn btn-primary pull-right"><i class="fa fa-cogs" ng-click="installExtension(ext)"></i> Install</button>
+						<button class="btn btn-primary pull-right" ng-click="installExtension(ext)"><i class="fa fa-cogs"></i> Install</button>
 						<p><strong class="extension-detail-label">Name</strong> {{extensionDetails.extension}}</p>
 						<p><strong class="extension-detail-label">Type</strong> {{extensionDetails.type}}</p>
 						<p><strong class="extension-detail-label">Author</strong> {{extensionDetails.handle}} <i>({{extensionDetails.author}})</i></p>

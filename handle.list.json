@@ -1,0 +1,10 @@
+{
+	"name": "handle-list",
+	"type": "list",
+	"file": "handle.list.json",
+	"version": 1,
+	"updated": 1394394028,
+	"handles": [
+		{"name": "razorcms", "fullName": "Paul Smith"}
+	]
+}

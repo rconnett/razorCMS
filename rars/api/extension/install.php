@@ -29,7 +29,7 @@ class ExtensionInstall extends RazorAPI
 
         // check if folders exist
         if (!is_dir($this->tmp_path)) mkdir($this->tmp_path);
-        if (!is_dir($this->tmp->package_path)) mkdir($this->tmp_package_path);
+        if (!is_dir($this->tmp_package_path)) mkdir($this->tmp_package_path);
         if (!is_dir($this->ext_path)) mkdir($this->ext_path);
 
         // includes
@@ -39,12 +39,12 @@ class ExtensionInstall extends RazorAPI
     public function post($data)
     {
         if ((int) $this->check_access() < 10) $this->response(null, null, 401);
-        if (empty($data) || !isset($data["category"]) || !isset($data["handle"]) || !isset($data["name"])) $this->response(null, null, 400);
+        if (empty($data) || !isset($data["type"]) || !isset($data["handle"]) || !isset($data["extension"])) $this->response(null, null, 400);
 
          // fetch cleaned data
-        $category = preg_replace('/[^a-zA-Z0-9-_]/', '', $data["category"]);
+        $category = preg_replace('/[^a-zA-Z0-9-_]/', '', $data["type"]);
         $handle = preg_replace('/[^a-zA-Z0-9-_]/', '', $data["handle"]);
-        $name = preg_replace('/[^a-zA-Z0-9-_]/', '', $data["name"]);
+        $name = preg_replace('/[^a-zA-Z0-9-_]/', '', $data["extension"]);
 
         // fetch details
         $package_url = $this->package_url."{$category}/{$handle}/{$name}/{$name}.zip";
@@ -74,7 +74,7 @@ class ExtensionInstall extends RazorAPI
             $zip->open("{$this->tmp_package_path}/{$name}.zip");
 
             // extract
-            $zip->extractTo($this->ext_path);
+            $zip->extractTo(RAZOR_BASE_PATH);
             $zip->close();
 
             // cleanup

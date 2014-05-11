@@ -1,0 +1,14 @@
+{
+	"name": "category-list",
+	"type": "list",
+	"file": "category.list.json",
+	"version": 1,
+	"updated": 1394394028,
+	"categories": [
+		{"name": "advertising", "displayName": "Advertising", "icon": "fa-money"},
+		{"name": "communication", "displayName": "Communication", "icon": "fa-bullhorn"},
+		{"name": "media", "displayName": "Media", "icon": "fa-play"},
+		{"name": "photo", "displayName": "Photo", "icon": "fa-picture-o"},
+		{"name": "theme", "displayName": "Theme", "icon": "fa-tint"}
+	]
+}
