@@ -12,10 +12,15 @@
  
 class ExtensionData extends RazorAPI
 {
+    private $ext_path = null;
+
     function __construct()
     {
         // REQUIRED IN EXTENDED CLASS TO LOAD DEFAULTS
         parent::__construct();
+
+        // set paths
+        $this->ext_path = RAZOR_BASE_PATH."extension";
     }
 
     public function post($ext)
@@ -54,6 +59,25 @@ class ExtensionData extends RazorAPI
         $db->disconnect(); 
 
         $this->response("success", "json");
+    }
+
+    public function delete($id)
+    {
+        if ((int) $this->check_access() < 10) $this->response(null, null, 401);
+        if (empty($id)) $this->response(null, null, 400);
+
+        $parts = explode("__", strtolower($id));
+        if (count($parts) != 3) $this->response(null, null, 400);
+
+        $category = preg_replace('/[^a-z0-9-_]/', '', $parts[0]);
+        $handle = preg_replace('/[^a-z0-9-_]/', '', $parts[1]);
+        $extension = preg_replace('/[^a-z0-9-_]/', '', $parts[2]);
+        $remove_path = "{$this->ext_path}/{$category}/{$handle}/{$extension}";
+
+        if (!is_dir($remove_path)) $this->response(null, null, 400);
+
+        if (RazorFileTools::delete_directory($remove_path)) $this->response("success", "json");
+        $this->response(null, null, 400);
     }
 }
 

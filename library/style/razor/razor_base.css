@@ -1349,6 +1349,7 @@ li.dropdown:hover .dropdown-menu{display:block !important}
 .razor-admin .accordian .content .content-preview,.razor-access .accordian .content .content-preview{margin-top:20px;height:250px;overflow:scroll;border:1px solid #ccc}
 .razor-admin .accordian .content .used_on_pages,.razor-access .accordian .content .used_on_pages{padding:2px 4px;border:1px solid #ccc;margin:3px;display:inline-block;background-color:#eee}
 .razor-admin .accordian .content .theme-screenshot,.razor-access .accordian .content .theme-screenshot{width:526px;border:1px solid #bbb;padding:3px}
+.razor-admin .accordian .content .extension-detail-label,.razor-access .accordian .content .extension-detail-label{display:inline-block;width:80px}
 .razor-admin .accordian .content table,.razor-access .accordian .content table{margin-bottom:0}
 .razor-admin .accordian .filter,.razor-access .accordian .filter{margin-bottom:20px}
 .razor-admin .slide-switch,.razor-access .slide-switch{display:block;padding:2px;width:100px;height:35px;background-color:#aaa;border:2px solid #555;cursor:pointer;border-radius:4px}.razor-admin .slide-switch .slide-switch-slider,.razor-access .slide-switch .slide-switch-slider{display:block;height:27px;width:50px;background-color:#555;float:left;text-align:center;padding-top:5px;font-size:11px;color:#aaa;border-radius:2px}

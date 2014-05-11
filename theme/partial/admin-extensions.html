@@ -1,9 +1,12 @@
 <div class="razor-admin-extensions" ng-init="loadExtensions()">
 	<div class="row">
 		<div class="col-sm-12">
-			<div class="accordian" ng-controller="extensionsListAccordion">
+			<div class="accordian ng-cloak" ng-controller="extensionsListAccordion">
 				<div class="filter row">
-					<div class="col-sm-9">
+					<div class="col-sm-3">
+						<button class="btn btn-primary" ng-click="searchExtensions()"><i class="fa fa-cogs"></i> Install Extensions</button>
+					</div>
+					<div class="col-sm-6">
 						<div class="input-group">
 	  						<span class="input-group-addon">Filter</span>
 							<input class="form-control" ng-model="searchFilter" placeholder="Search to filter" />
@@ -19,11 +22,16 @@
 				<accordion close-others="oneAtATime">
 					<accordion-group ng-repeat="e in extensions | orderBy:['type', 'name'] | filter:searchFilter | limitTo:searchLimit" is-open="isopen">
 						<accordion-heading>
-							<strong>{{e.type}}:</strong> {{e.name}}
+							<i class="category-icon fa fa-fw" ng-class="(cats.categories | filter:e.type:name)[0].icon"></i>
+							{{e.name}}
 							<i class="expander pull-right fa" ng-class="{'fa-chevron-down': isopen, 'fa-chevron-right': !isopen}"></i>
 						</accordion-heading>
 						<div class="content">
-							<h3>Details</h3>
+							<div class="loader" ng-if="isopen" ng-init="getExtensionDetails(e)"></div>
+							<h3>
+								Details
+								<button class="btn btn-danger pull-right" ng-click="removeExtension(e)"><i class="fa fa-trash-o"></i> Remove</button>
+							</h3>
 							<table class="table table-condensed table-striped table-bordered">
 								<tbody>
 									<tr>
@@ -40,7 +48,7 @@
 									</tr>
 									<tr ng-if="e.version">
 										<td>Version</td>
-										<td>{{e.version}}</td>
+										<td>{{e.version}} <i class="fa fa-exclamation-triangle red" ng-if="extensionDetails.version > e.version" tooltip="New version available"></i></td>
 									</tr>
 									<tr ng-if="e.created">
 										<td>Created</td>
@@ -58,7 +66,7 @@
 									<tbody>
 										<tr>
 											<td>Version</td>
-											<td>{{l.version}}</td>
+											<td>{{l.version}} <i class="fa fa-exclamation-triangle red" ng-if="extensionDetails.version > l.version" tooltip="New version available"></i></td>
 										</tr>
 										<tr>
 											<td>Created</td>
