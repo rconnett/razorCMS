@@ -41,7 +41,7 @@
 
         if (isset($_GET["u"], $_GET["p"]) || isset($POST["u"], $POST["p"]))
         {
-            $u = preg_replace("/[^a-z0-9_.@]/", '', strtolower((isset($POST["u"]) ? $POST["u"] : $_GET["u"])));
+            $u = isset($POST["u"]) ? $POST["u"] : $_GET["u"];
             $p = isset($POST["p"]) ? $POST["p"] : $_GET["p"];
 
             $api = new RazorAPI();
