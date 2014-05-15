@@ -1303,7 +1303,7 @@ li.dropdown:hover .dropdown-menu{display:block !important}
 .click-and-sort .click-and-sort-sub.place-holder:hover a{opacity:.7}
 .click-and-sort .add-new-menu{border:2px dashed transparent}.click-and-sort .add-new-menu a:hover{border:2px dashed transparent}
 .upgrade-message{font-size:18px}
-.progress-box{margin:10px 0 10px 0}.progress-box .progress-ring{margin:2px;border:10px solid #ccc;display:inline-block}.progress-box .progress-ring.ring-1{width:80px;height:80px;border-radius:40px;font-size:40px;text-align:center;color:#277baa}
+.progress-box{margin:10px 0 10px 0}.progress-box .progress-ring{margin:2px;border:10px solid #ccc;display:inline-block}.progress-box .progress-ring.ring-1{margin-top:3px;width:79px;height:79px;border-radius:40px;font-size:40px;text-align:center;color:#277baa}
 .progress-box .progress-ring.ring-2{width:104px;height:104px;border-radius:52px}
 .progress-box .progress-ring.ring-3{width:128px;height:128px;border-radius:64px}
 .progress-box .progress-ring.ring-4{width:152px;height:152px;border-radius:76px}
