@@ -24,7 +24,7 @@ class RazorSite
     function __construct()
     {
         // generate path from get
-        $this->link = (isset($_GET["path"]) ? preg_replace("/[^a-z0-9_.\/-]/", '', strtolower($_GET["path"])) : null);
+        $this->link = (isset($_GET["path"]) ? $_GET["path"] : null);
     }
 
     public function load()
@@ -63,7 +63,7 @@ class RazorSite
         }
 
         // if default not chosen, load manifest
-        if (!empty($this->page["theme"]))
+        if (!empty($this->page["theme"]) && is_file(RAZOR_BASE_PATH."extension/theme/{$this->page["theme"]}"))
         {
             $manifest = RazorFileTools::read_file_contents(RAZOR_BASE_PATH."extension/theme/{$this->page["theme"]}", "json");
             $view_path = RAZOR_BASE_PATH."extension/theme/{$manifest->handle}/{$manifest->extension}/view/{$manifest->layout}.php";
