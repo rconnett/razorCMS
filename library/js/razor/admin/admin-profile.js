@@ -37,5 +37,46 @@ define(["angular", "cookie-monster"], function(angular, monster)
 	        	$scope.processing = false; 
 	        });
         };
+
+        $scope.editUser = function()
+        {            
+            $modal.open(
+            {
+                templateUrl: RAZOR_BASE_URL + "theme/partial/modal/user-details.html",
+                controller: "userDetailsController"
+            }).result.then(function(user)
+            {
+
+            });
+        };
+    })
+
+    .controller("userDetailsController", function($scope, $modalInstance)
+    {
+        $scope.cancel = function()
+        {
+            $modalInstance.dismiss('cancel');
+        };
+
+        $scope.close = function(theme)
+        {
+            $modalInstance.close(theme);
+        };    
+    })
+
+    .controller("userListAccordion", function($scope, rars)
+    {
+        $scope.oneAtATime = true;
+
+        //grab content list
+        rars.get("user/list", "all", monster.get("token")).success(function(data)
+        {
+            $scope.users = data.users;
+        }); 
+
+        // $scope.selectTheme = function(theme)
+        // {
+        //     $scope.$parent.close(theme);
+        // };
     });
 });

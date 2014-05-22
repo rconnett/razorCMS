@@ -16,7 +16,7 @@ define(["angular"], function(angular)
 		return {
 			restrict: 'E',
 			scope: {"rzrModel": "=", "rzrDisabled": "="},
-			template: '<div class="slide-switch" title="{{(rzrDisabled ? \'Disabled (is home page)\' : \'\')}}" ng-class="{\'slide-switch-on\': rzrModel, \'slide-switch-disabled\': rzrDisabled}" ng-click="rzrModel = (rzrDisabled ? rzrModel : !rzrModel)"><span class="slide-switch-slider"><span ng-hide="rzrModel">OFF</span><span ng-show="rzrModel">ON</span></span></div>'
+			template: '<div class="slide-switch" title="{{(rzrDisabled ? \'Disabled\' : \'\')}}" ng-class="{\'slide-switch-on\': rzrModel, \'slide-switch-disabled\': rzrDisabled}" ng-click="rzrModel = (rzrDisabled ? rzrModel : !rzrModel)"><span class="slide-switch-slider"><span ng-hide="rzrModel">OFF</span><span ng-show="rzrModel">ON</span></span></div>'
 		};
     })
  
