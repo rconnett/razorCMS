@@ -12,7 +12,7 @@ File Based CMS (FBCMS)
 This means it helps you to build a website without the means of a database backend.
 All data in **razorCMS** is stored in flat files, and uses a "database" engine called **razorDB**.
 
-It has been primarily designed for Apache on a Unix machine, although it may well function just fine on a Microsoft based environment. Please note that all testing is performed on Unix machines, and no guarantee is offered outside of this environment.
+It has been primarily designed for Apache on a *Unix* machine, although it may well function just fine on a *Microsoft* based environment. Please note that all testing is performed on *Unix* machines, and no guarantee is offered outside of this environment.
 
 By using this software you, the user, are accepting that this software comes with no legal rights as to recompense from any issues that may arise. This software comes with no guarantees, and no promises. The developers of this software will not be held responsible for any issues that arise due to the use of this software. Again, by using this software you agree to these terms.
 
@@ -33,7 +33,7 @@ Tablets, and mobile devices are also supported as much as is humanly possible.
 
 Apache running on a Unix type machine.
 
-You may find it possible to make **razorCMS** work outside of its comfort zone, awesome, I tilt my hat in your general direction, but I do not support this. Too many developers are keeping institutions alive purely by supporting old defunct outdated crap, I will not do this, I loose enough sleep at night without the need to support things that should be put out of their misery.
+You may find it possible to make **razorCMS** work outside of its comfort zone, awesome. I tilt my hat in your general direction. However, I do not support this. Too many developers are keeping institutions alive purely by supporting old defunct outdated crap. I will not do this. I loose enough sleep at night without the need to support things that should be put out of their misery.
 
 
 ---
@@ -92,9 +92,9 @@ Installation is now complete, you may now log in using the new credentials in th
 ## Using razorCMS
 
 
-**razorCMS** has been designed to be as intuitive as possible, so we shouldn't have to tell you too much. The only things we should really explain is that the system only has one area, public. Most CMS solutions come with two areas, one where people view the website, and a second administration end where they manage it.
+**razorCMS** has been designed to be as intuitive as possible, so we shouldn't have to tell you too much. The only things we should really explain is that the system only has one area, public. Most *CMS* solutions come with two areas, one where people view the website, and a second administration end where they manage it.
 
-**razorCMS** has been built to work all from the public area. When you log in, you are actually instantiating the **Administration Overlay**. This is a separate JavaScript (AngularJS) Overlay that lays on top of the public area, which is only shown when you are logged in. By taking this approach we are able to reduce the need for an administration interface, and help you to better visualize changes to the site as you edit the page right there in front of you.
+**razorCMS** has been built to work all from the public area. When you log in, you are actually instantiating the **Administration Overlay**. This is a separate *JavaScript* (*AngularJS*) overlay that lays on top of the public area, which is only shown when you are logged in. By taking this approach we are able to reduce the need for an administration interface, and help you to better visualize changes to the site as you edit the page right there in front of you.
 
 The **Administration Overlay** requires a login. Once logged in, you can start the **Administration Overlay** by clicking the bullseye **Dashboard Icon**. From the **Administration Overlay** you can edit the properties/details of the page you are currently viewing, or you can manage other aspects of the site.
 
