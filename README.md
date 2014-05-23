@@ -1,6 +1,9 @@
 # razorCMS File Based CMS (FBCMS)
 
 
+---
+
+
 ## Intro
 
 
@@ -11,6 +14,9 @@ All data in **razorCMS** is stored in flat files, and uses a "database" engine c
 It has been primarily designed for Apache on a Unix machine, although it may well function just fine on a Microsoft based environment. Please note that all testing is performed on Unix machines, and no guarantee is offered outside of this environment.
 
 By using this software you, the user, are accepting that this software comes with no legal rights as to recompense from any issues that may arise. This software comes with no guarantees, and no promises. The developers of this software will not be held responsible for any issues that arise due to the use of this software. Again, by using this software you agree to these terms.
+
+
+---
 
 
 ## Requirements
@@ -27,6 +33,9 @@ Tablets, and mobile devices are also supported as much as is humanly possible.
 Apache running on a Unix type machine.
 
 You may find it possible to make **razorCMS** work outside of its comfort zone, awesome, I tilt my hat in your general direction, but I do not support this. Too many developers are keeping institutions alive purely by supporting old defunct outdated crap, I will not do this, I loose enough sleep at night without the need to support things that should be put out of their misery.
+
+
+---
 
 
 ## Installation FULL
@@ -49,6 +58,9 @@ Due to the system not using any database backend, installation is a breeze.
 Installation is now complete, you may now log in using the new credentials in the same manner you did above.
 
 
+---
+
+
 ## Installation UPGRADE
 
 
@@ -57,6 +69,9 @@ Installation is now complete, you may now log in using the new credentials in th
 1. Download upgrade.
 2. Unpack.
 3. Upload the unpacked files to your system merging any folders, and overwriting any files.
+
+
+---
 
 
 ## Installing Extensions
@@ -68,6 +83,9 @@ Installation is now complete, you may now log in using the new credentials in th
 2. Unpack.
 3. Upload to the location you installed **razorCMS**. (You can upload to the root location as the file structure is included in the download.)
 4. To configure, click on the bullseye **Dashboard Icon** to bring up the **Administration Overlay**, click **Extensions**, expand your extension, and change your settings there.
+
+
+---
 
 
 ## Using razorCMS
@@ -88,6 +106,9 @@ Managing **Menus** is also simple. Click on the "**x**" to remove a **Menu Item*
 **Themes** in **razorCMS** are per page, this means you can set a different **Theme** for each page, allowing greater control of your site. (Like side **Menus** in some parts, and top **Menus** in others.) All **Themes** are added as **Extensions**, but they can come with multiple layouts per **Theme**, allowing better selection of what you want.
 
 
+---
+
+
 ## Licensing
 
 
@@ -98,6 +119,9 @@ All I ask is be kind, keep comments in place, and give a nod back to the guy tha
 So you don't need to have a link in your site such as *Powered by xxxxxxxx*, or *This Site Uses xxxxxxx*. You make it look how you want it. Just don’t pass my work off as yours.
 
 On a side note to this, the **razorCMS** website is Copyrighted to smiffy6969 (me). You are not permitted to use that **Theme**, or copy anything within that site.
+
+
+---
 
 
 ## Summary
