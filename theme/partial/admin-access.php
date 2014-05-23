@@ -116,17 +116,17 @@
 										</li>
 										<li ng-class="{'active':activePage == 'content'}">
 											<a href="#content">
-												<i class="fa fa-th-large"></i><span class="mobile-hide-inline">  Content</span>
+												<i class="fa fa-th-large"></i><span class="mobile-hide-inline"> Content</span>
 											</a>
 										</li>
 										<li ng-class="{'active':activePage == 'extensions'}">
 											<a href="#extensions">
-												<i class="fa fa-puzzle-piece"></i><span class="mobile-hide-inline">  Extensions</span>
+												<i class="fa fa-puzzle-piece"></i><span class="mobile-hide-inline"> Extensions</span>
 											</a>
 										</li>
-										<li ng-class="{'active':activePage == 'profile'}">
+										<li ng-class="{'active':activePage == 'profile'}" ng-if="user.access_level == 10">
 											<a href="#profile">
-												<i class="fa fa-user"></i><span class="mobile-hide-inline">  Profile</span>
+												<i class="fa fa-user"></i><span class="mobile-hide-inline"> Users</span>
 											</a>
 										</li>
 										<li ng-class="{'active':activePage == 'settings'}">

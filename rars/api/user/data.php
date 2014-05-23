@@ -21,24 +21,43 @@ class UserData extends RazorAPI
     // add or update content
     public function post($data)
     {
-        // login check - if fail, return no data to stop error flagging to user
-        if ((int) $this->check_access() < 10) $this->response(null, null, 401);
+        // check we have a logged in user
+        if ((int) $this->check_access() < 1) $this->response(null, null, 401);
         if (empty($data)) $this->response(null, null, 400);
 
         $db = new RazorDB();
         $db->connect("user");
 
-        // check link unique
-        $search = array("column" => "id", "value" => $this->user["id"]);
+        if ($this->user["id"] == $data["id"])
+        {
+            // if this is your account, alter name, email or password
+            $search = array("column" => "id", "value" => $this->user["id"]);
 
-        $row = array(
-            "name" => $data["name"], 
-            "email_address" => $data["email_address"]
-        );
+            $row = array(
+                "name" => $data["name"], 
+                "email_address" => $data["email_address"]
+            );
 
-        if (isset($data["new_password"])) $row["password"] = $this->create_hash($data["new_password"]);
+            if (isset($data["new_password"])) $row["password"] = $this->create_hash($data["new_password"]);
 
-        $db->edit_rows($search, $row);
+            $db->edit_rows($search, $row);
+        }
+        elseif ($this->check_access() == 10)
+        {
+            // if not account owner, but acces of 10, alter access level or active
+            // do not allow anyone to be set to level 10, only one account aloud
+            if (isset($data["access_level"]) && $data["access_level"] == 10) $this->response(null, null, 400);
+
+            $search = array("column" => "id", "value" => $data["id"]);
+
+            $row = array(
+                "access_level" => $data["access_level"], 
+                "active" => $data["active"]
+            );
+
+            $db->edit_rows($search, $row);
+        }
+        else $this->response(null, null, 401);
 
         $db->disconnect(); 
 

@@ -17,16 +17,16 @@
 					</div>
 				</div>
 				<accordion close-others="oneAtATime">
-					<accordion-group ng-repeat="u in users | orderBy:'name' | filter:searchFilter | limitTo:searchLimit" is-open="isopen">
+					<accordion-group ng-repeat="u in users | orderBy:'id' | filter:searchFilter | limitTo:searchLimit" is-open="isopen">
 						<accordion-heading>
-       						<i class="fa fa-eye" ng-hide="u.used_on_pages == null" title="Active"></i>
+       						<i class="fa fa-user" ng-show="u.id == user.id" title="Active"></i>
 							{{u.name}}
 							<i class="expander pull-right fa" ng-class="{'fa-chevron-down': isopen, 'fa-chevron-right': !isopen}"></i>
 						</accordion-heading>
 						<div class="content">
 					        <div class="row">
 					        	<div class="col-sm-12">
-						        	<form class="form-horizontal" role="form" novalidate>
+						        	<form name="form" class="form-horizontal" role="form" novalidate>
 										<div class="form-group">
 											<label class="col-sm-2 control-label">ID</label>
 											<div class="col-sm-10">
@@ -54,11 +54,11 @@
 										<div class="form-group" ng-if="user.id == u.id">
 											<label for="new-password" class="col-sm-2 control-label">New Password</label>
 											<div class="col-sm-3">
-												<input id="new-password" name="newPassword" class="form-control" type="password" ng-model="user.new_password" placeholder="Leave blank to keep same" >
+												<input id="new-password" name="newPassword" class="form-control" type="password" ng-model="u.new_password" placeholder="Leave blank to keep same">
 											</div>
 											<label for="repeat-password" class="col-sm-1 control-label">Repeat</label>
 											<div class="col-sm-3">
-												<input id="repeat-password" name="repeatPassword" class="form-control" type="password" ng-model="user.repeat_password" placeholder="Leave blank to keep same" confirm="{{user.new_password}}">
+												<input id="repeat-password" name="repeatPassword" class="form-control" type="password" ng-model="u.repeat_password" placeholder="Leave blank to keep same" confirm="{{u.new_password}}">
 											</div>
 											<div class="col-sm-2 error-block" ng-show="(form.newPassword.$dirty && form.newPassword.$invalid) || (form.repeatPassword.$dirty && form.repeatPassword.$invalid)">
 												<span class="alert alert-danger alert-form" ng-show="form.newPassword.$error.pattern">Invalid</span>
@@ -68,17 +68,30 @@
 										<div class="form-group">
 											<label for="input-active" class="col-sm-2 control-label">Active</label>
 											<div class="col-sm-10">
-												<slide-switch rzr-model="u.active" rzr-disabled="user.id == u.id || u.access_level < 10"></slide-switch>
+												<slide-switch rzr-model="u.active" rzr-disabled="user.id == u.id || user.access_level < 10"></slide-switch>
 											</div>
 										</div>
 										<div class="form-group">
 											<label for="input-access-level" class="col-sm-2 control-label">Access Level</label>
 											<div class="col-sm-2">
-												<input type="number" class="form-control" id="input-access-level" ng-model="u.access_level" min="1" max="10" ng-disabled="user.id == u.id || u.access_level < 10" required>
+												<select ng-if="u.access_level < 10" class="form-control" id="input-access-level" ng-model="u.access_level" ng-options="al.value as al.name for al in accessLevels" ng-disabled="user.id == u.id || user.access_level < 10" required></select>
+												<span ng-if="u.access_level == 10" class="span-input">Super Admin</span>
 											</div>
-											<div class="col-sm-2 col-sm-offset-5 error-block" ng-show="form.access_level.$dirty && form.access_level.$invalid">
-												<span class="alert alert-danger alert-form" ng-show="form.access_level.$error.required">Required</span>
-											</div>
+											<span class="alert alert-danger alert-form" ng-if="u.access_level == 9">
+												Admin access to everything accept altering users.
+											</span>
+											<span class="alert alert-warning alert-form" ng-if="u.access_level == 8">
+												Admin access to create, edit and delete content.
+											</span>
+											<span class="alert alert-warning alert-form" ng-if="u.access_level == 7">
+												Admin access to create, edit content.
+											</span>
+											<span class="alert alert-warning alert-form" ng-if="u.access_level == 6">
+												Admin access create content.
+											</span>
+											<span class="alert alert-success alert-form" ng-if="u.access_level == 1">
+												Public access to level 1 pages.
+											</span>
 										</div>
 										<div class="form-group">
 											<label class="col-sm-2 control-label">IP Address</label>
@@ -94,10 +107,10 @@
 										</div>
 										<div class="form-group">
 											<div class="col-sm-10 col-sm-offset-2">
-								                <button class="btn btn-success" ng-click="">
+								                <button class="btn btn-success" ng-click="saveUser($index)" ng-disabled="form.$invalid || processing || (!!u.new_password && !u.repeat_password)">
 								                	<i class="fa fa-check"></i> Save Changes
 								                </button>
-								                <button class="btn btn-danger" ng-if="u.id != 1" ng-disabled="u.active" ng-click="user.splice($index,1); deleteUser(c.id)">
+								                <button class="btn btn-danger" ng-if="u.id != 1" ng-disabled="u.active" ng-click="removeUser($index)">
 								                	<i class="fa fa-trash-o"></i> Remove User
 								                </button>
 											</div>
