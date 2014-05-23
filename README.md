@@ -1,10 +1,7 @@
 # razorCMS File Based CMS (FBCMS)
 
-===
-
 
 ## Intro
----
 
 
 **razorCMS** is a *File Based Content Management System*.
@@ -17,7 +14,6 @@ By using this software you, the user, are accepting that this software comes wit
 
 
 ## Requirements
----
 
 
 **To View, and Administer Correctly:**
@@ -34,7 +30,6 @@ You may find it possible to make **razorCMS** work outside of its comfort zone, 
 
 
 ## Installation FULL
----
 
 Due to the system not using any database backend, installation is a breeze.
 
@@ -46,8 +41,8 @@ Due to the system not using any database backend, installation is a breeze.
 4. Using your web browser, navigate to the location you installed **razorCMS**.
 5. Append "**/login**" to the end of the URL. (Without the quotes.)
 6. Login in with the following default credentials:
--      *Username/email*: **`razorcms@razorcms.co.uk`**
--            *Password*: **password**
+>*Username/email*: **`razorcms@razorcms.co.uk`**
+>*Password*: **`password`**
 7. Once logged in, click the **Dashboard Icon** to bring up the **Administration Overlay**. (Top left circular icon that looks like a *bullseye*.)
 8. Click on profile, change the default username, and password, save the changes, and wait to be logged out.
 
@@ -55,7 +50,6 @@ Installation is now complete, you may now log in using the new credentials in th
 
 
 ## Installation UPGRADE
----
 
 
 **Follow These Steps:**
@@ -66,7 +60,6 @@ Installation is now complete, you may now log in using the new credentials in th
 
 
 ## Installing Extensions
----
 
 
 **Follow These Steps:**
@@ -78,7 +71,6 @@ Installation is now complete, you may now log in using the new credentials in th
 
 
 ## Using razorCMS
----
 
 
 **razorCMS** has been designed to be as intuitive as possible, so we shouldn't have to tell you too much. The only things we should really explain is that the system only has one area, public. Most CMS solutions come with two areas, one where people view the website, and a second administration end where they manage it.
@@ -97,7 +89,6 @@ Managing **Menus** is also simple. Click on the "**x**" to remove a **Menu Item*
 
 
 ## Licensing
----
 
 
 **razorCMS** is licensed under the *GPL V3*; you can find a copy by [Clicking Here] (//gnu.org/copyleft/gpl.html). So what does this mean? Well, you can do whatever the hell you would like with this software; create sites, extend it, change it, fork it; I don't really care either way.
@@ -110,7 +101,6 @@ On a side note to this, the **razorCMS** website is Copyrighted to smiffy6969 (m
 
 
 ## Summary
----
 
 
 Questions, ideas, and/or bundles of cash you want to give me?
