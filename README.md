@@ -1,10 +1,8 @@
 # razorCMS
+File Based CMS (FBCMS)
 
 
 ---
-
-
-File Based CMS (FBCMS)
 
 
 ## Intro
