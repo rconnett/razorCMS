@@ -50,7 +50,7 @@
 						<table class="table table-condensed table-striped table-bordered">
 							<tbody>
 								<tr><td>Version</td><td>{{l.version}}</td></tr>
-								<tr><td>Created</td><td>{{l.created}}</td></tr>
+								<tr><td>Created</td><td>{{l.created * 1000 | date:'EEE, MMM d, y'}}</td></tr>
 								<tr><td>Menus</td><td><span ng-repeat="menu in l.menus">{{($index > 0 ? ', ' + menu : menu)}}</span></td></tr>
 								<tr><td>Header Columns</td><td>{{l.content.header}}</td></tr>
 								<tr><td>Main Columns</td><td>{{l.content.main}}</td></tr>

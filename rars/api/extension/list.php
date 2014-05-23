@@ -35,9 +35,7 @@ class ExtensionList extends RazorAPI
         $db->connect("extension");
 
         foreach ($manifests as $mf)
-        {
-            $mf->created = date("D jS M Y", $mf->created);
-            
+        {            
             // grab settings if any
             if (isset($mf->settings))
             {

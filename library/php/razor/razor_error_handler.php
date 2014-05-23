@@ -136,7 +136,7 @@ class RazorErrorHandler {
         }
 
         // set date time
-        $date_time = date('d m Y - h:i:s', time());
+        $date_time = @date('d m Y - h:i:s', time());
 
         $log[] = "<?php /* [{$date_time}] [{$error['error']}] [type: {$error['type']}] [file: {$error['file']}] [line: {$error['line']}] [message: {$error['string']}] */ ?>\n\r";
 
@@ -163,7 +163,7 @@ class RazorErrorHandler {
         include_once(RAZOR_BASE_PATH.'library/php/chromephp/chromephp.php');
 
         // set date time
-        $date_time = date('d m Y - h:i:s', time());
+        $date_time = @date('d m Y - h:i:s', time());
 
         // log error to chromephp
         if ($debug === false)
@@ -194,7 +194,7 @@ class RazorErrorHandler {
         if (empty($error) || $this->mode == "production") return false;
 
         // set date time
-        $date_time = date('d m Y - h:i:s', time());
+        $date_time = @date('d m Y - h:i:s', time());
 
         echo "razorCMS Error Handler >> [{$date_time}] [{$error['error']}] [type: {$error['type']}] [file: {$error['file']}] [line: {$error['line']}] [message: {$error['string']}]";
     }

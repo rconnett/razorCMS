@@ -80,7 +80,7 @@
 					<div class="col-xs-6">
 						<div class="account-details text-right" ng-show="user.id">
 							<span class="name">{{user.name}} <a href="#" ng-click="logout()"><i class="fa fa-sign-out" data-toggle="tooltip" data-placement="bottom" title="Sign Out"></i></a></span>
-							<span class="last-login-date">Last login: {{user.last_logged_in}}</span>
+							<span class="last-login-date">Last login: {{user.last_logged_in * 1000 | date:'EEE, MMM d, y'}}</span>
 						</div>
 					</div>
 				</div>

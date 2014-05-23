@@ -52,7 +52,7 @@
 									</tr>
 									<tr ng-if="e.created">
 										<td>Created</td>
-										<td>{{e.created}}</td>
+										<td>{{e.created * 1000 | date:'EEE, MMM d, y'}}</td>
 									</tr>
 									<tr>
 										<td>Description</td>
@@ -70,7 +70,7 @@
 										</tr>
 										<tr>
 											<td>Created</td>
-											<td>{{l.created}}</td>
+											<td>{{l.created * 1000 | date:'EEE, MMM d, y'}}</td>
 										</tr>
 										<tr><td>Menus</td><td><span ng-repeat="menu in l.menus">{{($index > 0 ? ', ' + menu : menu)}}</span></td></tr>
 										<tr><td>Header Columns</td><td>{{l.content.header}}</td></tr>

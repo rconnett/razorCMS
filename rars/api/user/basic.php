@@ -24,12 +24,8 @@ class UserBasic extends RazorAPI
         // login check - if fail, return no data to stop error flagging to user
         if ((int) $this->check_access() < 1 || $id !== "current") $this->response(null, null, 204);
 
-        // convert last logged for front end
-        $user = $this->user;
-        $user["last_logged_in"] = date("D jS M Y", $user["last_logged_in"]);
-
         // return the basic user details
-        $this->response(array("user" => $user), "json");
+        $this->response(array("user" => $this->user), "json");
     }
 }
 
