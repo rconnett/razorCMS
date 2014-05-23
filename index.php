@@ -32,6 +32,9 @@
 	set_error_handler(array($error, 'handle_error'));
 	set_exception_handler(array($error, 'handle_error'));
 
+    // check any required folders exist
+    if (!is_dir(RAZOR_BASE_PATH."extension")) mkdir(RAZOR_BASE_PATH."extension");
+
     // continue with public load
     $site = new RazorSite();
     $site->load();
