@@ -12,9 +12,46 @@ define(["angular", "cookie-monster"], function(angular, monster)
 {
     angular.module("razor.admin.profile", [])
 
-    .controller("profile", function($scope, rars, $rootScope, $timeout)
+    .controller("profile", function($scope, $modal)
     {
+        $scope.createUser = function()
+        {            
+            $modal.open(
+            {
+                templateUrl: RAZOR_BASE_URL + "theme/partial/modal/create-user.html",
+                controller: "createUserModal"
+            });
+        };
+    })
 
+    .controller("createUserModal", function($scope, $modalInstance, $rootScope, rars)
+    {
+        $scope.accessLevels = [
+            {"name": "Admin", "value": 9},
+            {"name": "Manager", "value": 8},
+            {"name": "Editor", "value": 7},
+            {"name": "Contributer", "value": 6},
+            {"name": "User", "value": 1}
+        ];
+
+        $scope.cancel = function()
+        {
+            $modalInstance.dismiss('cancel');
+        };
+
+        $scope.saveUser = function(newUser)
+        {
+            rars.post("user/data", newUser, monster.get("token")).success(function(data)
+            {
+                $rootScope.$broadcast("global-notification", {"type": "success", "text": "New user created."});
+                $rootScope.$broadcast("reload-users");
+                $modalInstance.close();
+            }).error(function(data, header) 
+            { 
+                if (header == 409) $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Could not create user, email address already registered."});
+                else $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Could not create user, please try again later."});
+            });
+        };    
     })
 
     .controller("userListAccordion", function($scope, rars, $rootScope, $timeout)
@@ -33,6 +70,14 @@ define(["angular", "cookie-monster"], function(angular, monster)
         {
             $scope.users = data.users;
         }); 
+
+        $rootScope.$on("reload-users", function()
+        {
+            rars.get("user/list", "all", monster.get("token")).success(function(data)
+            {
+                $scope.users = data.users;
+            }); 
+        });
 
         $scope.saveUser = function(index)
         {

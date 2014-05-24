@@ -18,7 +18,6 @@ class UserData extends RazorAPI
         parent::__construct();
     }
 
-    // add or update content
     public function post($data)
     {
         // check we have a logged in user
@@ -28,8 +27,38 @@ class UserData extends RazorAPI
         $db = new RazorDB();
         $db->connect("user");
 
-        if ($this->user["id"] == $data["id"])
+        if (!isset($data["id"]))
         {
+            // do you have access to make create new user
+            if ($this->check_access() != 10) $this->response(null, null, 401);
+            if (!isset($data["new_password"]) || empty($data["new_password"])) $this->response(null, null, 400);
+
+            // check email is unique
+            $search = array("column" => "email_address", "value" => $data["email_address"]);
+            $user = $db->get_rows($search);
+            if ($user["count"] > 0) $this->response(null, null, 409);
+            
+            // create new user
+            $row = array(
+                "name" => $data["name"], 
+                "email_address" => $data["email_address"],
+                "access_level" => ((int) $data["access_level"] < 10 ? $data["access_level"] : 1),
+                "active" => $data["active"],
+                "password" => $this->create_hash($data["new_password"])
+            );
+
+            $db->add_rows($row);
+        }
+        elseif ($this->user["id"] == $data["id"])
+        {
+            // check email is unique if changed
+            if ($data["email_address"] != $this->user["email_address"])
+            {
+                $search = array("column" => "email_address", "value" => $data["email_address"]);
+                $user = $db->get_rows($search);
+                if ($user["count"] > 0) $this->response(null, null, 409);
+            }
+
             // if this is your account, alter name, email or password
             $search = array("column" => "id", "value" => $this->user["id"]);
 
@@ -41,6 +70,9 @@ class UserData extends RazorAPI
             if (isset($data["new_password"])) $row["password"] = $this->create_hash($data["new_password"]);
 
             $db->edit_rows($search, $row);
+            
+            // return the basic user details
+            if (isset($data["new_password"])) $this->response(array("reload" => true), "json");
         }
         elseif ($this->check_access() == 10)
         {
@@ -60,9 +92,6 @@ class UserData extends RazorAPI
         else $this->response(null, null, 401);
 
         $db->disconnect(); 
-
-        // return the basic user details
-        if (isset($data["new_password"])) $this->response(array("reload" => true), "json");
 
         $this->response("success", "json");
     }

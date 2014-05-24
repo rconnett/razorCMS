@@ -3,7 +3,10 @@
 		<div class="col-sm-12">
 			<div class="accordian" ng-controller="userListAccordion">
 				<div class="filter row">
-					<div class="col-sm-9">
+					<div class="col-sm-3">
+						<button class="btn btn-primary" ng-click="createUser()" ng-disabled="user.access_level !== 10"><i class="fa fa-users"></i> Create User</button>
+					</div>
+					<div class="col-sm-6">
 						<div class="input-group">
 	  						<span class="input-group-addon">Filter</span>
 							<input class="form-control" ng-model="searchFilter" placeholder="Search to filter" />
