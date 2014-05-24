@@ -110,7 +110,7 @@
 								                <button class="btn btn-success" ng-click="saveUser($index)" ng-disabled="form.$invalid || processing || (!!u.new_password && !u.repeat_password)">
 								                	<i class="fa fa-check"></i> Save Changes
 								                </button>
-								                <button class="btn btn-danger" ng-if="u.id != 1" ng-disabled="u.active" ng-click="removeUser($index)">
+								                <button class="btn btn-danger" ng-if="u.id != 1" ng-disabled="u.active || processing" ng-click="removeUser($index)">
 								                	<i class="fa fa-trash-o"></i> Remove User
 								                </button>
 											</div>

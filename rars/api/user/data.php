@@ -66,6 +66,39 @@ class UserData extends RazorAPI
 
         $this->response("success", "json");
     }
+
+    // remove a user
+    public function delete($id)
+    {
+        // check we have a logged in user
+        if ((int) $this->check_access() < 1) $this->response(null, null, 401);
+        if (empty($id)) $this->response(null, null, 400);
+        if ($id == 1) $this->response(null, null, 400);
+        $id = (int) $id;
+
+        $db = new RazorDB();
+        $db->connect("user");
+
+        if ($this->user["id"] == $id)
+        {
+            // this is your account, allow removal of own account
+            $search = array("column" => "id", "value" => $this->user["id"]);
+            $db->delete_rows($search);
+            $response = "reload";
+        }
+        elseif ($this->check_access() == 10)
+        {
+            // if not account owner, but acces of 10, can remove account
+            $search = array("column" => "id", "value" => $id);
+            $db->delete_rows($search);
+            $response = "success";
+        }
+        else $this->response(null, null, 401);
+
+        $db->disconnect(); 
+
+        $this->response($response, "json");        
+    }
 }
 
 /* EOF */

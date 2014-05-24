@@ -60,7 +60,28 @@ define(["angular", "cookie-monster"], function(angular, monster)
 
         $scope.removeUser = function(index)
         {
+            $scope.processing = true;
 
+            rars.delete("user/data", $scope.users[index].id, monster.get("token")).success(function(data)
+            {
+                $scope.processing = false;
+                if (!!data == "reload")
+                {
+                    $rootScope.$broadcast("global-notification", {"type": "success", "text": "Your details have been removed, logging out in 3 seconds."});
+
+                    $timeout(function()
+                    {
+                        window.location = RAZOR_BASE_URL;
+                    }, 3000);
+                }
+                else $rootScope.$broadcast("global-notification", {"type": "success", "text": "User has been removed."});
+
+                $scope.users.splice(index, 1);
+            }).error(function() 
+            { 
+                $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Could not remove user, please try again later."});
+                $scope.processing = false; 
+            });
         };
     });
 });
