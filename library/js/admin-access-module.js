@@ -11,9 +11,9 @@
 require([
 	"angular",
 	"angular-route",
-    "ui-bootstrap",
-    "jquery",
-    "jquery-bootstrap",
+	"ui-bootstrap",
+	"jquery",
+	"jquery-bootstrap",
 	"razor/services/rars", 
 	"razor/directives/form-controls", 
 	"razor/directives/notification", 
@@ -27,31 +27,31 @@ require([
 	"razor/admin/admin-extensions"
 ], function(angular)
 {
-    angular.module("razor.access", [
-    	"ngRoute",
-    	"razor.services.rars", 
-    	"razor.directives.formControls", 
-    	"razor.directives.notification", 
-    	"razor.directives.validation", 
-    	"razor.admin.access",
-    	"razor.admin.settings", 
-    	"razor.admin.page", 
-    	"razor.admin.pages", 
-    	"razor.admin.content", 
-    	"razor.admin.profile", 
-    	"razor.admin.extensions"
-    ])
+	angular.module("razor.access", [
+		"ngRoute",
+		"razor.services.rars", 
+		"razor.directives.formControls", 
+		"razor.directives.notification", 
+		"razor.directives.validation", 
+		"razor.admin.access",
+		"razor.admin.settings", 
+		"razor.admin.page", 
+		"razor.admin.pages", 
+		"razor.admin.content", 
+		"razor.admin.profile", 
+		"razor.admin.extensions"
+	])
 
 	.config(['$routeProvider', function($routeProvider) {
-	    $routeProvider
-	    .when('/page', {templateUrl: RAZOR_BASE_URL + 'theme/partial/admin-page.html', controller: "page"})
-	    .when('/pages', {templateUrl: RAZOR_BASE_URL + 'theme/partial/admin-pages.html', controller: "pages"})
-	    .when('/content', {templateUrl: RAZOR_BASE_URL + 'theme/partial/admin-content.html', controller: "content"})
-	    .when('/extensions', {templateUrl: RAZOR_BASE_URL + 'theme/partial/admin-extensions.html', controller: "extensions"})
-	    .when('/profile', {templateUrl: RAZOR_BASE_URL + 'theme/partial/admin-profile.html', controller: "profile"})
-	    .when('/settings', {templateUrl: RAZOR_BASE_URL + 'theme/partial/admin-settings.html', controller: "settings"})
-	    .when('/password-reset', {templateUrl: RAZOR_BASE_URL + 'theme/partial/admin-page.html', controller: "page"})
+		$routeProvider
+		.when('/page', {templateUrl: RAZOR_BASE_URL + 'theme/partial/admin-page.html', controller: "page"})
+		.when('/pages', {templateUrl: RAZOR_BASE_URL + 'theme/partial/admin-pages.html', controller: "pages"})
+		.when('/content', {templateUrl: RAZOR_BASE_URL + 'theme/partial/admin-content.html', controller: "content"})
+		.when('/extensions', {templateUrl: RAZOR_BASE_URL + 'theme/partial/admin-extensions.html', controller: "extensions"})
+		.when('/profile', {templateUrl: RAZOR_BASE_URL + 'theme/partial/admin-profile.html', controller: "profile"})
+		.when('/settings', {templateUrl: RAZOR_BASE_URL + 'theme/partial/admin-settings.html', controller: "settings"})
+		.when('/password-reset', {templateUrl: RAZOR_BASE_URL + 'theme/partial/admin-page.html', controller: "page"})
 	}]);
 
-    angular.bootstrap(document.getElementById("razor-access"), ["razor.access"]); // Necessary because the Angular files are being loading asynchronously
+	angular.bootstrap(document.getElementById("razor-access"), ["razor.access"]); // Necessary because the Angular files are being loading asynchronously
 });

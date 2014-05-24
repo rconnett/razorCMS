@@ -9,8 +9,8 @@
  */
  
 require.config({
-    baseUrl: RAZOR_BASE_URL + 'library/js',
-    waitSeconds: 60,
+	baseUrl: RAZOR_BASE_URL + 'library/js',
+	waitSeconds: 60,
 
 	paths: {
 		"angular": "angular/angular_1_2_14.min",

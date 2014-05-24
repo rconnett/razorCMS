@@ -15,9 +15,9 @@ h1, h2, h3, h4, h5, h6,
 
   small,
   .small {
-    font-weight: normal;
-    line-height: 1;
-    color: @headings-small-color;
+	font-weight: normal;
+	line-height: 1;
+	color: @headings-small-color;
   }
 }
 
@@ -29,7 +29,7 @@ h3, .h3 {
 
   small,
   .small {
-    font-size: 65%;
+	font-size: 65%;
   }
 }
 h4, .h4,
@@ -40,7 +40,7 @@ h6, .h6 {
 
   small,
   .small {
-    font-size: 75%;
+	font-size: 75%;
   }
 }
 
@@ -66,7 +66,7 @@ p {
   line-height: 1.4;
 
   @media (min-width: @screen-sm-min) {
-    font-size: (@font-size-base * 1.5);
+	font-size: (@font-size-base * 1.5);
   }
 }
 
@@ -79,13 +79,13 @@ small,
 .small  { font-size: 85%; }
 
 // Undo browser default styling
-cite    { font-style: normal; }
+cite	{ font-style: normal; }
 
 // Alignment
-.text-left           { text-align: left; }
-.text-right          { text-align: right; }
-.text-center         { text-align: center; }
-.text-justify        { text-align: justify; }
+.text-left		   { text-align: left; }
+.text-right		  { text-align: right; }
+.text-center		 { text-align: center; }
+.text-justify		{ text-align: justify; }
 
 // Contextual colors
 .text-muted {
@@ -150,7 +150,7 @@ ol {
   margin-bottom: (@line-height-computed / 2);
   ul,
   ol {
-    margin-bottom: 0;
+	margin-bottom: 0;
   }
 }
 
@@ -168,9 +168,9 @@ ol {
   margin-left: -5px;
 
   > li {
-    display: inline-block;
-    padding-left: 5px;
-    padding-right: 5px;
+	display: inline-block;
+	padding-left: 5px;
+	padding-right: 5px;
   }
 }
 
@@ -197,17 +197,17 @@ dd {
 
 @media (min-width: @grid-float-breakpoint) {
   .dl-horizontal {
-    dt {
-      float: left;
-      width: (@component-offset-horizontal - 20);
-      clear: left;
-      text-align: right;
-      .text-overflow();
-    }
-    dd {
-      margin-left: @component-offset-horizontal;
-      &:extend(.clearfix all); // Clear the floated `dt` if an empty `dd` is present
-    }
+	dt {
+	  float: left;
+	  width: (@component-offset-horizontal - 20);
+	  clear: left;
+	  text-align: right;
+	  .text-overflow();
+	}
+	dd {
+	  margin-left: @component-offset-horizontal;
+	  &:extend(.clearfix all); // Clear the floated `dt` if an empty `dd` is present
+	}
   }
 }
 
@@ -236,9 +236,9 @@ blockquote {
   p,
   ul,
   ol {
-    &:last-child {
-      margin-bottom: 0;
-    }
+	&:last-child {
+	  margin-bottom: 0;
+	}
   }
 
   // Note: Deprecated small and .small as of v3.1.0
@@ -246,14 +246,14 @@ blockquote {
   footer,
   small,
   .small {
-    display: block;
-    font-size: 80%; // back to default font-size
-    line-height: @line-height-base;
-    color: @blockquote-small-color;
+	display: block;
+	font-size: 80%; // back to default font-size
+	line-height: @line-height-base;
+	color: @blockquote-small-color;
 
-    &:before {
-      content: '\2014 \00A0'; // em dash, nbsp
-    }
+	&:before {
+	  content: '\2014 \00A0'; // em dash, nbsp
+	}
   }
 }
 
@@ -272,10 +272,10 @@ blockquote.pull-right {
   footer,
   small,
   .small {
-    &:before { content: ''; }
-    &:after {
-      content: '\00A0 \2014'; // nbsp, em dash
-    }
+	&:before { content: ''; }
+	&:after {
+	  content: '\00A0 \2014'; // nbsp, em dash
+	}
   }
 }
 

@@ -12,29 +12,29 @@
  
 class SystemData extends RazorAPI
 {
-    function __construct()
-    {
-        // REQUIRED IN EXTENDED CLASS TO LOAD DEFAULTS
-        parent::__construct();
-    }
+	function __construct()
+	{
+		// REQUIRED IN EXTENDED CLASS TO LOAD DEFAULTS
+		parent::__construct();
+	}
 
-    public function get($id)
-    {
-        if ((int) $this->check_access() < 6) $this->response(null, null, 401);
-        if (empty($id)) $this->response(null, null, 400);
+	public function get($id)
+	{
+		if ((int) $this->check_access() < 6) $this->response(null, null, 401);
+		if (empty($id)) $this->response(null, null, 400);
 
-        // get menu data too
-        $db = new RazorDB();
-        $db->connect("system");
+		// get menu data too
+		$db = new RazorDB();
+		$db->connect("system");
 
-        $search = array("column" => "id", "value" => 1);
-        $system = $db->get_rows($search);
-        $system = $system["result"][0];
-        
-        $db->disconnect(); 
+		$search = array("column" => "id", "value" => 1);
+		$system = $db->get_rows($search);
+		$system = $system["result"][0];
+		
+		$db->disconnect(); 
 
-        $this->response(array("system" => $system), "json");
-    }
+		$this->response(array("system" => $system), "json");
+	}
 }
 
 /* EOF */

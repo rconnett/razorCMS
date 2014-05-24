@@ -12,21 +12,21 @@
  
 class UserBasic extends RazorAPI
 {
-    function __construct()
-    {
-        // REQUIRED IN EXTENDED CLASS TO LOAD DEFAULTS
-        parent::__construct();
-    }
+	function __construct()
+	{
+		// REQUIRED IN EXTENDED CLASS TO LOAD DEFAULTS
+		parent::__construct();
+	}
 
-    // fetch logged in user details if logged in
-    public function get($id)
-    {
-        // login check - if fail, return no data to stop error flagging to user
-        if ((int) $this->check_access() < 1 || $id !== "current") $this->response(null, null, 204);
+	// fetch logged in user details if logged in
+	public function get($id)
+	{
+		// login check - if fail, return no data to stop error flagging to user
+		if ((int) $this->check_access() < 1 || $id !== "current") $this->response(null, null, 204);
 
-        // return the basic user details
-        $this->response(array("user" => $this->user), "json");
-    }
+		// return the basic user details
+		$this->response(array("user" => $this->user), "json");
+	}
 }
 
 /* EOF */

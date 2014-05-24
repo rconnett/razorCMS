@@ -10,17 +10,17 @@
  
 define(["angular"], function(angular)
 {
-    angular.module("razor.directives.formControls", [])
+	angular.module("razor.directives.formControls", [])
  
-    .directive('slideSwitch', function() {
+	.directive('slideSwitch', function() {
 		return {
 			restrict: 'E',
 			scope: {"rzrModel": "=", "rzrDisabled": "="},
 			template: '<div class="slide-switch" title="{{(rzrDisabled ? \'Disabled (is home page)\' : \'\')}}" ng-class="{\'slide-switch-on\': rzrModel, \'slide-switch-disabled\': rzrDisabled}" ng-click="rzrModel = (rzrDisabled ? rzrModel : !rzrModel)"><span class="slide-switch-slider"><span ng-hide="rzrModel">OFF</span><span ng-show="rzrModel">ON</span></span></div>'
 		};
-    })
+	})
  
-    .directive('multiSelect', function() {
+	.directive('multiSelect', function() {
 		return {
 			restrict: 'E',
 			scope: {"rzrSelected": "=", "rzrOptions": "=", "rzrValue": "=", "rzrLabel": "="},
@@ -42,38 +42,38 @@ define(["angular"], function(angular)
 			{
 				$scope.hideSelected = function(opt)
 				{
-				    var result = true
+					var result = true
 
-				    angular.forEach($scope.rzrSelected, function(val)
-				    {
-				        if (val[$scope.rzrValue] === opt[$scope.rzrValue]) result = false;
-				    });
+					angular.forEach($scope.rzrSelected, function(val)
+					{
+						if (val[$scope.rzrValue] === opt[$scope.rzrValue]) result = false;
+					});
 
-				    return result;
+					return result;
 				};
 
 				$scope.hideOptions = function()
 				{
-				    $timeout(function() {
-				        $scope.selectaOptions = false;
-				    }, 250);
+					$timeout(function() {
+						$scope.selectaOptions = false;
+					}, 250);
 				};
 			}
 		};
-    })
+	})
 
 	.directive('rzrFileModel', ['$parse', function ($parse) {
-	    return {
-	        restrict: 'A',
-	        link: function($scope, $element, $attrs) {
-	            var model = $parse($attrs.rzrFileModel);
-	            
-	            $element.bind('change', function(){
-	                $scope.$apply(function(){
-	                    model.assign($scope, $element[0].files);
-	                });
-	            });
-	        }
-	    };
+		return {
+			restrict: 'A',
+			link: function($scope, $element, $attrs) {
+				var model = $parse($attrs.rzrFileModel);
+				
+				$element.bind('change', function(){
+					$scope.$apply(function(){
+						model.assign($scope, $element[0].files);
+					});
+				});
+			}
+		};
 	}]);
 });

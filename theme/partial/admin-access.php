@@ -1,16 +1,16 @@
 <!-- admin html -->
 <body class="razor-access">
  
-    <!--[if lt IE 9]>
-        <div class="ie8 ie8-admin">
-            <p class="message">
-                <i class="fa fa-exclamation-triangle"></i> You are using an outdated version of Internet Explorer that is not supported, 
-                please update your browser or consider using an alternative, modern browser, such as 
-                <a href="http://www.google.com/chrome">Google Chome</a>.
-            </p>
-        </div>
-    <![endif]-->
-    <div id="razor-access" class="ng-cloak" ng-controller="access" ng-init="init()">
+	<!--[if lt IE 9]>
+		<div class="ie8 ie8-admin">
+			<p class="message">
+				<i class="fa fa-exclamation-triangle"></i> You are using an outdated version of Internet Explorer that is not supported, 
+				please update your browser or consider using an alternative, modern browser, such as 
+				<a href="http://www.google.com/chrome">Google Chome</a>.
+			</p>
+		</div>
+	<![endif]-->
+	<div id="razor-access" class="ng-cloak" ng-controller="access" ng-init="init()">
 
 		<global-notification></global-notification>
 
@@ -21,13 +21,13 @@
 						<div class="form-group">
 							<!--[if IE 9]>
 								<label for="email">Email</label>
-						    <![endif]-->
+							<![endif]-->
 							<input name="email" type="email" class="form-control" placeholder="Email address" ng-model="loginDetails.u" ng-class="{'input-error' :form.email.$dirty && form.email.$invalid && form.email.$error.required}" required>
 						</div>
 						<div class="form-group">
 							<!--[if IE 9]>
 								<label for="password">Password</label>
-						    <![endif]-->
+							<![endif]-->
 							<input name="password" type="password" class="form-control" placeholder="Password" ng-model="loginDetails.p" ng-class="{'input-error' :form.password.$dirty && form.password.$invalid && form.password.$error.required}">
 						</div>
 						<button type="submit" class="btn btn-default" ng-disabled="form.$invalid || processing || !loginDetails.p || loginDetails.p.length < 1">
@@ -44,13 +44,13 @@
 						<div class="form-group">
 							<!--[if IE 9]>
 								<label for="password">Password</label>
-						    <![endif]-->
+							<![endif]-->
 							<input name="password" type="password" class="form-control" placeholder="Password" ng-model="passwordDetails.password" ng-class="{'input-error' :form.password.$dirty && form.password.$invalid && form.password.$error.required}" required>
 						</div>
 							<div class="form-group">
 							<!--[if IE 9]>
 								<label for="password">New Password</label>
-						    <![endif]-->
+							<![endif]-->
 							<input name="repeat_password" type="password" class="form-control" placeholder="New Password" ng-model="passwordDetails.repeat_password" ng-class="{'input-error' :form.repeat_password.$dirty && form.repeat_password.$invalid && (form.repeat_password.$error.required || form.repeatPassword.$error.confirm)}"  confirm="{{passwordDetails.password}}" required>
 						</div>
 						<button type="submit" class="btn btn-default" ng-disabled="form.$invalid || processing">

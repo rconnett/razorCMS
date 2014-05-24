@@ -1,15 +1,15 @@
 <!-- admin html -->
 <body id="razor-admin" class="ng-cloak razor-admin" ng-controller="edit" ng-init="init()">
  
-    <!--[if lt IE 9]>
-        <div class="ie8 ie8-admin">
-            <p class="message">
-                <i class="fa fa-exclamation-triangle"></i> You are using an outdated version of Internet Explorer that is not supported, 
-                please update your browser or consider using an alternative, modern browser, such as 
-                <a href="http://www.google.com/chrome">Google Chome</a>.
-            </p>
-        </div>
-    <![endif]-->
+	<!--[if lt IE 9]>
+		<div class="ie8 ie8-admin">
+			<p class="message">
+				<i class="fa fa-exclamation-triangle"></i> You are using an outdated version of Internet Explorer that is not supported, 
+				please update your browser or consider using an alternative, modern browser, such as 
+				<a href="http://www.google.com/chrome">Google Chome</a>.
+			</p>
+		</div>
+	<![endif]-->
 
 	<global-notification></global-notification>
 

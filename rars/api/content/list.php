@@ -12,58 +12,58 @@
  
 class ContentList extends RazorAPI
 {
-    function __construct()
-    {
-        // REQUIRED IN EXTENDED CLASS TO LOAD DEFAULTS
-        parent::__construct();
-    }
+	function __construct()
+	{
+		// REQUIRED IN EXTENDED CLASS TO LOAD DEFAULTS
+		parent::__construct();
+	}
 
-    public function get($id)
-    {
-        $db = new RazorDB();
+	public function get($id)
+	{
+		$db = new RazorDB();
 
-        $db->connect("content");
+		$db->connect("content");
 
-        // set options
-        $options = array(
-            "order" => array("column" => "id", "direction" => "desc")
-        );
+		// set options
+		$options = array(
+			"order" => array("column" => "id", "direction" => "desc")
+		);
 
-        $search = array("column" => "id", "value" => null, "not" => true);
+		$search = array("column" => "id", "value" => null, "not" => true);
 
-        $content = $db->get_rows($search, $options);
-        $content = $content["result"];
-        $db->disconnect(); 
+		$content = $db->get_rows($search, $options);
+		$content = $content["result"];
+		$db->disconnect(); 
 
-        // now get all page content so we can show what pages are using this content
-        $db->connect("page_content");
+		// now get all page content so we can show what pages are using this content
+		$db->connect("page_content");
 
-        $options = array(
-            "join" => array("table" => "page", "join_to" => "page_id")
-        );
+		$options = array(
+			"join" => array("table" => "page", "join_to" => "page_id")
+		);
 
-        $search = array("column" => "id", "value" => null, "not" => true);
+		$search = array("column" => "id", "value" => null, "not" => true);
 
-        $page_content = $db->get_rows($search, $options);
-        $page_content = $page_content["result"];
-        $db->disconnect(); 
+		$page_content = $db->get_rows($search, $options);
+		$page_content = $page_content["result"];
+		$db->disconnect(); 
 
-        foreach ($content as $key => $row)
-        {
-            foreach ($page_content as $pc)
-            {
-                if ($row["id"] == $pc["content_id"])
-                {
-                   if (!isset($content[$key]["used_on_pages"])) $content[$key]["used_on_pages"] = array();
-                   $content[$key]["used_on_pages"][$pc["page_id"]] = array("id" => $pc["page_id"], "name" => $pc["page_id.name"], "link" => $pc["page_id.link"]);  
-                }
-            }
-        }
+		foreach ($content as $key => $row)
+		{
+			foreach ($page_content as $pc)
+			{
+				if ($row["id"] == $pc["content_id"])
+				{
+				   if (!isset($content[$key]["used_on_pages"])) $content[$key]["used_on_pages"] = array();
+				   $content[$key]["used_on_pages"][$pc["page_id"]] = array("id" => $pc["page_id"], "name" => $pc["page_id.name"], "link" => $pc["page_id.link"]);  
+				}
+			}
+		}
 
-        
-        // return the basic user details
-        $this->response(array("content" => $content), "json");
-    }
+		
+		// return the basic user details
+		$this->response(array("content" => $content), "json");
+	}
 }
 
 /* EOF */

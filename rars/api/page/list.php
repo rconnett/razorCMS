@@ -12,26 +12,26 @@
  
 class PageList extends RazorAPI
 {
-    function __construct()
-    {
-        // REQUIRED IN EXTENDED CLASS TO LOAD DEFAULTS
-        parent::__construct();
-    }
+	function __construct()
+	{
+		// REQUIRED IN EXTENDED CLASS TO LOAD DEFAULTS
+		parent::__construct();
+	}
 
-    public function get($id)
-    {
-        $db = new RazorDB();
-        $db->connect("page");
+	public function get($id)
+	{
+		$db = new RazorDB();
+		$db->connect("page");
 
-        $search = array("column" => "id", "value" => null, "not" => true);
+		$search = array("column" => "id", "value" => null, "not" => true);
 
-        $pages = $db->get_rows($search);
-        $pages = $pages["result"];
-        $db->disconnect(); 
-        
-        // return the basic user details
-        $this->response(array("pages" => $pages), "json");
-    }
+		$pages = $db->get_rows($search);
+		$pages = $pages["result"];
+		$db->disconnect(); 
+		
+		// return the basic user details
+		$this->response(array("pages" => $pages), "json");
+	}
 }
 
 /* EOF */

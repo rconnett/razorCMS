@@ -52,7 +52,7 @@ Due to the system not using any database backend, installation is a breeze.
 5. Append "**/login**" to the end of the URL. (Without the quotes.)
 6. Login in with the following default credentials:
   - *Username/email*: **`razorcms@razorcms.co.uk`**
-  -       *Password*: **`password`**
+  -	   *Password*: **`password`**
 7. Once logged in, click the **Dashboard Icon** to bring up the **Administration Overlay**. (Top left circular icon that looks like a *bullseye*.)
 8. Click on profile, change the default username, and password, save the changes, and wait to be logged out.
 

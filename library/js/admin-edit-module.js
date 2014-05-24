@@ -10,9 +10,9 @@
  
 require([
 	"angular",
-    "ui-bootstrap",
-    "jquery",
-    "jquery-bootstrap",
+	"ui-bootstrap",
+	"jquery",
+	"jquery-bootstrap",
 	"razor/services/rars", 
 	"razor/directives/form-controls", 
 	"razor/directives/notification", 
@@ -20,13 +20,13 @@ require([
 	"razor/admin/admin-edit"
 ], function(angular)
 {
-    angular.module("razor.admin", [
-    	"razor.services.rars", 
-    	"razor.directives.formControls", 
-    	"razor.directives.notification", 
-    	"razor.directives.validation", 
-    	"razor.admin.edit"
-    ]);
+	angular.module("razor.admin", [
+		"razor.services.rars", 
+		"razor.directives.formControls", 
+		"razor.directives.notification", 
+		"razor.directives.validation", 
+		"razor.admin.edit"
+	]);
 
-    angular.bootstrap(document.getElementById("razor-admin"), ["razor.admin"]); // Necessary because the Angular files are being loading asynchronously
+	angular.bootstrap(document.getElementById("razor-admin"), ["razor.admin"]); // Necessary because the Angular files are being loading asynchronously
 });

@@ -12,32 +12,32 @@
  
 class SiteData extends RazorAPI
 {
-    function __construct()
-    {
-        // REQUIRED IN EXTENDED CLASS TO LOAD DEFAULTS
-        parent::__construct();
-    }
+	function __construct()
+	{
+		// REQUIRED IN EXTENDED CLASS TO LOAD DEFAULTS
+		parent::__construct();
+	}
 
-    // add or update content
-    public function post($data)
-    {
-        // login check - if fail, return no data to stop error flagging to user
-        if ((int) $this->check_access() < 10) $this->response(null, null, 401);
-        if (empty($data)) $this->response(null, null, 400);
+	// add or update content
+	public function post($data)
+	{
+		// login check - if fail, return no data to stop error flagging to user
+		if ((int) $this->check_access() < 10) $this->response(null, null, 401);
+		if (empty($data)) $this->response(null, null, 400);
 
-        $db = new RazorDB();
-        $db->connect("site");
-        $search = array("column" => "id", "value" => 1);
-        $row = array();
+		$db = new RazorDB();
+		$db->connect("site");
+		$search = array("column" => "id", "value" => 1);
+		$row = array();
 
-        if (isset($data["name"])) $row["name"] = $data["name"];
-        if (isset($data["google_analytics_code"])) $row["google_analytics_code"] = $data["google_analytics_code"];
+		if (isset($data["name"])) $row["name"] = $data["name"];
+		if (isset($data["google_analytics_code"])) $row["google_analytics_code"] = $data["google_analytics_code"];
 
-        $db->edit_rows($search, $row);
-        $db->disconnect(); 
+		$db->edit_rows($search, $row);
+		$db->disconnect(); 
 
-        $this->response("success", "json");
-    }
+		$this->response("success", "json");
+	}
 }
 
 /* EOF */

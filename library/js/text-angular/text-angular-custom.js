@@ -246,16 +246,16 @@ define(["angular", "cookie-monster", "text-angular-sanitize", "ui-bootstrap", "r
 
 					// razorcms [smiffy6969] - image add/select modal - requires ui.bootstrap
 					this.$editor().imageSelection().result.then(function(image)
-				    {
-				    	var img = document.querySelector("#editor-link-place-holder-" + rand);
-				    	img.removeAttribute("id");
-				    	img.setAttribute("src", image.url);
-				    	scope.$editor().endAction();
-				    }, function () 
-				    {
-				    	var img = document.querySelector("#editor-link-place-holder-" + rand);
-				    	img.parentNode.removeChild(img);
-				    });
+					{
+						var img = document.querySelector("#editor-link-place-holder-" + rand);
+						img.removeAttribute("id");
+						img.setAttribute("src", image.url);
+						scope.$editor().endAction();
+					}, function () 
+					{
+						var img = document.querySelector("#editor-link-place-holder-" + rand);
+						img.parentNode.removeChild(img);
+					});
 					return this.$editor().wrapSelection('insertHTML', "<img id=\"editor-link-place-holder-" + rand + "\"/>");
 				}
 			});
@@ -573,32 +573,32 @@ define(["angular", "cookie-monster", "text-angular-sanitize", "ui-bootstrap", "r
 						scope.imageSelection = function()
 						{	
 							// image select modal
-						    return $modal.open(
-						    {
-						        templateUrl: "template/text-angular/image-selector.html",
-						        controller: function($scope, $modalInstance, rars, $rootScope)
-						        {
-						        	$scope.imageList = [];
-						        	$scope.imageFile = null;
+							return $modal.open(
+							{
+								templateUrl: "template/text-angular/image-selector.html",
+								controller: function($scope, $modalInstance, rars, $rootScope)
+								{
+									$scope.imageList = [];
+									$scope.imageFile = null;
 
-						            // get images
-						            rars.get("file/image", "all", monster.get("token")).success(function(data)
-						            {
-						                $scope.imageList = data.imageList;
-						            });
-							        
-							        $scope.cancel = function()
-							        {
-							            $modalInstance.dismiss('cancel');
-							        };
+									// get images
+									rars.get("file/image", "all", monster.get("token")).success(function(data)
+									{
+										$scope.imageList = data.imageList;
+									});
+									
+									$scope.cancel = function()
+									{
+										$modalInstance.dismiss('cancel');
+									};
 
-							        $scope.close = function(image)
-							        {
-							            $modalInstance.close(image);
-							        }; 
+									$scope.close = function(image)
+									{
+										$modalInstance.close(image);
+									}; 
 
-							        $scope.uploadFile = function()
-							        {
+									$scope.uploadFile = function()
+									{
 										rars.post("file/image", {"files": $scope.fileList}, monster.get("token")).success(function(data)
 										{
 											if (!!data.files[0]) $scope.close(data.files[0]);
@@ -608,9 +608,9 @@ define(["angular", "cookie-monster", "text-angular-sanitize", "ui-bootstrap", "r
 											if (data == "HTTP/1.0 406 Not Acceptable") $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Error uploading file, invalid filename or file size over 50Mb."});
 											else $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Error uploading file, only .jpg, .gif and .png files allowed."});
 										});
-							        };
-							    }
-						    }); 
+									};
+								}
+							}); 
 						};
 					}
 				};
@@ -1174,13 +1174,13 @@ define(["angular", "cookie-monster", "text-angular-sanitize", "ui-bootstrap", "r
 			"		</div>\n" +
 			"		<div class=\"col-sm-11\" ng-show=\"showUpload\">\n" +
 			"			<div class=\"input-group\">\n" +
-			"               <span class=\"input-group-btn\">\n" +
+			"			   <span class=\"input-group-btn\">\n" +
 			"					<span class=\"btn btn-default btn-file\">\n" +
-    		"						<i class=\"fa fa-folder-open\"></i> Select <input type=\"file\" rzr-file-model=\"$parent.fileList\">\n" +
+			"						<i class=\"fa fa-folder-open\"></i> Select <input type=\"file\" rzr-file-model=\"$parent.fileList\">\n" +
 			"					</span>\n" +
 			"				</span>\n" +
 			"				<input type=\"text\" class=\"form-control\" readonly=\"\" ng-model=\"$parent.fileList[0].name\">\n" +
-			"               <span class=\"input-group-btn\">\n" +
+			"			   <span class=\"input-group-btn\">\n" +
 			"					<button class=\"btn btn-default\" ng-click=\"uploadFile()\" ng-disabled=\"!$parent.fileList\"> Upload</button>\n" +
 			"				</span>\n" +
 			"			</div>\n" +

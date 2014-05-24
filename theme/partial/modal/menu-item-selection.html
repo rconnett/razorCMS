@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h3>Add Menu Item <i class="fa fa-times pull-right" ng-click="cancel()"></i></h3>
+	<h3>Add Menu Item <i class="fa fa-times pull-right" ng-click="cancel()"></i></h3>
 </div>
 <div class="modal-body">
 	<div class="accordian" ng-controller="menuItemListAccordion">
@@ -26,10 +26,10 @@
 					<i class="expander pull-right fa button-heading" ng-class="{'fa-chevron-down': isopen, 'fa-chevron-right': !isopen}"></i>
 				</accordion-heading>
 				<div class="content">
-			        <div class="page-preview for-menu">
-			        	<iframe ng-src="{{loadPreview(page.link)}}" ng-if="isopen"></iframe>
-			        	<div class="preview-mask"></div>
-			        </div>
+					<div class="page-preview for-menu">
+						<iframe ng-src="{{loadPreview(page.link)}}" ng-if="isopen"></iframe>
+						<div class="preview-mask"></div>
+					</div>
 				</div>
 			</accordion-group>
 		</accordion>

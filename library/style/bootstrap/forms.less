@@ -140,14 +140,14 @@ output {
   &[disabled],
   &[readonly],
   fieldset[disabled] & {
-    cursor: not-allowed;
-    background-color: @input-bg-disabled;
-    opacity: 1; // iOS fix for unreadable disabled content
+	cursor: not-allowed;
+	background-color: @input-bg-disabled;
+	opacity: 1; // iOS fix for unreadable disabled content
   }
 
   // Reset height for `textarea`s
   textarea& {
-    height: auto;
+	height: auto;
   }
 }
 
@@ -196,9 +196,9 @@ input[type="date"] {
   margin-bottom: 10px;
   padding-left: 20px;
   label {
-    display: inline;
-    font-weight: normal;
-    cursor: pointer;
+	display: inline;
+	font-weight: normal;
+	cursor: pointer;
   }
 }
 .radio input[type="radio"],
@@ -240,7 +240,7 @@ input[type="checkbox"],
 .checkbox-inline {
   &[disabled],
   fieldset[disabled] & {
-    cursor: not-allowed;
+	cursor: not-allowed;
   }
 }
 
@@ -269,19 +269,19 @@ input[type="checkbox"],
 
   // Ensure icons don't overlap text
   .form-control {
-    padding-right: (@input-height-base * 1.25);
+	padding-right: (@input-height-base * 1.25);
   }
 
   // Feedback icon (requires .glyphicon classes)
   .form-control-feedback {
-    position: absolute;
-    top: (@line-height-computed + 5); // Height of the `label` and its margin
-    right: 0;
-    display: block;
-    width: @input-height-base;
-    height: @input-height-base;
-    line-height: @input-height-base;
-    text-align: center;
+	position: absolute;
+	top: (@line-height-computed + 5); // Height of the `label` and its margin
+	right: 0;
+	display: block;
+	width: @input-height-base;
+	height: @input-height-base;
+	line-height: @input-height-base;
+	text-align: center;
   }
 }
 
@@ -336,53 +336,53 @@ input[type="checkbox"],
 
   // Kick in the inline
   @media (min-width: @screen-sm-min) {
-    // Inline-block all the things for "inline"
-    .form-group {
-      display: inline-block;
-      margin-bottom: 0;
-      vertical-align: middle;
-    }
+	// Inline-block all the things for "inline"
+	.form-group {
+	  display: inline-block;
+	  margin-bottom: 0;
+	  vertical-align: middle;
+	}
 
-    // In navbar-form, allow folks to *not* use `.form-group`
-    .form-control {
-      display: inline-block;
-      width: auto; // Prevent labels from stacking above inputs in `.form-group`
-      vertical-align: middle;
-    }
-    // Input groups need that 100% width though
-    .input-group > .form-control {
-      width: 100%;
-    }
+	// In navbar-form, allow folks to *not* use `.form-group`
+	.form-control {
+	  display: inline-block;
+	  width: auto; // Prevent labels from stacking above inputs in `.form-group`
+	  vertical-align: middle;
+	}
+	// Input groups need that 100% width though
+	.input-group > .form-control {
+	  width: 100%;
+	}
 
-    .control-label {
-      margin-bottom: 0;
-      vertical-align: middle;
-    }
+	.control-label {
+	  margin-bottom: 0;
+	  vertical-align: middle;
+	}
 
-    // Remove default margin on radios/checkboxes that were used for stacking, and
-    // then undo the floating of radios and checkboxes to match (which also avoids
-    // a bug in WebKit: https://github.com/twbs/bootstrap/issues/1969).
-    .radio,
-    .checkbox {
-      display: inline-block;
-      margin-top: 0;
-      margin-bottom: 0;
-      padding-left: 0;
-      vertical-align: middle;
-    }
-    .radio input[type="radio"],
-    .checkbox input[type="checkbox"] {
-      float: none;
-      margin-left: 0;
-    }
+	// Remove default margin on radios/checkboxes that were used for stacking, and
+	// then undo the floating of radios and checkboxes to match (which also avoids
+	// a bug in WebKit: https://github.com/twbs/bootstrap/issues/1969).
+	.radio,
+	.checkbox {
+	  display: inline-block;
+	  margin-top: 0;
+	  margin-bottom: 0;
+	  padding-left: 0;
+	  vertical-align: middle;
+	}
+	.radio input[type="radio"],
+	.checkbox input[type="checkbox"] {
+	  float: none;
+	  margin-left: 0;
+	}
 
-    // Validation states
-    //
-    // Reposition the icon because it's now within a grid column and columns have
-    // `position: relative;` on them. Also accounts for the grid gutter padding.
-    .has-feedback .form-control-feedback {
-      top: 0;
-    }
+	// Validation states
+	//
+	// Reposition the icon because it's now within a grid column and columns have
+	// `position: relative;` on them. Also accounts for the grid gutter padding.
+	.has-feedback .form-control-feedback {
+	  top: 0;
+	}
   }
 }
 
@@ -400,31 +400,31 @@ input[type="checkbox"],
   .checkbox,
   .radio-inline,
   .checkbox-inline {
-    margin-top: 0;
-    margin-bottom: 0;
-    padding-top: (@padding-base-vertical + 1); // Default padding plus a border
+	margin-top: 0;
+	margin-bottom: 0;
+	padding-top: (@padding-base-vertical + 1); // Default padding plus a border
   }
   // Account for padding we're adding to ensure the alignment and of help text
   // and other content below items
   .radio,
   .checkbox {
-    min-height: (@line-height-computed + (@padding-base-vertical + 1));
+	min-height: (@line-height-computed + (@padding-base-vertical + 1));
   }
 
   // Make form groups behave like rows
   .form-group {
-    .make-row();
+	.make-row();
   }
 
   .form-control-static {
-    padding-top: (@padding-base-vertical + 1);
+	padding-top: (@padding-base-vertical + 1);
   }
 
   // Only right align form labels here when the columns stop stacking
   @media (min-width: @screen-sm-min) {
-    .control-label {
-      text-align: right;
-    }
+	.control-label {
+	  text-align: right;
+	}
   }
 
   // Validation states
@@ -432,7 +432,7 @@ input[type="checkbox"],
   // Reposition the icon because it's now within a grid column and columns have
   // `position: relative;` on them. Also accounts for the grid gutter padding.
   .has-feedback .form-control-feedback {
-    top: 0;
-    right: (@grid-gutter-width / 2);
+	top: 0;
+	right: (@grid-gutter-width / 2);
   }
 }

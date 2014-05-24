@@ -4,7 +4,7 @@
 <html xmlns:ng="http://angularjs.org" id="ng-app">
 	<head>
 		<meta charset="utf-8">
-	    <meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="description" content="<?php echo $this->page["description"] ?>">
 		<meta name="keywords" content="<?php echo $this->page["keywords"] ?>">
 

@@ -25,69 +25,69 @@ class RazorDB
 
 	/* construct/destruct */
 
-    function __destruct()
-    {
-    	if ($this->connected) $this->disconnect();
-    }
-
-
-    /* Private Local Functions */
-
-    private function sort($a, $b) 
-    {
-    	if ($this->order["direction"] == "asc") return $a[$this->order["column"]] - $b[$this->order["column"]];
-    	if ($this->order["direction"] == "desc") return $b[$this->order["column"]] - $a[$this->order["column"]];
-    	return 0;
+	function __destruct()
+	{
+		if ($this->connected) $this->disconnect();
 	}
 
-    private function open($type = 'r')
-    {
-        $this->handle = fopen($this->file, $type);
-        if ($this->handle)  {
+
+	/* Private Local Functions */
+
+	private function sort($a, $b) 
+	{
+		if ($this->order["direction"] == "asc") return $a[$this->order["column"]] - $b[$this->order["column"]];
+		if ($this->order["direction"] == "desc") return $b[$this->order["column"]] - $a[$this->order["column"]];
+		return 0;
+	}
+
+	private function open($type = 'r')
+	{
+		$this->handle = fopen($this->file, $type);
+		if ($this->handle)  {
 	  		return true;
 	  	}
 
 	  	// return error on non bad con
 	  	trigger_error("Failed to open db file for '{$this->table}'");
 		return false;
-    }
+	}
 
-    private function close()
-    {
-        if ($this->handle)
-        {
+	private function close()
+	{
+		if ($this->handle)
+		{
 			fflush($this->handle);
-        	fclose($this->handle);
-        	$this->handle = null;
-        	return true;
-        }
+			fclose($this->handle);
+			$this->handle = null;
+			return true;
+		}
 
-        // no connection, cannot disconnect
+		// no connection, cannot disconnect
 	  	trigger_error("Failed to close db file for '{$this->table}'");
 		return false;
-    }
+	}
 
-    private function lock()
-    {
-    	// try for lock
-        $c = 0; // retries
-        while ($this->lock) {
-        	// refresh headers
-        	$this->headers();
+	private function lock()
+	{
+		// try for lock
+		$c = 0; // retries
+		while ($this->lock) {
+			// refresh headers
+			$this->headers();
 
-        	// carry on
-            if ($c >= 100)
-            {
+			// carry on
+			if ($c >= 100)
+			{
 		  		trigger_error("Failed to obtain lock for {$this->table} db file, file in use");
-            	return false;
-            }
-            usleep(rand(10, 10000));
-            $c++;
-        }
+				return false;
+			}
+			usleep(rand(10, 10000));
+			$c++;
+		}
 
-        // continue with locking //
+		// continue with locking //
 
-    	$this->open('r+');
+		$this->open('r+');
 
 		// move pointer to lock
 		fseek($this->handle, 9, SEEK_SET);
@@ -95,7 +95,7 @@ class RazorDB
 		// check found lock
 		if (stream_get_line($this->handle, 5) != 'lock:')
 		{
-	        // no lock found
+			// no lock found
 		  	trigger_error("Failed to find lock for '{$this->table}'");
 		  	$this->close();
 			return false;
@@ -106,19 +106,19 @@ class RazorDB
 		$this->lock = true;
 		$this->close();
 		return true;
-    }
+	}
 
-    private function unlock()
-    {
-    	if ($this->lock)
-    	{
-	    	$this->open('r+');
+	private function unlock()
+	{
+		if ($this->lock)
+		{
+			$this->open('r+');
 			// move pointer to lock
 			fseek($this->handle, 9, SEEK_SET);
 			// check found lock
 			if (stream_get_line($this->handle, 5) != 'lock:')
 			{
-		        // no lock found
+				// no lock found
 			  	trigger_error("Failed to find lock for '{$this->table}'");
 			  	$this->close();
 				return false;
@@ -128,14 +128,14 @@ class RazorDB
 			$this->lock = false;
 			$this->close();
 			return true;
-	    }
+		}
 
-	    return false;
-    }
+		return false;
+	}
 
-    private function update_counter()
-    {
-    	$this->open('r+');
+	private function update_counter()
+	{
+		$this->open('r+');
 
 		// move pointer to row count (not counter, that is for id's, count is for row count)
 		fseek($this->handle, 19, SEEK_SET);
@@ -143,7 +143,7 @@ class RazorDB
 		// check found lock
 		if (stream_get_line($this->handle, 4) != 'inc:')
 		{
-	        // no count found
+			// no count found
 		  	trigger_error("Failed to find count for '{$this->table}'");
 		  	$this->close();
 			return false;
@@ -157,11 +157,11 @@ class RazorDB
 		fwrite($this->handle, $str_counter, 30);
 		$this->close();
 		return true;
-    }
+	}
 
-    private function update_row_count()
-    {
-    	$this->open('r+');
+	private function update_row_count()
+	{
+		$this->open('r+');
 
 		// move pointer to row count (not counter, that is for id's, count is for row count)
 		fseek($this->handle, 57, SEEK_SET);
@@ -169,7 +169,7 @@ class RazorDB
 		// check found lock
 		if (stream_get_line($this->handle, 10) != 'row_count:')
 		{
-	        // no count found
+			// no count found
 		  	trigger_error("Failed to find count for '{$this->table}'");
 		  	$this->close();
 			return false;
@@ -183,7 +183,7 @@ class RazorDB
 		fwrite($this->handle, $str_row_count, 30);
 		$this->close();
 		return true;
-    }
+	}
 
 	private function data_in($data)
 	{
@@ -216,8 +216,8 @@ class RazorDB
 					$lock = str_replace(array("\r"), array(''), stream_get_line($this->handle, 20, "\n"));
 					if (substr($lock, 3, 5) !== 'lock:')
 					{
-		                trigger_error("Failed to find table lock in '{$this->table}' db file, db file corrupt");
-		                $this->close();
+						trigger_error("Failed to find table lock in '{$this->table}' db file, db file corrupt");
+						$this->close();
 						return false;
 					}
 					$this->lock = (bool) substr($lock, 8, 1);
@@ -227,8 +227,8 @@ class RazorDB
 					$counter = str_replace(array("\r"), array(''), stream_get_line($this->handle, 100, "\n"));
 					if (substr($counter, 3, 4) !== 'inc:')
 					{
-		                trigger_error("Failed to find counter in '{$this->table}' db file, db file corrupt");
-		                $this->close();
+						trigger_error("Failed to find counter in '{$this->table}' db file, db file corrupt");
+						$this->close();
 						return false;
 					}
 					$this->counter = (int) str_replace('-', '', substr($counter, 7, 30));
@@ -238,8 +238,8 @@ class RazorDB
 					$count = str_replace(array("\r"), array(''), stream_get_line($this->handle, 100, "\n"));
 					if (substr($count, 3, 10) !== 'row_count:')
 					{
-		                trigger_error("Failed to find row count in '{$this->table}' db file, db file corrupt");
-		                $this->close();
+						trigger_error("Failed to find row count in '{$this->table}' db file, db file corrupt");
+						$this->close();
 						return false;
 					}
 					$this->row_count = (int) str_replace('-', '', substr($count, 13, 30));
@@ -253,8 +253,8 @@ class RazorDB
 					$table = str_replace(array("\r"), array(''), stream_get_line($this->handle, 1024, "\n"));
 					if (substr($table, 3, 6) !== 'table:')
 					{
-		                trigger_error("Failed to find table name '{$this->table}' in db file, db file corrupt");
-		                $this->close();
+						trigger_error("Failed to find table name '{$this->table}' in db file, db file corrupt");
+						$this->close();
 						return false;
 					}
 					$this->table = substr($table, 9);
@@ -264,8 +264,8 @@ class RazorDB
 					$cols = str_replace(array("\r"), '', stream_get_line($this->handle, 1024, "\n"));
 					if (substr($cols, 3, 8) !== 'columns:')
 					{
-		                trigger_error("Failed to find columns in '{$this->table}' db file, db file corrupt");
-		                $this->close();
+						trigger_error("Failed to find columns in '{$this->table}' db file, db file corrupt");
+						$this->close();
 						return false;
 					}
 					$col_data = explode('|',substr($cols, 11));
@@ -598,10 +598,10 @@ class RazorDB
 		$file_data.= "// --- end headers ---";
 
 		// write string to new file
-        $new_handle = fopen(RAZOR_BASE_PATH."storage/database/{$table}.db.php", "c");
+		$new_handle = fopen(RAZOR_BASE_PATH."storage/database/{$table}.db.php", "c");
 		fwrite($new_handle, $file_data, 2048);
 		fflush($new_handle);
-       	fclose($new_handle);
+	   	fclose($new_handle);
 
 		return true;
 	}
@@ -673,8 +673,8 @@ class RazorDB
 		}
 
 		// open table
-        $handle = fopen(RAZOR_BASE_PATH."storage/database/{$table}.db.php", 'r');
-        $rename_handle = fopen(RAZOR_BASE_PATH."storage/database/{$rename_table}.db.php", 'c');
+		$handle = fopen(RAZOR_BASE_PATH."storage/database/{$table}.db.php", 'r');
+		$rename_handle = fopen(RAZOR_BASE_PATH."storage/database/{$rename_table}.db.php", 'c');
 
 		fseek($handle, 0, SEEK_SET);
 
@@ -696,7 +696,7 @@ class RazorDB
 				$table_line = str_replace(array("\r"), array(''), $line);
 				if (substr($table_line, 3, 6) === 'table:')
 				{
-	                $line = str_replace($table, $rename_table, $line);
+					$line = str_replace($table, $rename_table, $line);
 				}
 			}
 
@@ -747,9 +747,9 @@ class RazorDB
 	 * @param bool $write Optional, connect with write permissions
 	 * @return bool True on connection
 	 */
-    public function connect($table)
-    {
-    	// resolve table
+	public function connect($table)
+	{
+		// resolve table
 		$this->table = strtolower($table);
 		$this->file = RAZOR_BASE_PATH."storage/database/{$this->table}.db.php";
 
@@ -762,7 +762,7 @@ class RazorDB
 
 		$this->connected = true;
 		return true;
-    }
+	}
 
 
 	/**
@@ -771,8 +771,8 @@ class RazorDB
 	 * Disconnect manually from the table (auto disconnect on object destroy if still connected)
 	 * @return bool True on disconnect
 	 */
-    public function disconnect()
-    {
+	public function disconnect()
+	{
 		// clean up in case obaject reused
 		$this->connected = null;
 		$this->handle = null;
@@ -783,7 +783,7 @@ class RazorDB
 		$this->columns = null;
 
 		return true;
-    }
+	}
 
 
 	/**
@@ -797,7 +797,7 @@ class RazorDB
 		// check connected
 		if (!$this->connected)
 		{
-            trigger_error("Not connected to table, cannot perform query");
+			trigger_error("Not connected to table, cannot perform query");
 			return false;
 		}
 
@@ -836,7 +836,7 @@ class RazorDB
 		// check connected
 		if (!$this->connected)
 		{
-            trigger_error("Not connected to table, cannot perform query");
+			trigger_error("Not connected to table, cannot perform query");
 			return false;
 		}
 
@@ -861,13 +861,13 @@ class RazorDB
 		{
 			if (!isset($search_data['column']))
 			{
-	            trigger_error("'column' not provided in search");
+				trigger_error("'column' not provided in search");
 				return false;
 			}
 
 			if (!isset($this->columns[$search_data['column']]))
 			{
-	            trigger_error("Column '{$search_data['column']}' does not exist in table '{$this->table}'");
+				trigger_error("Column '{$search_data['column']}' does not exist in table '{$this->table}'");
 				return false;
 			}
 		}
@@ -882,7 +882,7 @@ class RazorDB
 				// check all join data present
 				if (!isset($join_data['table']) || !isset($join_data['join_to']))
 				{
-		            trigger_error("Join needs 'table', 'join_to' in order to join a table");
+					trigger_error("Join needs 'table', 'join_to' in order to join a table");
 					return false;
 				}
 
@@ -897,7 +897,7 @@ class RazorDB
 				// check join_to column exists in parent table
 				if (!isset($this->columns[$join_data['join_to']]))
 				{
-		            trigger_error("Cannot join to column '{$join_data['join_to']}' in parent table '{$this->table}', column does not exist");
+					trigger_error("Cannot join to column '{$join_data['join_to']}' in parent table '{$this->table}', column does not exist");
 					return false;
 				}
 			}
@@ -953,7 +953,7 @@ class RazorDB
 					// Check row data
 					if (substr($row_data, 3, 4) !== 'row:')
 					{
-		                trigger_error("Failed to read line in '{$this->table}' db file, db file corrupt");
+						trigger_error("Failed to read line in '{$this->table}' db file, db file corrupt");
 						return false;
 					}
 
@@ -1014,43 +1014,43 @@ class RazorDB
 		{
 			foreach ($joins as $join)
 			{
-			    $join_ob = new RazorDB('razor_db:join:'.$this->table.'>'.$join['table']);
+				$join_ob = new RazorDB('razor_db:join:'.$this->table.'>'.$join['table']);
 
-			    if (!$join_ob->connect($join['table']))
-			    {
-			    	trigger_error("Failed to join table '{$join['table']}' omitting this data from results");
-			    	continue;
-			    }
+				if (!$join_ob->connect($join['table']))
+				{
+					trigger_error("Failed to join table '{$join['table']}' omitting this data from results");
+					continue;
+				}
 
-			    // no join data found, skip this join
-			    if (!isset($join['join_data'])) continue;
+				// no join data found, skip this join
+				if (!isset($join['join_data'])) continue;
 
-			    $found = $join_ob->get_rows($join['join_data']);
+				$found = $join_ob->get_rows($join['join_data']);
 
-			    // attach data to matches
-		    	foreach ($matches as $key => $match)
-		    	{
-		    		if ($found['count'] > 0)
-		    		{
-			    		foreach ($found['result'] as $found_result)
-			    		{
-			    			if ($match[$join['join_to']] === $found_result['id'])
-			    			{
-			    				foreach ($found_result as $col => $val)
-			    				{
-			    					$matches[$key][$join['join_to'].'.'.$col] = $val;
-			    				}
-			    			}
-			    		}
-		    		}
-		    		else
-		    		{
-		    			// no results so no match
-		    			unset($matches[$key]);
-		    		}
-		    	}
+				// attach data to matches
+				foreach ($matches as $key => $match)
+				{
+					if ($found['count'] > 0)
+					{
+						foreach ($found['result'] as $found_result)
+						{
+							if ($match[$join['join_to']] === $found_result['id'])
+							{
+								foreach ($found_result as $col => $val)
+								{
+									$matches[$key][$join['join_to'].'.'.$col] = $val;
+								}
+							}
+						}
+					}
+					else
+					{
+						// no results so no match
+						unset($matches[$key]);
+					}
+				}
 
-			    $join_ob->disconnect();
+				$join_ob->disconnect();
 			}
 		}
 
@@ -1101,7 +1101,7 @@ class RazorDB
 			// do not let them set id, set manually
 			if (isset($row['id']))
 			{
-	            trigger_error("Cannot set id column, column not writable for table '{$this->table}'");
+				trigger_error("Cannot set id column, column not writable for table '{$this->table}'");
 				return false;
 			}
 
@@ -1162,7 +1162,7 @@ class RazorDB
 
 					if ($error)
 					{
-			            trigger_error("Type miss-match for column '{$column['name']}' not of type '{$column['type']}'");
+						trigger_error("Type miss-match for column '{$column['name']}' not of type '{$column['type']}'");
 						return false;
 					}
 				}
@@ -1173,7 +1173,7 @@ class RazorDB
 				}
 				else
 				{
-		            trigger_error("No value set for column '{$column['name']}' and column not nullable");
+					trigger_error("No value set for column '{$column['name']}' and column not nullable");
 					return false;
 				}
 			}
@@ -1181,7 +1181,7 @@ class RazorDB
 			$comp_line = implode('|', $line);
 			if (strlen($comp_line) >= 1046000)
 			{
-		        trigger_error("Data to be saved is over 1Mb per line limit for table '{$this->table}'");
+				trigger_error("Data to be saved is over 1Mb per line limit for table '{$this->table}'");
 				return false;
 			}
 			$lines[] = $comp_line;
@@ -1202,7 +1202,7 @@ class RazorDB
 		}
 
 		// close temp file
-       	$this->close();
+	   	$this->close();
 		$this->update_counter();
 		$this->update_row_count();
 		$this->unlock();
@@ -1232,7 +1232,7 @@ class RazorDB
 		// check connected
 		if (!$this->connected)
 		{
-            trigger_error("Not connected to table, cannot perform query");
+			trigger_error("Not connected to table, cannot perform query");
 			return false;
 		}
 
@@ -1251,13 +1251,13 @@ class RazorDB
 		{
 			if (!isset($search_data['column']))
 			{
-	            trigger_error("'column' not provided in search");
+				trigger_error("'column' not provided in search");
 				return false;
 			}
 
 			if (!isset($this->columns[$search_data['column']]))
 			{
-	            trigger_error("Column '{$search_data['column']}' does not exist in table '{$this->table}'");
+				trigger_error("Column '{$search_data['column']}' does not exist in table '{$this->table}'");
 				return false;
 			}
 		}
@@ -1265,7 +1265,7 @@ class RazorDB
 		// check for changes array, put into multi array if needed
 		if (empty($changes))
 		{
-	        trigger_error("No change data found for '{$this->table}'");
+			trigger_error("No change data found for '{$this->table}'");
 			return false;
 		}
 
@@ -1275,7 +1275,7 @@ class RazorDB
 		{
 			if ($change_col == 'id')
 			{
-	            trigger_error("Cannot change the column 'id' in table '{$this->table}' as this is primary key, cannot perform edit");
+				trigger_error("Cannot change the column 'id' in table '{$this->table}' as this is primary key, cannot perform edit");
 				return false;
 			}
 
@@ -1311,7 +1311,7 @@ class RazorDB
 
 			if ($error)
 			{
-	            trigger_error("Type miss-match for change data on column '{$change_col}' in table '{$this->table}', cannot perform edit.");
+				trigger_error("Type miss-match for change data on column '{$change_col}' in table '{$this->table}', cannot perform edit.");
 				return false;
 			}
 		}
@@ -1322,11 +1322,11 @@ class RazorDB
 		// setup temp file
 		$temp_ext = rand(1, 1000000);
 		$temp_file = RAZOR_BASE_PATH."storage/database/{$this->table}_{$temp_ext}.db.php";
-        $temp_handle = fopen($temp_file, 'c');
-        if (!$temp_handle)
-        {
-            trigger_error("Failed to create temp transfer file for '{$this->table}'");
-            $this->unlock();
+		$temp_handle = fopen($temp_file, 'c');
+		if (!$temp_handle)
+		{
+			trigger_error("Failed to create temp transfer file for '{$this->table}'");
+			$this->unlock();
 			return false;
 	  	}
 
@@ -1381,9 +1381,9 @@ class RazorDB
 					// Check row data
 					if (substr($row_data, 3, 4) !== 'row:')
 					{
-		                trigger_error("Failed to read line in '{$this->table}' db file, db file corrupt");
-					    fclose($temp_handle);
-					    @unlink($temp_file);
+						trigger_error("Failed to read line in '{$this->table}' db file, db file corrupt");
+						fclose($temp_handle);
+						@unlink($temp_file);
 						return false;
 					}
 
@@ -1408,9 +1408,9 @@ class RazorDB
 
 						if (strlen($row_data) >= 1046000)
 						{
-					        trigger_error("Data to be saved is over 1Mb per line limit for table '{$this->table}'");
-					        fclose($temp_handle);
-					        @unlink($temp_file);
+							trigger_error("Data to be saved is over 1Mb per line limit for table '{$this->table}'");
+							fclose($temp_handle);
+							@unlink($temp_file);
 							return false;
 						}
 					}
@@ -1442,9 +1442,9 @@ class RazorDB
 		}
 		if (!$rename)
 		{
-            trigger_error("Failed update file for table '{$this->table}'");
-            unlink($temp_file);
-            $this->unlock();
+			trigger_error("Failed update file for table '{$this->table}'");
+			unlink($temp_file);
+			$this->unlock();
 			return false;
 		}
 
@@ -1473,7 +1473,7 @@ class RazorDB
 		// check connected
 		if (!$this->connected)
 		{
-            trigger_error("Not connected to table, cannot perform query");
+			trigger_error("Not connected to table, cannot perform query");
 			return false;
 		}
 
@@ -1492,13 +1492,13 @@ class RazorDB
 		{
 			if (!isset($search_data['column']))
 			{
-	            trigger_error("'column' not provided in search");
+				trigger_error("'column' not provided in search");
 				return false;
 			}
 
 			if (!isset($this->columns[$search_data['column']]))
 			{
-	            trigger_error("Column '{$search_data['column']}' does not exist in table '{$this->table}'");
+				trigger_error("Column '{$search_data['column']}' does not exist in table '{$this->table}'");
 				return false;
 			}
 		}
@@ -1509,11 +1509,11 @@ class RazorDB
 		// setup temp file
 		$temp_ext = rand(1, 1000000);
 		$temp_file = RAZOR_BASE_PATH."storage/database/{$this->table}_{$temp_ext}.db.php";
-        $temp_handle = fopen($temp_file, 'c');
-        if (!$temp_handle)
-        {
-            trigger_error("Failed to create temp transfer file for '{$this->table}'");
-            $this->unlock();
+		$temp_handle = fopen($temp_file, 'c');
+		if (!$temp_handle)
+		{
+			trigger_error("Failed to create temp transfer file for '{$this->table}'");
+			$this->unlock();
 			return false;
 	  	}
 
@@ -1568,9 +1568,9 @@ class RazorDB
 					// Check row data
 					if (substr($row_data, 3, 4) !== 'row:')
 					{
-		                trigger_error("Failed to read line in '{$this->table}' db file, db file corrupt");
-					    fclose($temp_handle);
-					    @unlink($temp_file);
+						trigger_error("Failed to read line in '{$this->table}' db file, db file corrupt");
+						fclose($temp_handle);
+						@unlink($temp_file);
 						return false;
 					}
 
@@ -1612,9 +1612,9 @@ class RazorDB
 		}
 		if (!$rename)
 		{
-            trigger_error("Failed update file for table '{$this->table}'");
-            unlink($temp_file);
-            $this->unlock();
+			trigger_error("Failed update file for table '{$this->table}'");
+			unlink($temp_file);
+			$this->unlock();
 			return false;
 		}
 

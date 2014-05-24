@@ -12,59 +12,59 @@
  
 class PageDetails extends RazorAPI
 {
-    function __construct()
-    {
-        // REQUIRED IN EXTENDED CLASS TO LOAD DEFAULTS
-        parent::__construct();
-    }
+	function __construct()
+	{
+		// REQUIRED IN EXTENDED CLASS TO LOAD DEFAULTS
+		parent::__construct();
+	}
 
-    public function get($page_id)
-    {
-        $db = new RazorDB();
+	public function get($page_id)
+	{
+		$db = new RazorDB();
 
-        // get all page data
-        $db->connect("page");
-        $options = array("amount" => 1);
-        $search = array("column" => "id", "value" => (int) $page_id);
-        $page = $db->get_rows($search, $options);
-        $page = $page["result"][0];
-        $db->disconnect(); 
+		// get all page data
+		$db->connect("page");
+		$options = array("amount" => 1);
+		$search = array("column" => "id", "value" => (int) $page_id);
+		$page = $db->get_rows($search, $options);
+		$page = $page["result"][0];
+		$db->disconnect(); 
 
-        // return the basic user details
-        $this->response(array("page" => $page), "json");
-    }
+		// return the basic user details
+		$this->response(array("page" => $page), "json");
+	}
 
-    // add or update content
-    public function post($data)
-    {
-        // login check - if fail, return no data to stop error flagging to user
-        if ((int) $this->check_access() < 10) $this->response(null, null, 401);
-        if (empty($data)) $this->response(null, null, 400);
+	// add or update content
+	public function post($data)
+	{
+		// login check - if fail, return no data to stop error flagging to user
+		if ((int) $this->check_access() < 10) $this->response(null, null, 401);
+		if (empty($data)) $this->response(null, null, 400);
 
-        // update content
-        $db = new RazorDB();
-        $db->connect("page");
+		// update content
+		$db = new RazorDB();
+		$db->connect("page");
 
-        // set options
-        $search = array("column" => "id", "value" => $data["id"]);
+		// set options
+		$search = array("column" => "id", "value" => $data["id"]);
 
-        // ensure we only have changes we want
-        $changes = array(
-            "active" => $data["active"],
-            "name" => $data["name"],
-            "title" => $data["title"],
-            "link" => $data["link"],
-            "theme" => $data["theme"],
-            "keywords" => $data["keywords"],
-            "description" => $data["description"]
-        );
+		// ensure we only have changes we want
+		$changes = array(
+			"active" => $data["active"],
+			"name" => $data["name"],
+			"title" => $data["title"],
+			"link" => $data["link"],
+			"theme" => $data["theme"],
+			"keywords" => $data["keywords"],
+			"description" => $data["description"]
+		);
 
-        $db->edit_rows($search, $changes);
-        $db->disconnect(); 
+		$db->edit_rows($search, $changes);
+		$db->disconnect(); 
 
-        // return the basic user details
-        $this->response($data, "json");
-    }
+		// return the basic user details
+		$this->response($data, "json");
+	}
 }
 
 /* EOF */

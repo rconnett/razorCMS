@@ -12,28 +12,28 @@
  
 class SiteEditor extends RazorAPI
 {
-    function __construct()
-    {
-        // REQUIRED IN EXTENDED CLASS TO LOAD DEFAULTS
-        parent::__construct();
-    }
+	function __construct()
+	{
+		// REQUIRED IN EXTENDED CLASS TO LOAD DEFAULTS
+		parent::__construct();
+	}
 
-    public function get($page_id)
-    {
-        $db = new RazorDB();
+	public function get($page_id)
+	{
+		$db = new RazorDB();
 
-        // get menu data too
-        $db->connect("site");
+		// get menu data too
+		$db->connect("site");
 
-        $search = array("column" => "id", "value" => 1);
-        $site = $db->get_rows($search);
-        $site = $site["result"][0];
-        
-        $db->disconnect();  
+		$search = array("column" => "id", "value" => 1);
+		$site = $db->get_rows($search);
+		$site = $site["result"][0];
+		
+		$db->disconnect();  
 
-        // return the basic user details
-        $this->response(array("site" => $site), "json");
-    }
+		// return the basic user details
+		$this->response(array("site" => $site), "json");
+	}
 }
 
 /* EOF */

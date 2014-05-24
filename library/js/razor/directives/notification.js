@@ -10,9 +10,9 @@
  
 define(["angular"], function(angular)
 {
-    angular.module("razor.directives.notification", [])
+	angular.module("razor.directives.notification", [])
  
-    .directive('globalNotification', function() {
+	.directive('globalNotification', function() {
 		return {
 			restrict: 'E',
 			template: '<div class="notification"><span class="alert text-center" ng-class="{\'notification-message\': show, \'alert-success\': type == \'success\', \'alert-danger\': type == \'danger\'}" ng-show="show"><i class="fa fa-check-circle" ng-class="{\'fa-check-circle\': type, \'fa-exclamation-triangle\': type == \'danger\'}"></i> {{text}}</span></div>',
@@ -31,5 +31,5 @@ define(["angular"], function(angular)
 				});
 			}
 		};
-    });
+	});
 });
