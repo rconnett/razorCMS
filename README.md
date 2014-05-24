@@ -64,8 +64,11 @@ Installation is now complete, you may now log in using the new credentials in th
 
 ## Installation UPGRADE
 
+**Prefered Upgrade Method**
 
-**Follow These Steps:**
+The prefered upgrade method is to use the auto upgrade tool. This tool can be found in the settings area of the **Administration Overlay**. This tool is a simply two click method for updating your sytem to the latest release. During the process you will be able to download a complete system backup, should the process not be successful.
+
+**Manual Upgrade - Follow These Steps:**
 
 1. Download upgrade.
 2. Unpack.
@@ -77,8 +80,11 @@ Installation is now complete, you may now log in using the new credentials in th
 
 ## Installing Extensions
 
+**Prefered Installation Method**
 
-**Follow These Steps:**
+The prefered installation method is to use the auto installation tool. This tool can be found in the extensions area of the **Administration Overlay**. This tool is a simply one click method for installing any extension at the latest release, or upgrading an extension.
+
+**Manual Installation - Follow These Steps:**
 
 1. Download.
 2. Unpack.
@@ -133,5 +139,3 @@ Questions, ideas, and/or bundles of cash you want to give me?
 Well, in due course the **razorCMS** site will be updated, in due course the system will get more functionality/**Extensions**, and in due course the **Support**, and **Documentation** will be supplied. Please be patient, one man bands are hard to run, it will come with time as I find it.
 
 If you want to help out, buy me an *Aston Martin*, then you can contact me through the website. [//razorcms.co.uk] (//razorcms.co.uk) (For now we are on v3.razorcms.co.uk but this will change soon.)
-
-
