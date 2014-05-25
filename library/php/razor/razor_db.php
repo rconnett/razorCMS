@@ -76,18 +76,18 @@ class RazorDB
 			$this->headers();
 
 			// carry on
-			if ($c >= 100)
+			if ($c >= 200)
 			{
 		  		trigger_error("Failed to obtain lock for {$this->table} db file, file in use");
 				return false;
 			}
-			usleep(rand(10, 10000));
+			usleep(rand(1000, 10000)); // 1000000 = 1 sec
 			$c++;
 		}
 
 		// continue with locking //
 
-		$this->open('r+');
+		// $this->open('r+');
 
 		// move pointer to lock
 		fseek($this->handle, 9, SEEK_SET);
@@ -104,7 +104,7 @@ class RazorDB
 		// apply lock
 		fwrite($this->handle, '1', 1);
 		$this->lock = true;
-		$this->close();
+// $this->close();
 		return true;
 	}
 
@@ -112,7 +112,7 @@ class RazorDB
 	{
 		if ($this->lock)
 		{
-			$this->open('r+');
+// $this->open('r+');
 			// move pointer to lock
 			fseek($this->handle, 9, SEEK_SET);
 			// check found lock
@@ -126,7 +126,7 @@ class RazorDB
 			// apply lock
 			fwrite($this->handle, '0', 1);
 			$this->lock = false;
-			$this->close();
+// $this->close();
 			return true;
 		}
 
@@ -135,7 +135,7 @@ class RazorDB
 
 	private function update_counter()
 	{
-		$this->open('r+');
+// $this->open('r+');
 
 		// move pointer to row count (not counter, that is for id's, count is for row count)
 		fseek($this->handle, 19, SEEK_SET);
@@ -155,13 +155,13 @@ class RazorDB
 
 		// apply lock
 		fwrite($this->handle, $str_counter, 30);
-		$this->close();
+// $this->close();
 		return true;
 	}
 
 	private function update_row_count()
 	{
-		$this->open('r+');
+// $this->open('r+');
 
 		// move pointer to row count (not counter, that is for id's, count is for row count)
 		fseek($this->handle, 57, SEEK_SET);
@@ -181,7 +181,7 @@ class RazorDB
 
 		// apply lock
 		fwrite($this->handle, $str_row_count, 30);
-		$this->close();
+// $this->close();
 		return true;
 	}
 
@@ -199,7 +199,7 @@ class RazorDB
 
 	private function headers()
 	{
-		$this->open();
+//$this->open();
 		fseek($this->handle, 0, SEEK_SET);
 
 		// fetch headers
@@ -295,7 +295,7 @@ class RazorDB
 			}
 		}
 
-		$this->close();
+// $this->close();
 		return true;
 	}
 
@@ -807,7 +807,9 @@ class RazorDB
 		// get headers
 		if (empty($this->columns))
 		{
+			$this->open();
 			$this->headers();
+			$this->close();
 		}
 
 		$result = array(
@@ -852,7 +854,10 @@ class RazorDB
 		// get table headers
 		if (empty($this->columns))
 		{
-			if (!$this->headers()) return false;
+			$this->open();
+			$res = $this->headers();
+			$this->close();	
+			if (!$res) return false;
 		}
 
 		// check for single or multi array
@@ -1087,7 +1092,10 @@ class RazorDB
 		// get table headers
 		if (empty($this->columns))
 		{
-			if (!$this->headers()) return false;
+			$this->open();
+			$res = $this->headers();
+			$this->close();
+			if (!$res) return false;
 		}
 
 		// check for changes array, put into multi array if needed
@@ -1187,11 +1195,16 @@ class RazorDB
 			$lines[] = $comp_line;
 		}
 
+		$this->open('r+');
+
 		// apply lock
-		if (!$this->lock()) return false;
+		if (!$this->lock()) 
+		{
+			$this->close();
+			return false;
+		}
 
 		// move to end
-		$this->open('r+');
 		fseek($this->handle, 0, SEEK_END);
 
 		// add new lines
@@ -1202,10 +1215,10 @@ class RazorDB
 		}
 
 		// close temp file
-	   	$this->close();
 		$this->update_counter();
 		$this->update_row_count();
 		$this->unlock();
+	   	$this->close();
 
 		// return results
 		$result = array(
@@ -1242,7 +1255,10 @@ class RazorDB
 		// get table headers
 		if (empty($this->columns))
 		{
-			if (!$this->headers()) return false;
+			$this->open();
+			$res = $this->headers();
+			$this->close();
+			if (!$res) return false;
 		}
 
 		// check for single or multi array
@@ -1316,6 +1332,8 @@ class RazorDB
 			}
 		}
 
+		$this->open('r+');
+
 		// lock and move to start
 		if (!$this->lock()) return false;
 
@@ -1325,13 +1343,13 @@ class RazorDB
 		$temp_handle = fopen($temp_file, 'c');
 		if (!$temp_handle)
 		{
+			// failed to create temp file, remove lock and tidy up
+			unlink($temp_file);
 			trigger_error("Failed to create temp transfer file for '{$this->table}'");
 			$this->unlock();
+			$this->close();
 			return false;
 	  	}
-
-		// open and move pointer to beginning
-		$this->open();
 
 		// work out how many markers to use and size (16ms without prequery on test3)
 		$markers_amount = (int) round($this->row_count / 150);
@@ -1428,28 +1446,28 @@ class RazorDB
 
 		// close both files
 		fclose($temp_handle);
-		$this->close();
 
 		// overwrite file with temp, windows issue with rename and system closing handle after reload cause it's shite!!!
 		$c = 0;
 		$rename = false;
-		while ($c <= 100)
+		while ($c <= 200)
 		{
 			usleep(10000);
 			$rename = @rename($temp_file, RAZOR_BASE_PATH."storage/database/{$this->table}.db.php");
 			if ($rename === true) break;
 			$c++;
 		}
+		
+		// remove lock
+		$this->unlock();
+		$this->close();
+
 		if (!$rename)
 		{
 			trigger_error("Failed update file for table '{$this->table}'");
 			unlink($temp_file);
-			$this->unlock();
 			return false;
 		}
-
-		// remove lock
-		$this->unlock();
 
 		$result = array(
 			'table' 		=> $this->table,
@@ -1483,7 +1501,10 @@ class RazorDB
 		// get table headers
 		if (empty($this->columns))
 		{
-			if (!$this->headers()) return false;
+			$this->open();
+			$res = $this->headers();
+			$this->close();
+			if (!$res) return false;
 		}
 
 		// check for single or multi array
@@ -1504,7 +1525,13 @@ class RazorDB
 		}
 
 		// lock and move to start
-		if (!$this->lock()) return false;
+		$this->open('r+');
+		
+		if (!$this->lock()) 
+		{
+			$this->close();
+			return false;
+		}
 
 		// setup temp file
 		$temp_ext = rand(1, 1000000);
@@ -1514,11 +1541,9 @@ class RazorDB
 		{
 			trigger_error("Failed to create temp transfer file for '{$this->table}'");
 			$this->unlock();
+			$this->close();
 			return false;
 	  	}
-
-		// open and move pointer to beginning
-		$this->open();
 
 		// work out how many markers to use and size (16ms without prequery on test3)
 		$markers_amount = (int) round($this->row_count / 150);
@@ -1598,8 +1623,7 @@ class RazorDB
 
 		// close both files
 		fclose($temp_handle);
-		$this->close();
-
+		
 		// overwrite file with temp, windows issue with rename and system closing handle after reload cause it's shite!!!
 		$c = 0;
 		$rename = false;
@@ -1622,6 +1646,7 @@ class RazorDB
 		$this->row_count-= count($matches);
 		$this->update_row_count();
 		$this->unlock();
+		$this->close();
 
 		$result = array(
 			'table' 		=> $this->table,
