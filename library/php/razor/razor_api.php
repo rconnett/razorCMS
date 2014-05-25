@@ -240,11 +240,11 @@ class RazorAPI
 		$search = array("column" => "id", "value" => $id);
 		$options = array("amount" => 1);
 		$res = $db->get_rows($search, $options);
-		$user = $res["result"][0];
 		$db->disconnect(); 
 
 		// no user found or no access in XXX seconds
 		if ($res["count"] != 1) return false;	 
+        $user = $res["result"][0];
 		if ($user["last_accessed"] < time() - $access_timeout) return false;
 
 		/* all ok, so go verify user */
