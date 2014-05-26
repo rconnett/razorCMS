@@ -1335,7 +1335,11 @@ class RazorDB
 		$this->open('r+');
 
 		// lock and move to start
-		if (!$this->lock()) return false;
+		if (!$this->lock()) 
+		{
+			$this->close();
+			return false;
+		}
 
 		// setup temp file
 		$temp_ext = rand(1, 1000000);
@@ -1344,8 +1348,8 @@ class RazorDB
 		if (!$temp_handle)
 		{
 			// failed to create temp file, remove lock and tidy up
-			unlink($temp_file);
 			trigger_error("Failed to create temp transfer file for '{$this->table}'");
+			@unlink($temp_file);
 			$this->unlock();
 			$this->close();
 			return false;
@@ -1366,6 +1370,7 @@ class RazorDB
 
 		// skip headers
 		$headers = stream_get_line($this->handle, 2048, "--- end headers ---\n");
+		$headers = str_replace("// lock:1", "// lock:0", $headers); // remove any lock on temp file
 		fwrite($temp_handle, $headers."--- end headers ---");
 
 		while (!feof($this->handle))
@@ -1457,15 +1462,14 @@ class RazorDB
 			if ($rename === true) break;
 			$c++;
 		}
-		
-		// remove lock
-		$this->unlock();
-		$this->close();
 
+		// rename failed, tidy up and unlock, else unlock is automatic via new renamed file
 		if (!$rename)
 		{
 			trigger_error("Failed update file for table '{$this->table}'");
 			unlink($temp_file);
+			$this->unlock();
+			$this->close();
 			return false;
 		}
 
