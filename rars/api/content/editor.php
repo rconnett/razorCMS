@@ -104,6 +104,14 @@ class ContentEditor extends RazorAPI
 		$new_content_map = array();
 		foreach ($data["content"] as $key => $content)
 		{
+			// if content name empty, try to resolve this to something
+			if (empty($content["name"]))
+			{
+				$name = strip_tags(str_replace("><", "> <", $content["content"]));
+				$cap = (strlen($name) > 30 ? 30 : strlen($name));
+				$content["name"] = substr($name, 0, $cap)."...";
+			}
+
 			if (!isset($content["content_id"]) || !isset($content["content"]) || empty($content["content"]))
 			{
 				unset($data["content"][$key]);
