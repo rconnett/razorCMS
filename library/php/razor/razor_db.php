@@ -1427,19 +1427,26 @@ class RazorDB
 		}
 
 		// close both files
-		fclose($temp_handle);
 		$this->close();
+		fflush($temp_handle);
+		fclose($temp_handle);
 
 		// overwrite file with temp, windows issue with rename and system closing handle after reload cause it's shite!!!
 		$c = 0;
 		$rename = false;
-		while ($c <= 100)
+		while ($c <= 40)
 		{
-			usleep(10000);
-			$rename = @rename($temp_file, RAZOR_BASE_PATH."storage/database/{$this->table}.db.php");
-			if ($rename === true) break;
+			usleep(250000);
+			$writable = is_writable(RAZOR_BASE_PATH."storage/database/{$this->table}.db.php");
+			if ($writable) 
+			{
+				// sleep(1); // stupid but cures windows bug with handle closing AFTER rename, damn you MS
+				$rename = rename($temp_file, RAZOR_BASE_PATH."storage/database/{$this->table}.db.php");
+				break;
+			}
 			$c++;
 		}
+
 		if (!$rename)
 		{
             trigger_error("Failed update file for table '{$this->table}'");
