@@ -70,9 +70,9 @@ define(["angular", "cookie-monster", "text-angular-sanitize", "text-angular", "u
             });
 
             // get site data
-            rars.get("site/editor", "all").success(function(data)
+            rars.get("setting/editor", "all", monster.get("token")).success(function(data)
             {
-                $scope.site = data.site;
+                $scope.site = data.settings;
             });
 
             // grab content for page

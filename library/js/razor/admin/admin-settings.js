@@ -20,7 +20,7 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
         {
         	$scope.processing = true;
 
-	        rars.post("site/data", $scope.site, monster.get("token")).success(function(data)
+	        rars.post("setting/data", $scope.site, monster.get("token")).success(function(data)
 	        {
 	            $rootScope.$broadcast("global-notification", {"type": "success", "text": "Settings saved."});
 	            $scope.processing = false;

@@ -62,7 +62,7 @@ define(["angular", "cookie-monster"], function(angular, monster)
 
         $scope.makeHomePage = function(pageId)
         {
-            rars.post("site/data", {"home_page": pageId}, monster.get("token")).success(function(data)
+            rars.post("setting/data", {"home_page": pageId}, monster.get("token")).success(function(data)
             {
                 $rootScope.$broadcast("global-notification", {"type": "success", "text": "Home page set successfully."});
                 $scope.site.home_page = pageId;

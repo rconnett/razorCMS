@@ -1,7 +1,7 @@
 <div class="razor-admin-extensions" ng-init="loadExtensions()">
 	<div class="row">
 		<div class="col-sm-12">
-			<div class="accordian ng-cloak" ng-controller="extensionsListAccordion">
+			<div class="accordian ng-cloak" ng-controller="extensionsListAccordion" ng-if="user.access_level > 8">
 				<div class="filter row">
 					<div class="col-sm-3">
 						<button class="btn btn-primary" ng-click="searchExtensions()"><i class="fa fa-cogs"></i> Install Extensions</button>

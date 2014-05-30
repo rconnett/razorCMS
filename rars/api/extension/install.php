@@ -38,7 +38,7 @@ class ExtensionInstall extends RazorAPI
 
     public function post($data)
     {
-        if ((int) $this->check_access() < 10) $this->response(null, null, 401);
+        if ((int) $this->check_access() < 9) $this->response(null, null, 401);
         if (empty($data) || !isset($data["type"]) || !isset($data["handle"]) || !isset($data["extension"])) $this->response(null, null, 400);
 
          // fetch cleaned data

@@ -18,11 +18,11 @@ class PageData extends RazorAPI
         parent::__construct();
     }
 
-    // add or update content
+    // add page
     public function post($data)
     {
         // login check - if fail, return no data to stop error flagging to user
-        if ((int) $this->check_access() < 10) $this->response(null, null, 401);
+        if ((int) $this->check_access() < 6) $this->response(null, null, 401);
         if (empty($data)) $this->response(null, null, 400);
 
         $db = new RazorDB();
@@ -56,7 +56,7 @@ class PageData extends RazorAPI
     public function delete($id)
     {
         // login check - if fail, return no data to stop error flagging to user
-        if ((int) $this->check_access() < 10) $this->response(null, null, 401);
+        if ((int) $this->check_access() < 8) $this->response(null, null, 401);
         if (!is_numeric($id)) $this->response(null, null, 400);
 
         $db = new RazorDB();

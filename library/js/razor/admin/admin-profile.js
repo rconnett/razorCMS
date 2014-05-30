@@ -8,9 +8,9 @@
  * @created Feb 2014
  */
  
-define(["angular", "cookie-monster"], function(angular, monster)
+define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 {
-    angular.module("razor.admin.profile", [])
+    angular.module("razor.admin.profile", ["ui.bootstrap"])
 
     .controller("profile", function($scope, $modal)
     {

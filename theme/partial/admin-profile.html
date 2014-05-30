@@ -1,7 +1,7 @@
 <div class="razor-admin-profile">
 	<div class="row">
 		<div class="col-sm-12">
-			<div class="accordian" ng-controller="userListAccordion">
+			<div class="accordian" ng-controller="userListAccordion" ng-if="user.access_level == 10">
 				<div class="filter row">
 					<div class="col-sm-3">
 						<button class="btn btn-primary" ng-click="createUser()" ng-disabled="user.access_level !== 10"><i class="fa fa-users"></i> Create User</button>
@@ -23,6 +23,8 @@
 					<accordion-group ng-repeat="u in users | orderBy:'id' | filter:searchFilter | limitTo:searchLimit" is-open="isopen">
 						<accordion-heading>
        						<i class="fa fa-user" ng-show="u.id == user.id" title="Active"></i>
+       						<i class="fa fa-check" ng-show="u.active"></i>
+       						<i class="fa fa-ban" ng-hide="u.active"></i>
 							{{u.name}}
 							<i class="expander pull-right fa" ng-class="{'fa-chevron-down': isopen, 'fa-chevron-right': !isopen}"></i>
 						</accordion-heading>

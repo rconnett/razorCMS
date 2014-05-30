@@ -26,7 +26,7 @@
 						<div class="content">
 					        <div class="btn-toolbar" role="toolbar">
 					            <div class="btn-group pull-right"> 
-					                <button class="btn btn-danger" ng-click="content.splice($index,1); deleteContent(c.id)"><i class="fa fa-trash-o"></i> Delete Content</button>
+					                <button class="btn btn-danger" ng-click="content.splice($index,1); deleteContent(c.id)" ng-disabled="user.access_level < 8"><i class="fa fa-trash-o"></i> Delete Content</button>
 					            </div>
 					        </div>
 					        <div class="row">

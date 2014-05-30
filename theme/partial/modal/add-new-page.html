@@ -24,10 +24,10 @@
 		<div class="form-group">
 			<label for="page-link" class="col-sm-3 control-label">Link</label>
 			<div class="col-sm-7">
-				<input id="page-link" name="pageLink" class="form-control" type="text" ng-model="page.link" placeholder="Append this to URL to access page" ng-pattern="/^[a-z0-9-_\/]+(\.html|\.htm)?$/" ng-disabled="processing">
+				<input id="page-link" name="pageLink" class="form-control" type="text" ng-model="page.link" placeholder="Append this to URL to access page"ng-pattern="/^(?!.*(login)).*$/" ng-disabled="processing">
 			</div>
 			<div class="col-sm-2 error-block" ng-show="form.pageLink.$dirty && form.pageLink.$invalid">
-				<span class="alert alert-danger alert-form" ng-show="form.pageLink.$error.pattern">Invalid</span>
+				<span class="alert alert-danger alert-form" ng-show="form.pageLink.$error.pattern">Reserved</span>
 			</div>
 		</div>
 		<div class="form-group">

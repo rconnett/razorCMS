@@ -112,7 +112,7 @@ class MenuEditor extends RazorAPI
     public function post($data)
     {
         // login check - if fail, return no data to stop error flagging to user
-        if ((int) $this->check_access() < 10) $this->response(null, null, 401);
+        if ((int) $this->check_access() < 8) $this->response(null, null, 401);
     
         // menu item
         $db = new RazorDB();

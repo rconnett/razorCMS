@@ -1,7 +1,7 @@
 <div class="razor-admin-settings">
 	<div class="row">
 		<div class="col-sm-12">
-			<form name="form" class="form-horizontal" role="form" novalidate>
+			<form name="form" class="form-horizontal" role="form" novalidate ng-if="user.access_level > 8">
 				<div class="form-group">
 					<label for="system-version" class="col-sm-3 control-label">System Version</label>
 					<div class="col-sm-7">
@@ -43,6 +43,44 @@
 					<label for="google-analytics-code" class="col-sm-3 control-label">Google Analytics Code</label>
 					<div class="col-sm-7">
 						<input id="google-analytics-code" name="googleAnalyticsCode" class="form-control" type="text" ng-model="site.google_analytics_code" placeholder="Use google anlytics to track users">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Allow Registration</label>
+					<div class="col-sm-2">
+						<slide-switch rzr-model="site.allow_registration"></slide-switch>
+					</div>
+					<div class="col-sm-5">
+						<p ng-if="site.allow_registration" class="alert alert-danger alert-inline-message">Public can register user accounts.</p>
+						<p ng-if="!site.allow_registration" class="alert alert-success alert-inline-message">User accounts can only be created by super admin.</p>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Manual Activation</label>
+					<div class="col-sm-2">
+						<slide-switch rzr-model="site.manual_activation" rzr-disabled="!site.allow_registration"></slide-switch>
+					</div>
+					<div class="col-sm-5" ng-if="site.allow_registration">
+						<p ng-if="!site.manual_activation" class="alert alert-danger alert-inline-message">Public activate accounts from email link.</p>
+						<p ng-if="site.manual_activation" class="alert alert-success alert-inline-message">Super admin must activate all new users.</p>
+					</div>
+				</div>
+				<div class="form-group" ng-if="site.allow_registration && site.manual_activation">
+					<label for="registration-email" class="col-sm-3 control-label">Registration Email</label>
+					<div class="col-sm-7">
+						<textarea rows="4" id="registration-email" name="registrationEmail" class="form-control" type="text" ng-model="site.registration_email" placeholder="Email that is sent when people register account"></textarea>
+					</div>
+				</div>
+				<div class="form-group" ng-if="site.allow_registration && !site.manual_activation">
+					<label for="activation-email" class="col-sm-3 control-label">Activation Email</label>
+					<div class="col-sm-7">
+						<textarea rows="4" id="activation-email" name="activationEmail" class="form-control" type="text" ng-model="site.activation_email" placeholder="Email that is sent when people register account and it needs acitvating"></textarea>
+					</div>
+				</div>
+				<div class="form-group" ng-if="site.allow_registration && site.manual_activation">
+					<label for="activate-user-email" class="col-sm-3 control-label">Activate User Email</label>
+					<div class="col-sm-7">
+						<textarea rows="4" id="activate-user-email" name="activateUserEmail" class="form-control" type="text" ng-model="site.activate_user_email" placeholder="Email that is sent to super admin to tell them user needs activating"></textarea>
 					</div>
 				</div>
 				<div class="form-group">

@@ -5,13 +5,13 @@
 				<div class="form-group">
 					<label for="page-active" class="col-sm-3 control-label">Active</label>
 					<div class="col-sm-7">
-						<slide-switch rzr-model="page.active" rzr-disabled="page.id == site.home_page"></slide-switch>
+						<slide-switch rzr-model="page.active" rzr-disabled="page.id == site.home_page || user.access_level < 8"></slide-switch>
 					</div>
 				</div>
 				<div class="form-group">
 					<label for="page-name" class="col-sm-3 control-label">Name</label>
 					<div class="col-sm-7">
-						<input id="page-name" name="pageName" class="form-control" type="text" ng-model="page.name" placeholder="Used in menus" required>
+						<input id="page-name" name="pageName" class="form-control" type="text" ng-model="page.name" placeholder="Used in menus" ng-disabled="user.access_level < 8" required>
 					</div>
 					<div class="col-sm-2 error-block" ng-show="form.pageName.$dirty && form.pageName.$invalid">
 						<span class="alert alert-danger alert-form" ng-show="form.pageName.$error.required">Required</span>
@@ -20,7 +20,7 @@
 				<div class="form-group">
 					<label for="page-title" class="col-sm-3 control-label">Title</label>
 					<div class="col-sm-7">
-						<input id="page-title" name="pageTitle" class="form-control" type="text" ng-model="page.title" placeholder="Used in browser tab and search engines" required>
+						<input id="page-title" name="pageTitle" class="form-control" type="text" ng-model="page.title" placeholder="Used in browser tab and search engines" ng-disabled="user.access_level < 8" required>
 					</div>
 					<div class="col-sm-2 error-block" ng-show="form.pageTitle.$dirty && form.pageTitle.$invalid">
 						<span class="alert alert-danger alert-form" ng-show="form.pageTitle.$error.required">Required</span>
@@ -29,16 +29,16 @@
 				<div class="form-group">
 					<label for="page-link" class="col-sm-3 control-label">Link</label>
 					<div class="col-sm-7">
-						<input id="page-link" name="pageLink" class="form-control" type="text" ng-model="page.link" placeholder="Append this to URL to access page">
+						<input id="page-link" name="pageLink" class="form-control" type="text" ng-model="page.link" placeholder="Append this to URL to access page" ng-pattern="/^(?!.*(login)).*$/" ng-disabled="user.access_level < 8">
 					</div>
 					<div class="col-sm-2 error-block" ng-show="form.pageLink.$dirty && form.pageLink.$invalid">
-						<span class="alert alert-danger alert-form" ng-show="form.pageLink.$error.pattern">Invalid</span>
+						<span class="alert alert-danger alert-form" ng-show="form.pageLink.$error.pattern">Reserved</span>
 					</div>
 				</div>
 				<div class="form-group">
 					<label for="page-keywords" class="col-sm-3 control-label">Keywords</label>
 					<div class="col-sm-7">
-						<input id="page-keywords" name="pageKeywords" class="form-control" type="text" ng-model="page.keywords" placeholder="Comma seperated words (search engines)">
+						<input id="page-keywords" name="pageKeywords" class="form-control" type="text" ng-model="page.keywords" placeholder="Comma seperated words (search engines)" ng-disabled="user.access_level < 8">
 					</div>
 					<div class="col-sm-2 error-block" ng-show="form.pageKeywords.$dirty && form.pageKeywords.$invalid">
 						<span class="alert alert-danger alert-form" ng-show="form.pageKeywords.$error.pattern">Invalid</span>
@@ -47,7 +47,7 @@
 				<div class="form-group">
 					<label for="page-description" class="col-sm-3 control-label">Description</label>
 					<div class="col-sm-7">
-						<textarea id="page-description" name="pageDescription" class="form-control" ng-model="page.description" rows="3" placeholder="Page description (search engines)" required></textarea>
+						<textarea id="page-description" name="pageDescription" class="form-control" ng-model="page.description" rows="3" placeholder="Page description (search engines)" ng-disabled="user.access_level < 8" required></textarea>
 					</div>
 					<div class="col-sm-2 error-block" ng-show="form.pageDescription.$dirty && form.pageDescription.$invalid">
 						<span class="alert alert-danger alert-form" ng-show="form.pageDescription.$error.required">Required</span>
@@ -56,7 +56,7 @@
 				<div class="form-group">
 					<label for="page-theme" class="col-sm-3 control-label">Theme</label>
 					<div class="col-sm-7">
-						<button class="btn btn-default pull-left" ng-click="chooseTheme()"><i class="fa fa-tint"></i> Choose Theme</button>
+						<button class="btn btn-default pull-left" ng-click="chooseTheme()" ng-disabled="user.access_level < 8"><i class="fa fa-tint"></i> Choose Theme</button>
 						<div class="selected-theme-box pull-left" ng-hide="page.themeData.handle">
 							<i class="fa fa-tint"></i>
 							<div class="text">
@@ -75,7 +75,7 @@
 				</div>
 				<div class="form-group">
 					<div class="col-sm-offset-3 col-sm-7">
-						<button type="submit" class="btn btn-success" ng-click="save()" ng-disabled="form.$invalid || processing">
+						<button type="submit" class="btn btn-success" ng-click="save()" ng-disabled="form.$invalid || processing || user.access_level < 8">
 							<i class="fa fa-check"></i> 
 							Save Page Details
 						</button>

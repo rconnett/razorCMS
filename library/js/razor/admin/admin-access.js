@@ -37,6 +37,7 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
             $scope.$watch("location.path()", function(path)
             {
                 if (path) $scope.activePage = path.split("/")[1];
+                if ($scope.activePage == "user-activated") $rootScope.$broadcast("global-notification", {"type": "success", "text": "Your account is now activated, you may now log in."});
             });
         };
 
@@ -130,7 +131,7 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
                     $scope.user = data.user;
                     $scope.loggedIn = true;
                     $scope.showLogin = false;
-                    $scope.load();
+                    if ($scope.user.access_level > 5) $scope.load();
                 }
                 else
                 {
@@ -175,9 +176,9 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
             });
 
             // get site data
-            rars.get("site/editor", "all").success(function(data)
+            rars.get("setting/editor", "all", monster.get("token")).success(function(data)
             {
-                $scope.site = data.site;
+                $scope.site = data.settings;
             });
 
             // grab page data
@@ -218,6 +219,90 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
                 if (!!redirect) window.location = RAZOR_BASE_URL + redirect;
             });
         };
+
+        $scope.register = function()
+        {            
+            $modal.open(
+            {
+                templateUrl: RAZOR_BASE_URL + "theme/partial/modal/register-user.html",
+                controller: "registerUserModal"
+            });
+        };
+
+        $scope.editProfile = function()
+        {            
+            $modal.open(
+            {
+                templateUrl: RAZOR_BASE_URL + "theme/partial/modal/user-profile.html",
+                controller: "userProfileModal",
+                resolve: {
+                    user: function(){ return $scope.user; }
+                }
+            });
+        };
+    })
+
+    .controller("userProfileModal", function($scope, $modalInstance, rars, $rootScope, user, $timeout)
+    {
+        $scope.user = user;
+
+        $scope.cancel = function()
+        {
+            $modalInstance.dismiss('cancel');
+        }; 
+
+        $scope.saveUser = function(profile)
+        {
+            $scope.processing = true;
+
+            rars.post("user/data", profile, monster.get("token")).success(function(data)
+            {
+                $scope.processing = false;
+                
+                if (!!data.reload)
+                {
+                    $rootScope.$broadcast("global-notification", {"type": "success", "text": "User profile updated, logging out in 3 seconds."});
+    
+                    $timeout(function()
+                    {
+                        window.location = RAZOR_BASE_URL;
+                    }, 3000);
+                }
+                else $rootScope.$broadcast("global-notification", {"type": "success", "text": "User profile updated."});
+
+            }).error(function(data, header) 
+            { 
+                $scope.processing = false;
+                if (header == 409) $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Could not update user profile, email address already registered."});
+                else $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Could not update user profile."});
+            });
+        };   
+    })
+
+    .controller("registerUserModal", function($scope, $modalInstance, $rootScope, rars)
+    {
+        $scope.newUser = {"signature": RAZOR_FORM_SIGNATURE};
+
+        $scope.cancel = function()
+        {
+            $modalInstance.dismiss('cancel');
+        };
+
+        $scope.saveUser = function(newUser)
+        {
+            rars.post("user/register", newUser, monster.get("token")).success(function(data)
+            {
+                if (data.manual_activation) $rootScope.$broadcast("global-notification", {"type": "success", "text": "Registration completed, please allow time for administration to activate account."});
+                else $rootScope.$broadcast("global-notification", {"type": "success", "text": "Registration completed, please click link in activation email to complete."});
+                $modalInstance.close();
+            }).error(function(data, header) 
+            { 
+                if (header == 409) $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Could not register user, email address already registered."});
+                else if (header == 406) $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Could not register user, you are not human."});
+                else $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Could not register user, please try again later."});
+                $modalInstance.close();
+            });
+        };    
     })
 
     .controller("addNewPageModal", function($scope, $modalInstance, rars, $rootScope)

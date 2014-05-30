@@ -27,11 +27,9 @@ class FileImage extends RazorAPI
         $this->root_url = str_replace("http://{$_SERVER["SERVER_NAME"]}".($_SERVER["SERVER_PORT"] == "80" ? "" : ":{$_SERVER["SERVER_PORT"]}"), "", RAZOR_BASE_URL).'storage/files/images';
     }
 
-    // get a list of images from the nicEdit path
     public function get()
     {
-        if ((int) $this->check_access() < 10) $this->response(null, null, 401);
-
+        if ((int) $this->check_access() < 6) $this->response(null, null, 401);
         
         // check if folders exist
         if (!is_dir($this->root_path)) $this->response(null, null, 401);
@@ -60,7 +58,7 @@ class FileImage extends RazorAPI
     // add or update content
     public function post()
     {
-        if ((int) $this->check_access() < 10) $this->response(null, null, 401);
+        if ((int) $this->check_access() < 6) $this->response(null, null, 401);
 
         // check if folders exist
         if (!is_dir(RAZOR_BASE_PATH."storage/files")) mkdir(RAZOR_BASE_PATH."storage/files");

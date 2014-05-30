@@ -20,7 +20,6 @@ class ContentEditor extends RazorAPI
 
     public function get($page_id)
     {
-        // go through all changes and update all
         $db = new RazorDB();
         $db->connect("page_content");
 
@@ -92,8 +91,7 @@ class ContentEditor extends RazorAPI
     // add or update content
     public function post($data)
     {
-        // login check - if fail, return no data to stop error flagging to user
-        if ((int) $this->check_access() < 10) $this->response(null, null, 401);
+        if ((int) $this->check_access() < 6) $this->response(null, null, 401);
         if (!isset($data["content"])) $this->response(null, null, 400);
 
         // update content

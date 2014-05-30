@@ -33,7 +33,7 @@ class FilePackage extends RazorAPI
     // get a package from razorcms server
     public function get($package)
     {
-        if ((int) $this->check_access() < 6 || empty($package)) $this->response(null, null, 401);
+        if ((int) $this->check_access() < 10 || empty($package)) $this->response(null, null, 401);
         
         $method_name = "package_{$package}";
 

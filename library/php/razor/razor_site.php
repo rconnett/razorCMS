@@ -79,7 +79,7 @@ class RazorSite
         $ext_dep_list = array();
         
         // admin angluar loading for editor, return
-        if (isset($_GET["edit"]) && $this->logged_in > 5)
+        if (isset($_GET["edit"]) && ($this->logged_in > 6 || ($this->logged_in > 5 && !$this->page["active"])))
         {
             echo <<<OUTPUT
 <div class="content-column" ng-if="changed" ng-class="{'edit': toggle}">
@@ -251,7 +251,7 @@ OUTPUT;
         if ($this->add_new_menu($loc)) $this->get_menu_data();;
 
         // admin angluar loading for editor, return
-        if (isset($_GET["edit"]) && $this->logged_in > 5)
+        if (isset($_GET["edit"]) && $this->logged_in > 6)
         {
             echo <<<OUTPUT
 <li ng-if="changed" ng-repeat="mi in menus.{$loc}.menu_items" ng-class="{'click-and-sort': toggle, 'active': linkIsActive(mi.page_id), 'dropdown': mi.sub_menu || toggle, 'selected': \$parent.clickAndSort['{$loc}'].selected, 'place-holder': \$parent.clickAndSort['{$loc}'].picked != \$index && \$parent.clickAndSort['{$loc}'].selected}">
@@ -289,7 +289,7 @@ OUTPUT;
                 // sort any submenu items
                 if (!isset($m_item["sub_menu"]))
                 {
-                    echo '<li ng-if="!changed" '.($m_item["page_id"] == $this->page["id"] ? ' class="active"' : '').'>';
+                    echo '<li '.($this->logged_in < 7 ? '' : 'ng-if="!changed"').' '.($m_item["page_id"] == $this->page["id"] ? ' class="active"' : '').'>';
                     echo '<a href="'.RAZOR_BASE_URL.$m_item["page_id.link"].'">'.$m_item["page_id.name"].'</a>';
                 }
                 else
@@ -390,11 +390,25 @@ OUTPUT;
     private function get_site_data()
     {
         $db = new RazorDB();
-        $db->connect("site");
-        $res = $db->get_rows(array("column" => "id", "value" => 1));
+        $db->connect("setting");
+        $res = $db->get_rows(array("column" => "id", "value" => null, "not" => true));
         $db->disconnect(); 
 
-        $this->site = $res["result"][0];
+        foreach ($res["result"] as $result)
+        {
+            switch ($result["type"])
+            {
+                case "bool":
+                    $this->site[$result["name"]] = (bool) $result["value"];
+                break;
+                case "int":
+                    $this->site[$result["name"]] = (int) $result["value"];
+                break;
+                default:
+                    $this->site[$result["name"]] = (string) $result["value"];
+                break;
+            }
+        }
     }
 
     private function get_page_data()
