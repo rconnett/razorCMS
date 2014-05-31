@@ -24,29 +24,29 @@
 							<i class="expander pull-right fa" ng-class="{'fa-chevron-down': isopen, 'fa-chevron-right': !isopen}"></i>
 						</accordion-heading>
 						<div class="content">
-					        <div class="btn-toolbar" role="toolbar">
-					            <div class="btn-group pull-right"> 
-					                <button class="btn btn-danger" ng-click="content.splice($index,1); deleteContent(c.id)" ng-disabled="user.access_level < 8"><i class="fa fa-trash-o"></i> Delete Content</button>
-					            </div>
-					        </div>
-					        <div class="row">
-						        <div class="col-xs-6">
-						        	<table class="table table-condensed table-bordered table-striped table-data">
-						        		<tbody>
-						        			<tr><td>ID</td><td>{{c.id}}</td></tr>
-						        			<tr>
-						        				<td>Used on Pages</td>
-						        				<td>
-							        				<a class="used_on_pages" ng-href="{{pageLink(uop.link)}}" ng-repeat="uop in c.used_on_pages">[{{uop.id}}] {{uop.name}}</a>
-						        				</td>
-						        			</tr>
-						        		</tbody>
-						        	</table>
-						        </div>
-						        <div class="col-xs-6">
-							        <div class="content-preview" ng-bind-html="loadHTML(c.content)"></div>
-						        </div>
-					        </div>
+							<div class="btn-toolbar" role="toolbar">
+								<div class="btn-group pull-right"> 
+									<button class="btn btn-danger" ng-click="content.splice($index,1); deleteContent(c.id)" ng-disabled="user.access_level < 8"><i class="fa fa-trash-o"></i> Delete Content</button>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-6">
+									<table class="table table-condensed table-bordered table-striped table-data">
+										<tbody>
+											<tr><td>ID</td><td>{{c.id}}</td></tr>
+											<tr>
+												<td>Used on Pages</td>
+												<td>
+													<a class="used_on_pages" ng-href="{{pageLink(uop.link)}}" ng-repeat="uop in c.used_on_pages">[{{uop.id}}] {{uop.name}}</a>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<div class="col-xs-6">
+									<div class="content-preview" ng-bind-html="loadHTML(c.content)"></div>
+								</div>
+							</div>
 						</div>
 					</accordion-group>
 				</accordion>

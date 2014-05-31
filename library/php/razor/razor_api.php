@@ -244,7 +244,7 @@ class RazorAPI
 
 		// no user found or no access in XXX seconds
 		if ($res["count"] != 1) return false;	 
-        $user = $res["result"][0];
+		$user = $res["result"][0];
 		if ($user["last_accessed"] < time() - $access_timeout) return false;
 
 		/* all ok, so go verify user */

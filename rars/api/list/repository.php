@@ -23,9 +23,9 @@ class ListRepository extends RazorAPI
 		parent::__construct();
 	}
 
-    public function get($id)
-    {
-        if ((int) $this->check_access() < 9) $this->response(null, null, 401);
+	public function get($id)
+	{
+		if ((int) $this->check_access() < 9) $this->response(null, null, 401);
 
 		$list_url = "";
 		switch($id)

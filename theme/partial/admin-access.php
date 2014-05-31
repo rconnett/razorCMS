@@ -7,12 +7,12 @@
 		{
 			// check server details
 			$signature = null;
-		    if (isset($_SERVER["REMOTE_ADDR"], $_SERVER["HTTP_USER_AGENT"]) && !empty($_SERVER["REMOTE_ADDR"]) && !empty($_SERVER["HTTP_USER_AGENT"]))
-		    {
-			    // signature generation
-			    $signature = sha1($_SERVER["REMOTE_ADDR"].$_SERVER["HTTP_USER_AGENT"].rand(0, 100000));
-			    $_SESSION["signature"] = $signature;
-		    }
+			if (isset($_SERVER["REMOTE_ADDR"], $_SERVER["HTTP_USER_AGENT"]) && !empty($_SERVER["REMOTE_ADDR"]) && !empty($_SERVER["HTTP_USER_AGENT"]))
+			{
+				// signature generation
+				$signature = sha1($_SERVER["REMOTE_ADDR"].$_SERVER["HTTP_USER_AGENT"].rand(0, 100000));
+				$_SESSION["signature"] = $signature;
+			}
 		}
 	?>
  
@@ -22,16 +22,16 @@
 		</script>
 	<?php endif ?>
 
-    <!--[if lt IE 9]>
-        <div class="ie8 ie8-admin">
-            <p class="message">
-                <i class="fa fa-exclamation-triangle"></i> You are using an outdated version of Internet Explorer that is not supported, 
-                please update your browser or consider using an alternative, modern browser, such as 
-                <a href="http://www.google.com/chrome">Google Chome</a>.
-            </p>
-        </div>
-    <![endif]-->
-    <div id="razor-access" class="ng-cloak" ng-controller="access" ng-init="init()">
+	<!--[if lt IE 9]>
+		<div class="ie8 ie8-admin">
+			<p class="message">
+				<i class="fa fa-exclamation-triangle"></i> You are using an outdated version of Internet Explorer that is not supported, 
+				please update your browser or consider using an alternative, modern browser, such as 
+				<a href="http://www.google.com/chrome">Google Chome</a>.
+			</p>
+		</div>
+	<![endif]-->
+	<div id="razor-access" class="ng-cloak" ng-controller="access" ng-init="init()">
 
 		<global-notification></global-notification>
 

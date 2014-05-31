@@ -60,10 +60,10 @@ class UserReminder extends RazorAPI
 		$db->edit_rows($search, $row);
 		$db->disconnect(); 
 
-        // email user pasword reset email
-        $server_email = str_replace("www.", "", $_SERVER["SERVER_NAME"]);
-        $reminder_link = RAZOR_BASE_URL."login#/password-reset/{$reminder_token}_{$user["id"]}";
-        $message = <<<EOT
+		// email user pasword reset email
+		$server_email = str_replace("www.", "", $_SERVER["SERVER_NAME"]);
+		$reminder_link = RAZOR_BASE_URL."login#/password-reset/{$reminder_token}_{$user["id"]}";
+		$message = <<<EOT
 <html>
 <head>
 	<title>razorCMS - Password Reset</title>

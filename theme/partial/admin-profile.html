@@ -22,16 +22,16 @@
 				<accordion close-others="oneAtATime">
 					<accordion-group ng-repeat="u in users | orderBy:'id' | filter:searchFilter | limitTo:searchLimit" is-open="isopen">
 						<accordion-heading>
-       						<i class="fa fa-user" ng-show="u.id == user.id" title="Active"></i>
-       						<i class="fa fa-check" ng-show="u.active"></i>
-       						<i class="fa fa-ban" ng-hide="u.active"></i>
+	   						<i class="fa fa-user" ng-show="u.id == user.id" title="Active"></i>
+	   						<i class="fa fa-check" ng-show="u.active"></i>
+	   						<i class="fa fa-ban" ng-hide="u.active"></i>
 							{{u.name}}
 							<i class="expander pull-right fa" ng-class="{'fa-chevron-down': isopen, 'fa-chevron-right': !isopen}"></i>
 						</accordion-heading>
 						<div class="content">
-					        <div class="row">
-					        	<div class="col-sm-12">
-						        	<form name="form" class="form-horizontal" role="form" novalidate>
+							<div class="row">
+								<div class="col-sm-12">
+									<form name="form" class="form-horizontal" role="form" novalidate>
 										<div class="form-group">
 											<label class="col-sm-2 control-label">ID</label>
 											<div class="col-sm-10">
@@ -112,17 +112,17 @@
 										</div>
 										<div class="form-group">
 											<div class="col-sm-10 col-sm-offset-2">
-								                <button class="btn btn-success" ng-click="saveUser($index)" ng-disabled="form.$invalid || processing || (!!u.new_password && !u.repeat_password)">
-								                	<i class="fa fa-check"></i> Save Changes
-								                </button>
-								                <button class="btn btn-danger" ng-if="u.id != 1" ng-disabled="u.active || processing" ng-click="removeUser($index)">
-								                	<i class="fa fa-trash-o"></i> Remove User
-								                </button>
+												<button class="btn btn-success" ng-click="saveUser($index)" ng-disabled="form.$invalid || processing || (!!u.new_password && !u.repeat_password)">
+													<i class="fa fa-check"></i> Save Changes
+												</button>
+												<button class="btn btn-danger" ng-if="u.id != 1" ng-disabled="u.active || processing" ng-click="removeUser($index)">
+													<i class="fa fa-trash-o"></i> Remove User
+												</button>
 											</div>
 										</div>
 									</form>
-						        </div>
-					        </div>
+								</div>
+							</div>
 						</div>
 					</accordion-group>
 				</accordion>

@@ -34,12 +34,12 @@ class PageDetails extends RazorAPI
 		$this->response(array("page" => $page), "json");
 	}
 
-    // update content
-    public function post($data)
-    {
-        // login check - if fail, return no data to stop error flagging to user
-        if ((int) $this->check_access() < 8) $this->response(null, null, 401);
-        if (empty($data)) $this->response(null, null, 400);
+	// update content
+	public function post($data)
+	{
+		// login check - if fail, return no data to stop error flagging to user
+		if ((int) $this->check_access() < 8) $this->response(null, null, 401);
+		if (empty($data)) $this->response(null, null, 400);
 
 		// update content
 		$db = new RazorDB();
