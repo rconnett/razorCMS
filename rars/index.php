@@ -23,6 +23,16 @@ define("RARS_ACCESS_TIMEOUT", 86400); // the amount of time the login will stay 
 define("RARS_ACCESS_BAN_ATTEMPS", 250); // the amount of atempts an IP can have without a successful login, before being banned completely from logging in, 0 to turn off.
 // define("RARS_CLEAN_DATA_ALLOWED_TAGS", "<b><i><h1><h2><h3><h4><h5><h6><p><strong><em><table><thead><tbody><tfooter><tr><th><td><ul><ol><li><a><br><div><header><footer><span><img>"); // will add extra checking to data coming in, checking strings and removing any not listed, comment out to turn off.
 
+// permission defines
+// 6 to 10 - access to admin dash
+define("SUPER_ADMIN", 10); // only one account with this and it cannot be removed
+define("ADMIN", 9); // pretty much the same as super admin but can be removed
+define("MANAGER", 8); // add, edt, remove content only
+define("EDITOR", 7); // add, edit content only
+define("CONTRIBUTER", 6); // add content only
+// 1 to 5 - no access to admin dash, user levels only
+define("USER", 1); // base level, can onlyalter profile and user areas of public site that are protected to level 1
+
 // include error handler
 include_once(RAZOR_BASE_PATH.'library/php/razor/razor_file_tools.php');
 include_once(RAZOR_BASE_PATH.'library/php/razor/razor_error_handler.php');

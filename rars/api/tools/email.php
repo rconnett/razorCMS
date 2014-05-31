@@ -69,18 +69,34 @@ class ToolsEmail extends RazorAPI
 		if (empty($extension_settings)) $this->response(null, null, 400);
 		$settings = json_decode($extension_settings);
 
-		// get site data
-		$db->connect("site");
-		$search = array("column" => "id", "value" => 1);
-		$site = $db->get_rows($search);
-		$site = $site["result"][0];
-		$db->disconnect();  
-				
-		// clean email data
-		$to = $settings->email;
-		$from = preg_replace('/[^A-Za-z0-9-_+@.]/', '', $data["email"]);
-		$subject = "{$site["name"]} Contact Form";
-		$message = htmlspecialchars($data["message"], ENT_QUOTES);	  
+        // get site data
+        $db->connect("setting");
+        $res = $db->get_rows(array("column" => "id", "value" => null, "not" => true));
+        $db->disconnect(); 
+
+        $settings = array();
+
+        foreach ($res["result"] as $result)
+        {
+            switch ($result["type"])
+            {
+                case "bool":
+                    $settings[$result["name"]] = (bool) $result["value"];
+                break;
+                case "int":
+                    $settings[$result["name"]] = (int) $result["value"];
+                break;
+                default:
+                    $settings[$result["name"]] = (string) $result["value"];
+                break;
+            }
+        }
+                
+        // clean email data
+        $to = $settings->email;
+        $from = preg_replace('/[^A-Za-z0-9-_+@.]/', '', $data["email"]);
+        $subject = "{$settings["name"]} Contact Form";
+        $message = htmlspecialchars($data["message"], ENT_QUOTES);
 
 		// send to email response
 		$this->email($from, $to, $subject, $message);

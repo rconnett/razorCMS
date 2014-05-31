@@ -60,17 +60,17 @@ define(["angular", "cookie-monster"], function(angular, monster)
 			return (RAZOR_PAGE_ID == pageId ? true : false)
 		};
 
-		$scope.makeHomePage = function(pageId)
-		{
-			rars.post("site/data", {"home_page": pageId}, monster.get("token")).success(function(data)
-			{
-				$rootScope.$broadcast("global-notification", {"type": "success", "text": "Home page set successfully."});
-				$scope.site.home_page = pageId;
-			}).error(function()
-			{
-				$rootScope.$broadcast("global-notification", {"type": "danger", "text": "Error setting home page, please try again later."});
-			});
-		};
+        $scope.makeHomePage = function(pageId)
+        {
+            rars.post("setting/data", {"home_page": pageId}, monster.get("token")).success(function(data)
+            {
+                $rootScope.$broadcast("global-notification", {"type": "success", "text": "Home page set successfully."});
+                $scope.site.home_page = pageId;
+            }).error(function()
+            {
+                $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Error setting home page, please try again later."});
+            });
+        };
 
 		$scope.showKeywords = function(keywords)
 		{

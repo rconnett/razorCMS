@@ -1,16 +1,37 @@
 <!-- admin html -->
 <body class="razor-access">
+
+	<?php
+		// generate signature 
+		if ($this->site["allow_registration"])
+		{
+			// check server details
+			$signature = null;
+		    if (isset($_SERVER["REMOTE_ADDR"], $_SERVER["HTTP_USER_AGENT"]) && !empty($_SERVER["REMOTE_ADDR"]) && !empty($_SERVER["HTTP_USER_AGENT"]))
+		    {
+			    // signature generation
+			    $signature = sha1($_SERVER["REMOTE_ADDR"].$_SERVER["HTTP_USER_AGENT"].rand(0, 100000));
+			    $_SESSION["signature"] = $signature;
+		    }
+		}
+	?>
  
-	<!--[if lt IE 9]>
-		<div class="ie8 ie8-admin">
-			<p class="message">
-				<i class="fa fa-exclamation-triangle"></i> You are using an outdated version of Internet Explorer that is not supported, 
-				please update your browser or consider using an alternative, modern browser, such as 
-				<a href="http://www.google.com/chrome">Google Chome</a>.
-			</p>
-		</div>
-	<![endif]-->
-	<div id="razor-access" class="ng-cloak" ng-controller="access" ng-init="init()">
+	<?php if ($this->site["allow_registration"]): ?>
+		<script type="text/javascript">
+			var RAZOR_FORM_SIGNATURE = '<?php echo $signature ?>';
+		</script>
+	<?php endif ?>
+
+    <!--[if lt IE 9]>
+        <div class="ie8 ie8-admin">
+            <p class="message">
+                <i class="fa fa-exclamation-triangle"></i> You are using an outdated version of Internet Explorer that is not supported, 
+                please update your browser or consider using an alternative, modern browser, such as 
+                <a href="http://www.google.com/chrome">Google Chome</a>.
+            </p>
+        </div>
+    <![endif]-->
+    <div id="razor-access" class="ng-cloak" ng-controller="access" ng-init="init()">
 
 		<global-notification></global-notification>
 
@@ -35,10 +56,18 @@
 							<i class="fa fa-spinner fa-spin" ng-show="processing"></i>
 							<span class="mobile-hide-inline"> Sign In</span>
 						</button>
-						<button type="submit" class="btn btn-default pull-right" ng-click="forgotLogin()" ng-disabled="form.$invalid || processing">
-							<i class="fa fa-question-circle"></i>
-							<span class="mobile-hide-inline"> Forgot Login</span>
-						</button>
+						<div class="btn-group pull-right">
+							<button type="submit" class="btn btn-default" ng-click="forgotLogin()" ng-disabled="form.$invalid || processing">
+								<i class="fa fa-question-circle"></i>
+								<span class="mobile-hide-inline"> Forgot Login</span>
+							</button>
+							<?php if ($this->site["allow_registration"]): ?>
+								<a href="#" class="btn btn-default" ng-click="register()">
+									<i class="fa fa-users"></i>
+									<span class="mobile-hide-inline"> register</span>
+								</a>
+							<?php endif ?>
+						</div>
 					</form>
 					<form ng-if="activePage == 'password-reset'" name="form" role="form" class="form-inline login-form" ng-submit="passwordReset()" novalidate>
 						<div class="form-group">
@@ -68,7 +97,7 @@
 								<button class="btn btn-sm btn-default mobile-show-inline-block" ng-hide="changed" ng-click="openDash()">
 									<i class="fa fa-dot-circle-o"></i>
 								</button>
-								<a href="?edit" class="btn btn-sm btn-primary">
+								<a href="?edit" class="btn btn-sm btn-primary" ng-if="user.access_level > 6 || !page.active">
 									<i class="fa fa-pencil"></i><span class="mobile-hide-inline"> Edit Page</span>
 								</a>
 								<button class="btn btn-sm btn-default" ng-click="addNewPage()" ng-hide="toggle || changed">
@@ -79,7 +108,11 @@
 					</div>
 					<div class="col-xs-6">
 						<div class="account-details text-right" ng-show="user.id">
-							<span class="name">{{user.name}} <a href="#" ng-click="logout()"><i class="fa fa-sign-out" data-toggle="tooltip" data-placement="bottom" title="Sign Out"></i></a></span>
+							<span class="name">
+								{{user.name}} 
+								<a href="#" ng-click="editProfile()"><i class="fa fa-user" data-toggle="tooltip" data-placement="bottom" title="User Profile"></i></a>
+								<a href="#" ng-click="logout()"><i class="fa fa-sign-out" data-toggle="tooltip" data-placement="bottom" title="Sign Out"></i></a>
+							</span>
 							<span class="last-login-date">Last login: {{user.last_logged_in * 1000 | date:'EEE, MMM d, y'}}</span>
 						</div>
 					</div>
@@ -116,22 +149,22 @@
 										</li>
 										<li ng-class="{'active':activePage == 'content'}">
 											<a href="#content">
-												<i class="fa fa-th-large"></i><span class="mobile-hide-inline">  Content</span>
+												<i class="fa fa-th-large"></i><span class="mobile-hide-inline"> Content</span>
 											</a>
 										</li>
-										<li ng-class="{'active':activePage == 'extensions'}">
+										<li ng-class="{'active':activePage == 'extensions'}" ng-if="user.access_level > 8">
 											<a href="#extensions">
-												<i class="fa fa-puzzle-piece"></i><span class="mobile-hide-inline">  Extensions</span>
+												<i class="fa fa-puzzle-piece"></i><span class="mobile-hide-inline"> Extensions</span>
 											</a>
 										</li>
-										<li ng-class="{'active':activePage == 'profile'}">
+										<li ng-class="{'active':activePage == 'profile'}" ng-if="user.access_level == 10">
 											<a href="#profile">
-												<i class="fa fa-user"></i><span class="mobile-hide-inline">  Profile</span>
+												<i class="fa fa-user"></i><span class="mobile-hide-inline"> Users</span>
 											</a>
 										</li>
-										<li ng-class="{'active':activePage == 'settings'}">
+										<li ng-class="{'active':activePage == 'settings'}" ng-if="user.access_level > 8">
 											<a href="#settings">
-												<i class="fa fa-cog"></i><span class="mobile-hide-inline">  Settings</span>
+												<i class="fa fa-cog"></i><span class="mobile-hide-inline"> Settings</span>
 												<i class="fa fa-exclamation-triangle" ng-show="upgrade" style="color: #f00;"></i>
 											</a>
 										</li>

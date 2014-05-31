@@ -20,10 +20,10 @@ class ExtensionList extends RazorAPI
 		parent::__construct();
 	}
 
-	public function get($type)
-	{
-		if ((int) $this->check_access() < 10) $this->response(null, null, 401);
-		if (empty($type) || !in_array($type, $this->types)) $this->response(null, null, 400);
+    public function get($type)
+    {
+        if ((int) $this->check_access() < 9) $this->response(null, null, 401);
+        if (empty($type) || !in_array($type, $this->types)) $this->response(null, null, 400);
 
 		// first scan the folders for manifests
 		$manifests = RazorFileTools::find_file_contents(RAZOR_BASE_PATH."extension", "manifest.json", "json", "end");

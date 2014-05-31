@@ -23,10 +23,10 @@ class ExtensionData extends RazorAPI
 		$this->ext_path = RAZOR_BASE_PATH."extension";
 	}
 
-	public function post($ext)
-	{
-		if ((int) $this->check_access() < 10) $this->response(null, null, 401);
-		if (empty($ext)) $this->response(null, null, 400);
+    public function post($ext)
+    {
+        if ((int) $this->check_access() < 9) $this->response(null, null, 401);
+        if (empty($ext)) $this->response(null, null, 400);
 
 		$settings = array();
 		foreach ($ext["settings"] as $set) $settings[$set["name"]] = $set["value"];
@@ -61,10 +61,10 @@ class ExtensionData extends RazorAPI
 		$this->response("success", "json");
 	}
 
-	public function delete($id)
-	{
-		if ((int) $this->check_access() < 10) $this->response(null, null, 401);
-		if (empty($id)) $this->response(null, null, 400);
+    public function delete($id)
+    {
+        if ((int) $this->check_access() < 9) $this->response(null, null, 401);
+        if (empty($id)) $this->response(null, null, 400);
 
 		$parts = explode("__", strtolower($id));
 		if (count($parts) != 3) $this->response(null, null, 400);
