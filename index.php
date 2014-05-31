@@ -13,7 +13,14 @@
 // set session
 session_start();
 session_regenerate_id();
-
+	
+// sidewide constants
+define("RAZOR_BASE_PATH", str_replace(array("index.php"), "", $_SERVER["SCRIPT_FILENAME"]));
+$port = ($_SERVER["SERVER_PORT"] == "80" ? "" : ":{$_SERVER["SERVER_PORT"]}");
+define("RAZOR_BASE_URL", "http://".$_SERVER["SERVER_NAME"].$port.str_replace(array("index.php"), "", $_SERVER["SCRIPT_NAME"]));
+define("RAZOR_USERS_IP", $_SERVER["REMOTE_ADDR"]);
+define("RAZOR_USERS_UAGENT", $_SERVER["HTTP_USER_AGENT"]);
+    
 // permission defines
 // 6 to 10 - access to admin dash
 define("SUPER_ADMIN", 10); // only one account with this and it cannot be removed
