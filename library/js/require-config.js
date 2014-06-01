@@ -26,7 +26,7 @@ require.config({
 
 		"cookie-monster": "cookie-monster/cookie-monster",
 		
-		"jquery": "jquery/jquery-2.1.0.min",
+		"jquery": "jquery/jquery-1.11.1.min",
 		"jquery-bootstrap": "jquery-bootstrap/bootstrap.min"
 	},
 	
