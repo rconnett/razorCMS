@@ -52,9 +52,6 @@ $error = new RazorErrorHandler();
 set_error_handler(array($error, 'handle_error'));
 set_exception_handler(array($error, 'handle_error'));
 
-// remove any system upgrade files
-if (is_file(RAZOR_BASE_PATH."storage/tmp/package/system_upgrade_post_install.php")) RazorFileTools::delete_directory(RAZOR_BASE_PATH."storage/tmp");
-
 // check any required folders exist
 if (!is_dir(RAZOR_BASE_PATH."extension")) mkdir(RAZOR_BASE_PATH."extension");
 
