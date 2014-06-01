@@ -212,7 +212,13 @@ var validAttrs = angular.extend({}, uriAttrs, makeMap(
 	'color,cols,colspan,compact,coords,dir,face,headers,height,hreflang,hspace,'+
 	'ismap,lang,language,nohref,nowrap,rel,rev,rows,rowspan,rules,'+
 	'scope,scrolling,shape,size,span,start,summary,target,title,type,'+
-	'valign,value,vspace,width'));
+	'valign,value,vspace,width,style,'+
+	'id,tabindex,role,'+
+	'data-toggle,data-dismiss,data-target,data-spy,data-placement,data-container,'+
+	'data-content,data-loading-text,data-complete-text,data-parent,data-ride,data-slide-to,'+
+	'data-slide,data-offset-top,data-offset-bottom,'+
+	'aria-hidden,aria-labelledby,'
+	));
 
 function makeMap(str) {
   var obj = {}, items = str.split(','), i;
