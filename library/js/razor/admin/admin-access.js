@@ -315,6 +315,15 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 		$scope.processing = null;
 		$scope.completed = null;
 		$scope.newPage = null;
+		
+		$scope.accessLevels = [
+			{"name": "Public Access", "value": 0},
+			{"name": "User Level 1", "value": 1},
+			{"name": "User Level 2", "value": 2},
+			{"name": "User Level 3", "value": 3},
+			{"name": "User Level 4", "value": 4},
+			{"name": "User Level 5", "value": 5}
+		];
 
 		$scope.cancel = function()
 		{

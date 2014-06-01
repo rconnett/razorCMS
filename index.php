@@ -29,7 +29,11 @@ define("MANAGER", 8); // add, edt, remove content only
 define("EDITOR", 7); // add, edit content only
 define("CONTRIBUTER", 6); // add content only
 // 1 to 5 - no access to admin dash, user levels only
-define("USER", 1); // base level, can onlyalter profile and user areas of public site that are protected to level 1
+define("USER_5", 5); // base level, can onlyalter profile and user areas of public site that are protected to level 1
+define("USER_4", 4); // base level, can onlyalter profile and user areas of public site that are protected to level 1
+define("USER_3", 3); // base level, can onlyalter profile and user areas of public site that are protected to level 1
+define("USER_2", 2); // base level, can onlyalter profile and user areas of public site that are protected to level 1
+define("USER_1", 1); // base level, can onlyalter profile and user areas of public site that are protected to level 1
 
 // includes
 include_once(RAZOR_BASE_PATH.'library/php/razor/razor_file_tools.php');

@@ -31,7 +31,11 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 			{"name": "Manager", "value": 8},
 			{"name": "Editor", "value": 7},
 			{"name": "Contributer", "value": 6},
-			{"name": "User", "value": 1}
+			{"name": "User 5", "value": 5},
+			{"name": "User 4", "value": 4},
+			{"name": "User 3", "value": 3},
+			{"name": "User 2", "value": 2},
+			{"name": "User 1", "value": 1}
 		];
 
 		$scope.cancel = function()
@@ -62,7 +66,11 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 			{"name": "Manager", "value": 8},
 			{"name": "Editor", "value": 7},
 			{"name": "Contributer", "value": 6},
-			{"name": "User", "value": 1}
+			{"name": "User 5", "value": 5},
+			{"name": "User 4", "value": 4},
+			{"name": "User 3", "value": 3},
+			{"name": "User 2", "value": 2},
+			{"name": "User 1", "value": 1}
 		];
 
 		//grab content list

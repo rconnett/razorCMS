@@ -62,6 +62,14 @@ class RazorSite
 			return;
 		}
 
+		// is 401 ?
+		if ($this->logged_in < $this->page["access_level"])
+		{
+			header("HTTP/1.0 401 Unauthorized");
+			include_once(RAZOR_BASE_PATH."theme/view/401.php");
+			return;
+		}
+
 		// if default not chosen, load manifest
 		if (!empty($this->page["theme"]) && is_file(RAZOR_BASE_PATH."extension/theme/{$this->page["theme"]}"))
 		{

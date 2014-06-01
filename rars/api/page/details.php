@@ -56,6 +56,7 @@ class PageDetails extends RazorAPI
 			"link" => $data["link"],
 			"theme" => $data["theme"],
 			"keywords" => $data["keywords"],
+			"access_level" => (int) $data["access_level"], 
 			"description" => $data["description"]
 		);
 

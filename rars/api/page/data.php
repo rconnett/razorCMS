@@ -40,6 +40,7 @@ class PageData extends RazorAPI
 			"link" => $data["link"], 
 			"keywords" => $data["keywords"], 
 			"description" => $data["description"], 
+			"access_level" => (int) $data["access_level"], 
 			"active" => false
 		);
 
