@@ -84,6 +84,18 @@
 					</div>
 				</div>
 				<div class="form-group">
+					<label for="cookie-message" class="col-sm-3 control-label">Cookie Message</label>
+					<div class="col-sm-7">
+						<textarea rows="4" id="cookie-message" name="cookieMessage" class="form-control" type="text" ng-model="site.cookie_message" placeholder="Add a cookie message that users have to accept, leave blank to turn this off"></textarea>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="cookie-message-button" class="col-sm-3 control-label">Cookie Message Button</label>
+					<div class="col-sm-7">
+						<input id="cookie-message-button" name="cookieMessageButton" class="form-control" type="text" ng-model="site.cookie_message_button" placeholder="Add text to a cookie button that removes message, leave blank to turn this off">
+					</div>
+				</div>
+				<div class="form-group">
 					<div class="col-sm-offset-3 col-sm-7">
 						<button type="submit" class="btn btn-success" ng-click="save()" ng-disabled="form.$invalid || processing">
 							<i class="fa fa-check"></i> 

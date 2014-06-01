@@ -13,5 +13,10 @@ require([
 	"angular",
 	"ui-bootstrap",
 	"jquery",
-	"jquery-bootstrap"
-]);
+	"jquery-bootstrap",
+	"razor/base/cookie-message"
+], function(angular)
+{
+	angular.module("razor.base", ["razor.base.cookieMessage"]);
+	angular.bootstrap(document.getElementById("razor-cookie"), ["razor.base.cookieMessage"]); // Necessary because the Angular files are being loading asynchronously
+});

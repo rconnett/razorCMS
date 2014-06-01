@@ -372,6 +372,24 @@ OUTPUT;
 		<div>
 	<![endif]-->
 OUTPUT;
+
+			// if public viewable only, allow google tracking code to be used
+			if (!empty($this->site["cookie_message"]) && !empty($this->site["cookie_message_button"]))
+			{
+				echo <<<OUTPUT
+	<!-- cookie message -->
+	<div id="razor-cookie" class="cookie-message" ng-controller="cookieMessage">
+		<div class="alert alert-info alert-dismissable ng-cloak" ng-if="!hideMessage">
+			<p class="text-center">
+				{$this->site["cookie_message"]}
+				<button class="btn btn-default" ng-click="agree()">{$this->site["cookie_message_button"]}</button>
+			</p>
+		</div>
+	</div>
+	<!-- cookie message -->
+OUTPUT;
+			}
+
 			return;
 		}
 
