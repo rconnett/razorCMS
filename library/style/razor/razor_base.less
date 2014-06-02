@@ -11,14 +11,21 @@
 // load in bootstrap and fontawesome and configure
 @import "../bootstrap/bootstrap.less";
 @import "../../font/font-awesome/less/font-awesome.less";
+@import "../summernote/elements.less";
+@import "../summernote/summernote.less";
+@import "../codemirror/codemirror.less";
 
 @url-path: "../../../";
 @fa-font-path: "@{url-path}library/font/font-awesome/fonts";
-@font-family-sans-serif:  'Open Sans', Arial;
-@font-family-serif:	   Georgia, "Times New Roman", Times, serif;
-@font-family-monospace:   Menlo, Monaco, Consolas, "Courier New", monospace;
-@font-family-base:		@font-family-sans-serif;
-@headings-font-family:	'Open Sans', Arial;
+@font-family-sans-serif: 'Open Sans', Arial;
+@font-family-serif:	Georgia, "Times New Roman", Times, serif;
+@font-family-monospace: Menlo, Monaco, Consolas, "Courier New", monospace;
+@font-family-base: @font-family-sans-serif;
+@headings-font-family: 'Open Sans', Arial;
+@border-radius-base: 0px;
+@border-radius-large: 0px;
+@border-radius-small: 0px;
+
 
 // fix for ui-bootstrap cursor issue
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
@@ -634,60 +641,38 @@ li.dropdown
 			.content-block
 			{
 				margin-bottom: 10px;
-			}
+				-webkit-box-shadow: 0 0 5px 0 rgba(0,0,0,0.25);
+				-moz-box-shadow: 0 0 5px 0 rgba(0,0,0,0.25);
+				-ms-box-shadow: 0 0 5px 0 rgba(0,0,0,0.25);
+				-o-box-shadow: 0 0 5px 0 rgba(0,0,0,0.25);
+				box-shadow: 0 0 5px 0 rgba(0,0,0,0.25);
 
-			.content-edit
-			{
-				padding-top: 3px;
-				
-				.ta-toolbar
+				&.active
 				{
-					.btn-group { margin-bottom: 3px };
+					-webkit-box-shadow: 0px 0px 5px 0px rgba(0, 92, 255, 0.5);
+					-moz-box-shadow: 0px 0px 5px 0px rgba(0, 92, 255, 0.5);
+					-ms-box-shadow: 0px 0px 5px 0px rgba(0, 92, 255, 0.5);
+					-o-box-shadow: 0px 0px 5px 0px rgba(0, 92, 255, 0.5);
+					box-shadow: 0px 0px 5px 0px rgba(0, 92, 255, 0.5);
 				}
 
-				&.disabled
-				{					
-					.ta-editor 
+				.content-edit
+				{
+					padding-top: 3px;
+					min-height: 40px;
+					
+					.ta-toolbar
 					{
-						border: 1px solid #ccc;
+						.btn-group { margin-bottom: 3px };
 					}
-				}
-			}
-		}
 
-		.content-edit
-		{
-			background-color: transparent;
-			
-			.ta-editor {
-				background-color: transparent;
-				min-height: 50px;
-				height: auto;
-				overflow: auto;
-				font-family: inherit;
-				font-size: 100%;
-			}
-
-			.ta-html { height: 250px; }
-
-			&.disabled
-			{
-				-webkit-box-shadow: none;
-				-moz-box-shadow: none;
-				-ms-box-shadow: none;
-				-o-box-shadow: none;
-				box-shadow: none;
-				
-				.ta-toolbar { display: none; }
-				.ta-editor 
-				{
-					background-color: transparent;
-					border: none;
-					-webkit-box-shadow: none;
-					-moz-box-shadow: none;
-					-ms-box-shadow: none;
-					-o-box-shadow: none;
-					box-shadow: none;
+					&.disabled
+					{					
+						.ta-editor 
+						{
+							border: 1px solid #ccc;
+						}
+					}
 				}
 			}
 		}
@@ -833,7 +818,6 @@ li.dropdown
 		background-color: #aaa; 
 		border: 2px solid #555; 
 		cursor: pointer;
-		border-radius: 4px;
 
 		.slide-switch-slider
 		{
@@ -843,9 +827,11 @@ li.dropdown
 			float: left;
 			text-align: center;
 			font-size: 12px;
-			padding: 6px;
+			line-height: 27px;
+			height: 27px;
 			color: #aaa;
-			border-radius: 2px;
+			-webkit-box-sizing: border-box;
+			box-sizing: border-box;
 		}
 
 		&.slide-switch-on
@@ -872,7 +858,6 @@ li.dropdown
 		color: #000; 
 		background-color: #f4f4f4; 
 		border: 1px solid #aaa; 
-		border-radius: 4px; 
 		padding: 2px;
 		position: relative;
 
@@ -899,7 +884,6 @@ li.dropdown
 				background-color: #ddd; 
 				margin: 1px; 
 				padding: 2px 6px; 
-				border-radius: 3px; 
 				display: inline-block;
 				font-weight: bold; 
 				font-size: 14px;

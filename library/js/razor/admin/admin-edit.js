@@ -8,9 +8,9 @@
  * @created Feb 2014
  */
  
-define(["angular", "cookie-monster", "text-angular-sanitize", "text-angular", "ui-bootstrap"], function(angular, monster)
+define(["angular", "cookie-monster", "jquery", "summernote", "ui-bootstrap"], function(angular, monster, $)
 {
-	angular.module("razor.admin.edit", ['ui.bootstrap', 'textAngular'])
+	angular.module("razor.admin.edit", ['ui.bootstrap'])
 
 	.controller("edit", function($scope, rars, $modal, $sce, $timeout, $rootScope, $http)
 	{
@@ -124,6 +124,13 @@ define(["angular", "cookie-monster", "text-angular-sanitize", "text-angular", "u
 
 		$scope.saveEdit = function()
 		{
+			// if already editing, end
+			if (!!$scope.editing.id)
+			{
+				$scope.content[$scope.editing.id].content = $("#" + $scope.editing.handle).code();
+				$("#" + $scope.editing.handle).destroy();
+			}
+
 			// clear edit stuff
 			$scope.editing = {"handle": null, "id": null};
 			$scope.savedEditContent = false;
@@ -160,11 +167,20 @@ define(["angular", "cookie-monster", "text-angular-sanitize", "text-angular", "u
 		{
 			if (!$scope.toggle) return;
 
+			// if already editing, end
+			if (!!$scope.editing.id)
+			{
+				$scope.content[$scope.editing.id].content = $("#" + $scope.editing.handle).code();
+				$("#" + $scope.editing.handle).destroy();
+			}
+
 			// clear edit stuff
 			$scope.editing = {
 				"handle": locCol + content_id, 
 				"id": content_id,
 			};
+
+			$("#" + locCol + content_id).summernote();
 		};
 
 		$scope.editingThis = function(handle)
@@ -394,5 +410,12 @@ define(["angular", "cookie-monster", "text-angular-sanitize", "text-angular", "u
 		{
 			return RAZOR_BASE_URL + link + "?preview";
 		};
+	})
+
+	.filter("html", function ($sce) 
+	{
+        return function (html) {
+            return $sce.trustAsHtml(html);
+        }
 	});
 });

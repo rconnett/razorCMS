@@ -19,15 +19,14 @@ require.config({
 		"angular-sanitize": "angular/angular-sanitize.min",
 		"angular-cookies": "angular/angular-cookies.min",
 
-		"text-angular": "text-angular/text-angular-custom",
-		"text-angular-sanitize": "text-angular/text-angular-sanitize-custom",
-
 		"ui-bootstrap": "ui-bootstrap/ui-bootstrap-custom-tpls-0.10.0.min",
 
 		"cookie-monster": "cookie-monster/cookie-monster",
 		
 		"jquery": "jquery/jquery-1.11.1.min",
-		"jquery-bootstrap": "jquery-bootstrap/bootstrap.min"
+		"jquery-bootstrap": "jquery-bootstrap/bootstrap.min",
+		"summernote": "summernote/summernote.min",
+		"codemirror": "codemirror/codemirror"
 	},
 	
 	shim: {
@@ -37,12 +36,10 @@ require.config({
 		"angular-sanitize": { deps: ["angular"] },
 		"angular-cookies": { deps: ["angular"] },
 
-		"text-angular-sanitize": { deps: ["angular"] },
-		"text-angular": { deps: ["angular", "text-angular-sanitize", "ui-bootstrap"] },
-
 		"ui-bootstrap": { deps: ["angular"] },
 		
 		"jquery": { exports: "$" },
-		"jquery-bootstrap": { deps: ["jquery"] }
+		"jquery-bootstrap": { deps: ["jquery"] },
+		"summernote": { deps: ["jquery"]},
 	}
 });

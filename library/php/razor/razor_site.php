@@ -89,11 +89,13 @@ class RazorSite
 		// admin angluar loading for editor, return
 		if (isset($_GET["edit"]) && ($this->logged_in > 6 || ($this->logged_in > 5 && !$this->page["active"])))
 		{
+//<div text-angular name="{$loc}{$col}{{block.content_id}}" ng-if="!block.extension" ta-disabled="!editingThis('{$loc}{$col}' + block.content_id)" class="content-edit" ng-model="content[block.content_id].content" ng-click="startBlockEdit('{$loc}{$col}',  block.content_id)" ></div>
+
 			echo <<<OUTPUT
 <div class="content-column" ng-if="changed" ng-class="{'edit': toggle}">
 	<div class="content-block" ng-class="{'active': editingThis('{$loc}{$col}' + block.content_id)}" ng-repeat="block in locations.{$loc}.{$col}">
 
-		<div class="input-group" ng-if="!block.extension">
+		<div class="input-group block-controls" ng-if="!block.extension">
 			<span class="input-group-btn">
 				<button class="btn btn-default" ng-click="locations.{$loc}.{$col}.splice(\$index - 1, 0, locations.{$loc}.{$col}.splice(\$index, 1)[0])" ng-show="toggle"><i class="fa fa-arrow-up"></i></button>
 				<button class="btn btn-default" ng-click="locations.{$loc}.{$col}.splice(\$index + 1, 0, locations.{$loc}.{$col}.splice(\$index, 1)[0])" ng-show="toggle"><i class="fa fa-arrow-down"></i></button>
@@ -104,7 +106,7 @@ class RazorSite
 			</span>
 		</div>
 
-		<div text-angular name="{$loc}{$col}{{block.content_id}}" ng-if="!block.extension" ta-disabled="!editingThis('{$loc}{$col}' + block.content_id)" class="content-edit" ng-model="content[block.content_id].content" ng-click="startBlockEdit('{$loc}{$col}',  block.content_id)" ></div>
+		<div id="{$loc}{$col}{{block.content_id}}" ng-if="!block.extension" class="content-edit" ng-click="startBlockEdit('{$loc}{$col}',  block.content_id)" ng-bind-html="content[block.content_id].content | html"></div>
 
 		<div class="content-settings" ng-if="block.extension">
 			<div class="extension-controls">
