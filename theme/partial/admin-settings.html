@@ -46,6 +46,12 @@
 					</div>
 				</div>
 				<div class="form-group">
+					<label for="forgot-password-email" class="col-sm-3 control-label">Forgot Password Email</label>
+					<div class="col-sm-7">
+						<textarea rows="4" id="forgot-password-email" name="forgotPasswordEmail" class="form-control" type="text" ng-model="site.forgot_password_email" placeholder="Email that is sent when people request password reset. **server_name**, **user_email**, **forgot_password_link** can all be used to live data to the email."></textarea>
+					</div>
+				</div>
+				<div class="form-group">
 					<label class="col-sm-3 control-label">Allow Registration</label>
 					<div class="col-sm-2">
 						<slide-switch rzr-model="site.allow_registration"></slide-switch>
@@ -68,13 +74,13 @@
 				<div class="form-group" ng-if="site.allow_registration && site.manual_activation">
 					<label for="registration-email" class="col-sm-3 control-label">Registration Email</label>
 					<div class="col-sm-7">
-						<textarea rows="4" id="registration-email" name="registrationEmail" class="form-control" type="text" ng-model="site.registration_email" placeholder="Email that is sent when people register account"></textarea>
+						<textarea rows="4" id="registration-email" name="registrationEmail" class="form-control" type="text" ng-model="site.registration_email" placeholder="Email that is sent when people register account. **server_name**, **user_email** can all be used to live data to the email."></textarea>
 					</div>
 				</div>
 				<div class="form-group" ng-if="site.allow_registration && !site.manual_activation">
 					<label for="activation-email" class="col-sm-3 control-label">Activation Email</label>
 					<div class="col-sm-7">
-						<textarea rows="4" id="activation-email" name="activationEmail" class="form-control" type="text" ng-model="site.activation_email" placeholder="Email that is sent when people register account and it needs acitvating"></textarea>
+						<textarea rows="4" id="activation-email" name="activationEmail" class="form-control" type="text" ng-model="site.activation_email" placeholder="Email that is sent when people register account and it needs acitvating. **server_name**, **user_email**, **activation_link** can all be used to live data to the email."></textarea>
 					</div>
 				</div>
 				<div class="form-group" ng-if="site.allow_registration && site.manual_activation">

@@ -42,6 +42,13 @@ class SettingData extends RazorAPI
 			if ($res["count"] == 0)	$db->add_rows(array("name" => "google_analytics_code", "value" => (string) $data["google_analytics_code"], "type" => "string"));
 		}
 	
+		if (isset($data["forgot_password_email"]))
+		{
+			$search = array("column" => "name", "value" => "forgot_password_email");
+			$res = $db->edit_rows($search, array("value" => (string) $data["forgot_password_email"]));
+			if ($res["count"] == 0)	$db->add_rows(array("name" => "forgot_password_email", "value" => (string) $data["forgot_password_email"], "type" => "string"));
+		}
+	
 		if (isset($data["allow_registration"]))
 		{
 			$search = array("column" => "name", "value" => "allow_registration");
