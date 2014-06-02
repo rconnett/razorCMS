@@ -60,23 +60,32 @@ class UserReminder extends RazorAPI
 		$db->edit_rows($search, $row);
 		$db->disconnect(); 
 
+		// get setting
+		$db->connect("setting");
+		$setting = $db->get_rows(array("column" => "name", "value" => "forgot_password_email"));
+		$forgot_password_email = $setting["result"][0]["value"];
+		$db->disconnect(); 
+
 		// email user pasword reset email
 		$server_email = str_replace("www.", "", $_SERVER["SERVER_NAME"]);
 		$reminder_link = RAZOR_BASE_URL."login#/password-reset/{$reminder_token}_{$user["id"]}";
-		$message = <<<EOT
-<html>
-<head>
-	<title>razorCMS - Password Reset</title>
-</head>
-<body>
-	<h1>Reset your razorCMS Account Password</h1>
-	<p>This email address has requested a password reset for the account on razorCMS ({$_SERVER["SERVER_NAME"]}). If this was not you that requested this, please ignore this email and the password reset will expire in 1 hour.</p>
-	<p>If you did request this, then you can reset your password using the link below.</p>
-	<a href="{$reminder_link}">$reminder_link</a>
-</body>
-</html>
-EOT;
-		$this->email("no-reply@{$server_email}", $user["email_address"], "razorCMS Account Password Reset", $message);
+
+		// email text replacement
+		$search = array(
+			"**server_name**",
+			"**user_email**",
+			"**forgot_password_link**"
+		);
+
+		$replace = array(
+			$_SERVER["SERVER_NAME"],
+			$user["email_address"],
+			$reminder_link
+		);
+
+		$message = str_replace($search, $replace, $forgot_password_email);
+
+		$this->email("no-reply@{$server_email}", $user["email_address"], "{$_SERVER["SERVER_NAME"]} Account Password Reset", $message);
 
 		$this->response("success", "json");
 	}
