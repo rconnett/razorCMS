@@ -41,12 +41,6 @@ include_once(RAZOR_BASE_PATH.'library/php/razor/razor_error_handler.php');
 include_once(RAZOR_BASE_PATH.'library/php/razor/razor_site.php');
 include_once(RAZOR_BASE_PATH."library/php/razor/razor_db.php");
 
-// includes
-include_once(RAZOR_BASE_PATH.'library/php/razor/razor_file_tools.php');
-include_once(RAZOR_BASE_PATH.'library/php/razor/razor_error_handler.php');
-include_once(RAZOR_BASE_PATH.'library/php/razor/razor_site.php');
-include_once(RAZOR_BASE_PATH."library/php/razor/razor_db.php");
-
 // Load error handler
 $error = new RazorErrorHandler();
 set_error_handler(array($error, 'handle_error'));
