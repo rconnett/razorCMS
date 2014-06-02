@@ -1437,6 +1437,7 @@ class RazorDB
 
 		while ($c <= 40)
 		{
+			usleep(150000);
 			$writable = is_writable(RAZOR_BASE_PATH."storage/database/{$this->table}.db.php");
 			if ($writable) 
 			{
@@ -1444,7 +1445,6 @@ class RazorDB
 				break;
 			}
 			$c++;
-			usleep(250000);
 		}
 
 		if (!$rename)
