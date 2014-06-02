@@ -29,15 +29,15 @@ define(["angular", "cookie-monster"], function(angular, monster)
 		$scope.deletePage = function(pageId)
 		{
 			$scope.pagesMessage = null;
-	
+
 			rars.delete("page/data", pageId, monster.get("token")).success(function(data)
 			{
 				$rootScope.$broadcast("global-notification", {"type": "success", "text": "Page deleted successfully."});
 
-				// clean up remove from menus
-				angular.forEach($scope.$parent.menus, function(index, menu)
+				// remove from page array
+				angular.forEach($scope.pages, function(page, index)
 				{
-					if (menu.page_id == pageId) $scope.$parent.menus.splice(index, 1);
+					if (page.id == pageId) $scope.pages.splice(index, 1);
 				});
 			}).error(function()
 			{

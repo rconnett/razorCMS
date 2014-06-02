@@ -32,7 +32,7 @@
 									<button class="btn btn-default" ng-disabled="page.id == site.home_page || user.access_level < 8" ng-click="makeHomePage(page.id)"><i class="fa fa-home"></i> Make Home Page</button>
 								</div>
 								<div class="btn-group pull-right"> 
-									<button class="btn btn-danger" ng-click="pages.splice($index,1); deletePage(page.id)" ng-disabled="isCurrentPage(page.id) || page.id == site.home_page || user.access_level < 8"><i class="fa fa-trash-o"></i> Delete Page</button>
+									<button class="btn btn-danger" ng-click="deletePage(page.id)" ng-disabled="isCurrentPage(page.id) || page.id == site.home_page || user.access_level < 8"><i class="fa fa-trash-o"></i> Delete Page</button>
 								</div>
 							</div>
 							<div class="row">

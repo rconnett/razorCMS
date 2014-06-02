@@ -17,7 +17,7 @@
 					</div>
 				</div>
 				<accordion close-others="oneAtATime">
-					<accordion-group ng-repeat="c in content | orderBy:'name' | filter:searchFilter | limitTo:searchLimit" is-open="isopen">
+					<accordion-group ng-repeat="c in content | filter:searchFilter | limitTo:searchLimit" is-open="isopen">
 						<accordion-heading>
 	   						<i class="fa fa-eye" ng-hide="c.used_on_pages == null" title="Active"></i>
 							{{c.name}}
@@ -26,7 +26,7 @@
 						<div class="content">
 							<div class="btn-toolbar" role="toolbar">
 								<div class="btn-group pull-right"> 
-									<button class="btn btn-danger" ng-click="content.splice($index,1); deleteContent(c.id)" ng-disabled="user.access_level < 8"><i class="fa fa-trash-o"></i> Delete Content</button>
+									<button class="btn btn-danger" ng-click="deleteContent(c.id)" ng-disabled="user.access_level < 8"><i class="fa fa-trash-o"></i> Delete Content</button>
 								</div>
 							</div>
 							<div class="row">

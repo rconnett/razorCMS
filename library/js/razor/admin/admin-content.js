@@ -32,15 +32,9 @@ define(["angular", "cookie-monster"], function(angular, monster)
 				$rootScope.$broadcast("global-notification", {"type": "success", "text": "Content deleted successfully."});
 
 				// clean up any locations or content in active data
-				angular.forEach($scope.$parent.locations, function(index, loc)
+				angular.forEach($scope.content, function(con, index)
 				{
-					if (loc.content_id == contentId) $scope.$parent.locations.splice(index, 1);
-				});
-
-				// clean up any locations or content in active data
-				angular.forEach($scope.$parent.content, function(index, con)
-				{
-					if (con.content_id == contentId) $scope.$parent.content.splice(index, 1);
+					if (con.id == contentId) $scope.content.splice(index, 1);
 				});
 			}).error(function()
 			{
