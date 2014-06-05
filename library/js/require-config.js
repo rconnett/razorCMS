@@ -21,12 +21,12 @@ require.config({
 
 		"ui-bootstrap": "ui-bootstrap/ui-bootstrap-custom-tpls-0.10.0.min",
 
-		"cookie-monster": "cookie-monster/cookie-monster",
+		"cookie-monster": "cookie-monster/cookie-monster.min",
 		
 		"jquery": "jquery/jquery-1.11.1.min",
 		"jquery-bootstrap": "jquery-bootstrap/bootstrap.min",
-		"summernote": "summernote/summernote.min",
-		"codemirror": "codemirror/codemirror"
+		"summernote": "summernote/summernote-custom.min",
+		"codemirror": "codemirror/codemirror.min"
 	},
 	
 	shim: {
