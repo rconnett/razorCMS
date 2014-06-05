@@ -43,13 +43,13 @@
 							<!--[if IE 9]>
 								<label for="email">Email</label>
 							<![endif]-->
-							<input name="email" type="email" class="form-control" placeholder="Email address" ng-model="loginDetails.u" ng-class="{'input-error' :form.email.$dirty && form.email.$invalid && form.email.$error.required}" required>
+							<input name="email" type="email" class="form-control" placeholder="Email address" ng-model="loginDetails.u" ng-class="{'input-error' :form.email.$dirty && (form.email.$invalid || form.email.$error.required)}" required>
 						</div>
 						<div class="form-group">
 							<!--[if IE 9]>
 								<label for="password">Password</label>
 							<![endif]-->
-							<input name="password" type="password" class="form-control" placeholder="Password" ng-model="loginDetails.p" ng-class="{'input-error' :form.password.$dirty && form.password.$invalid && form.password.$error.required}">
+							<input name="password" type="password" class="form-control" placeholder="Password" ng-model="loginDetails.p" ng-class="{'input-error' :form.password.$dirty && (form.password.$invalid || form.password.$error.required)}" required>
 						</div>
 						<button type="submit" class="btn btn-default" ng-disabled="form.$invalid || processing || !loginDetails.p || loginDetails.p.length < 1">
 							<i class="fa fa-sign-in" ng-hide="processing"></i>
@@ -57,7 +57,7 @@
 							<span class="mobile-hide-inline"> Sign In</span>
 						</button>
 						<div class="btn-group pull-right">
-							<button type="submit" class="btn btn-default" ng-click="forgotLogin()" ng-disabled="form.$invalid || processing">
+							<button type="submit" class="btn btn-default" ng-click="forgotLogin()" ng-disabled="form.email.$invalid">
 								<i class="fa fa-question-circle"></i>
 								<span class="mobile-hide-inline"> Forgot Login</span>
 							</button>
