@@ -7,7 +7,7 @@
 		<button class="btn btn-lg btn-primary" ng-hide="upgrading" ng-click="downloadVersion()"><i class="fa fa-gears"></i> Start Upgrade</button>
 		<a ng-href="{{backupLink}}" class="btn btn-default" ng-show="backupAvailable" ng-disable="!backupLink"><i class="fa fa-download"></i> Download System Backup</a>
 		<button class="btn btn-primary" ng-show="backupAvailable" ng-click="continueUpgrade()"><i class="fa fa-check"></i> Continue</button>
-		<a ng-href="{{razorBaseUrl()}}" class="btn btn-success" ng-show="upgrading == 7"><i class="fa fa-refresh"></i> Upgrade Complete, Refresh in <span class="seconds-counter">20</span> sec</a>
+		<button class="btn btn-success" ng-show="upgrading == 7" ng-click="hardReload()"><i class="fa fa-refresh"></i> Upgrade Complete, Refresh in <span class="seconds-counter">20</span> sec</button>
 	</div>
 	<div class="text-center progress-box" ng-show="stage < 6">
 		<span class="progress-ring ring-5" ng-class="{'ring-pulse': stage == 5, 'ring-active': stage > 5}">
