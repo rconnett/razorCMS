@@ -198,9 +198,14 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 				if($scope.refreshSeconds == 0)
 				{
 					clearInterval($scope.clrInt);
-					window.location = RAZOR_BASE_URL;
+					$scope.hardReload();
 				}
 			}, 1000);
+		};
+
+		$scope.hardReload = function()
+		{
+			window.location.reload(true);
 		};
 	
 		$scope.revertUpgrade = function()
