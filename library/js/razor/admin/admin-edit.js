@@ -180,7 +180,26 @@ define(["angular", "cookie-monster", "jquery", "summernote", "ui-bootstrap"], fu
 				"id": content_id,
 			};
 
-			$("#" + locCol + content_id).summernote();
+			// start summernote and ensure callback for file uploading
+			$("#" + locCol + content_id).summernote({
+		        onImageUpload: function(files, editor, welEditable) 
+		        {
+					rars.post("file/image", {"files": files}, monster.get("token")).success(function(data)
+					{
+						for (var i = 0; i < data.files.length; i++) 
+						{
+							editor.insertImage(welEditable, data.files[i].url);
+						};						
+					}).error(function(data)
+					{
+						$rootScope.$broadcast("global-notification", {"type": "danger", "text": "Could not upload image, please try again."});
+					});
+		        },
+		        onImageUploadError: function() 
+		        {
+					$rootScope.$broadcast("global-notification", {"type": "danger", "text": "Could not upload image, please try again."});
+		        }
+		    });
 		};
 
 		$scope.editingThis = function(handle)

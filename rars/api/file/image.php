@@ -92,8 +92,8 @@ class FileImage extends RazorAPI
 			// check size, return 406 if file invalid
 			if ($file['size'] > 50000000) $this->response(null, null, 406);
 
-			// finally clean data (as we want to use the name, i know this is not very secure but really, we need to keep them readable and I have checked EVERYTHING else and cleaned the name)
-			$name = preg_replace("/[^a-z0-9\\040\\.\\-\\_\\\\]/", "", strtolower($file["name"]));
+			// finally clean data name
+			$name = preg_replace(array('/\s/', '/\.[\.]+/', '/[^\w_\.\-]/'), array('_', '.', ''), $file["name"]);
 			$files[] = array(
 				"name"	  => $name,
 				"tmp_name"  => $file["tmp_name"],
@@ -110,6 +110,27 @@ class FileImage extends RazorAPI
 
 		// json encode
 		$this->response(array("files" => $files), "json");
+	}
+
+	// remove an image
+	public function delete($name)
+	{
+		if ((int) $this->check_access() < 8) $this->response(null, null, 401);
+		if (empty($name)) $this->response(null, null, 400);
+
+		// ensure name is clean
+		$name = preg_replace(array('/\s/', '/\.[\.]+/', '/[^\w_\.\-]/'), array('_', '.', ''), $name);
+
+		// ensure we deleting a image
+		$file_ext = explode(".", strtolower($name));
+		if (!in_array(end($file_ext), $this->image_ext)) $this->response(null, null, 406);
+
+		// check exists
+		if (!is_file(RAZOR_BASE_PATH."storage/files/images/{$name}")) $this->response(null, null, 406);
+
+		RazorFileTools::delete_file(RAZOR_BASE_PATH."storage/files/images/{$name}");
+		
+		$this->response("success", "json");
 	}
 }
 
