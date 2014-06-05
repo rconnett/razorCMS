@@ -284,7 +284,9 @@ class RazorAPI
 	public function email($from, $to, $subject, $message)
 	{
 		$headers = "From: {$from}\r\nReply-To: {$from}\r\nMIME-Version: 1.0" . "\r\nContent-type:text/html;charset=UTF-8";
-		mail($to, $subject, $message, $headers);
+		
+		// do base check for production server and mail only if not localhost
+		if (strpos(RAZOR_BASE_URL, "http://localhost") !== 0) mail($to, $subject, $message, $headers);
 	}
 
 	public static function response($data, $type = null, $code = null)
