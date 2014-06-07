@@ -316,7 +316,7 @@ OUTPUT;
 							echo '</li>';   
 						}
 					}
-					echo "<ul>";
+					echo "</ul>";
 				}
 
 				echo '</li>';   
