@@ -67,7 +67,7 @@ class ToolsEmail extends RazorAPI
 		$db->disconnect();  
 
 		if (empty($extension_settings)) $this->response(null, null, 400);
-		$settings = json_decode($extension_settings);
+		$extension_settings = json_decode($extension_settings);
 
 		// get site data
 		$db->connect("setting");
@@ -93,7 +93,7 @@ class ToolsEmail extends RazorAPI
 		}
 				
 		// clean email data
-		$to = $settings->email;
+		$to = $extension_settings->email;
 		$from = preg_replace('/[^A-Za-z0-9-_+@.]/', '', $data["email"]);
 		$subject = "{$settings["name"]} Contact Form";
 		$message = htmlspecialchars($data["message"], ENT_QUOTES);
