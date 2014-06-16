@@ -294,7 +294,7 @@ OUTPUT;
 		// else carry on with nromal php loading
 		foreach ($this->menu[$loc] as $m_item)
 		{
-			if (!empty($m_item["page_id"]) && ($m_item["page_id.active"] || $this->logged_in > 5))
+			if (!empty($m_item["page_id"]) && $m_item["page_id.access_level"] <= $this->logged_in && ($m_item["page_id.active"] || $this->logged_in > 5))
 			{
 				// sort any submenu items
 				if (!isset($m_item["sub_menu"]))
