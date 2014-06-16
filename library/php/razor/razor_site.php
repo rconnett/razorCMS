@@ -294,24 +294,18 @@ OUTPUT;
 		// else carry on with nromal php loading
 		foreach ($this->menu[$loc] as $m_item)
 		{
-			if (!empty($m_item["page_id"]) && ($m_item["page_id.active"] || $this->logged_in > 5))
+			if (!empty($m_item["page_id"]) && $m_item["page_id.active"])
 			{
 				// sort any submenu items
 				if (!isset($m_item["sub_menu"]))
 				{
 					echo '<li '.($this->logged_in < 7 ? '' : 'ng-if="!changed"').' '.($m_item["page_id"] == $this->page["id"] ? ' class="active"' : '').'>';
-					echo '<a href="'.RAZOR_BASE_URL.$m_item["page_id.link"].'">';
-					if (!$m_item["page_id.active"]) echo '<i class="fa fa-eye-slash"></i> ';
-					echo $m_item["page_id.name"];
-					echo '</a>';
+					echo '<a href="'.RAZOR_BASE_URL.$m_item["page_id.link"].'">'.$m_item["page_id.name"].'</a>';
 				}
 				else
 				{
 					echo '<li ng-if="!changed" class="dropdown'.($m_item["page_id"] == $this->page["id"] ? ' active' : '').'">';
-					echo '<a class="dropdown-toggle" href="'.RAZOR_BASE_URL.$m_item["page_id.link"].'">';
-					if (!$m_item["page_id.active"]) echo '<i class="fa fa-eye-slash"></i> ';
-					echo $m_item["page_id.name"];
-					echo ' <i class="fa fa-caret-down"></i></a>';
+					echo '<a class="dropdown-toggle" href="'.RAZOR_BASE_URL.$m_item["page_id.link"].'">'.$m_item["page_id.name"].' <i class="fa fa-caret-down"></i></a>';
 					echo '<ul class="dropdown-menu">';
 					foreach ($m_item["sub_menu"] as $sm_item)
 					{
