@@ -220,6 +220,21 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 			});
 		};
 
+		$scope.copyPage = function()
+		{
+			$modal.open(
+			{
+				templateUrl: RAZOR_BASE_URL + "theme/partial/modal/copy-page.html",
+				controller: "copyPageModal",
+				resolve: {
+					page: function(){ return $scope.page; }
+				}
+			}).result.then(function(redirect)
+			{
+				if (!!redirect) window.location = RAZOR_BASE_URL + redirect;
+			});
+		};
+
 		$scope.register = function()
 		{			
 			$modal.open(
@@ -358,7 +373,60 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 				if (!data.response.code) $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Could not save page, please try again later."});
 				else if (data.response.code == 101) $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Link is not unique, already being used by another page."});
 				$scope.processing = false;
-				console.debug(1212);
+			}); 
+		};  
+
+	})
+
+	.controller("copyPageModal", function($scope, $modalInstance, rars, $rootScope, page)
+	{
+		$scope.page = angular.copy(page);		
+		$scope.processing = null;
+		$scope.completed = null;
+		$scope.newPage = null;
+		
+		$scope.accessLevels = [
+			{"name": "Public Access", "value": 0},
+			{"name": "User Level 1", "value": 1},
+			{"name": "User Level 2", "value": 2},
+			{"name": "User Level 3", "value": 3},
+			{"name": "User Level 4", "value": 4},
+			{"name": "User Level 5", "value": 5}
+		];
+
+		$scope.cancel = function()
+		{
+			$modalInstance.dismiss();
+		};
+
+		$scope.closeAndEdit = function()
+		{
+			$modalInstance.close($scope.newPage.link);
+		};  
+
+		$scope.addAnother = function()
+		{
+			$scope.completed = null;
+			$scope.processing = null;
+			$scope.page = angular.copy(page);
+		};  
+
+		$scope.copyPage = function()
+		{
+			$scope.processing = true;
+			$scope.completed = false;
+
+			rars.post("page/copy", $scope.page, monster.get("token")).success(function(data)
+			{
+				$scope.newPage = data;
+				$rootScope.$broadcast("global-notification", {"type": "success", "text": "Page copied successfully."});
+				$scope.processing = false;
+				$scope.completed = true;
+			}).error(function(data)
+			{
+				if (!data.response.code) $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Could not copy page, please try again later."});
+				else if (data.response.code == 101) $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Link is not unique, already being used by another page."});
+				$scope.processing = false;
 			}); 
 		};  
 

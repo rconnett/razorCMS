@@ -103,6 +103,9 @@
 								<button class="btn btn-sm btn-default" ng-click="addNewPage()" ng-hide="toggle || changed">
 									<i class="fa fa-file-text-o"></i><span class="mobile-hide-inline"> Add New Page</span>
 								</button>
+								<button class="btn btn-sm btn-default" ng-click="copyPage()" ng-hide="toggle || changed">
+									<i class="fa fa-files-o"></i><span class="mobile-hide-inline"> Copy This Page</span>
+								</button>
 							</div>
 						<?php endif ?>
 					</div>
