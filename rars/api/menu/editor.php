@@ -55,11 +55,14 @@ class MenuEditor extends RazorAPI
 				$menus[$mi["menu_id.name"]]["menu_items"][] = array(
 					"id" => $mi["id"],
 					"position" => $mi["position"],
-					"page_id" => $mi["page_id"],
-					"page_name" => $mi["page_id.name"],
-					"page_link" => $mi["page_id.link"],
-					"page_active" => $mi["page_id.active"],
-					"level" => $mi["level"]
+					"page_id" => (isset($mi["page_id"]) ? $mi["page_id"] : null),
+					"page_name" => (isset($mi["page_id.name"]) ? $mi["page_id.name"] : null),
+					"page_link" => (isset($mi["page_id.link"]) ? $mi["page_id.link"] : null),
+					"page_active" => (isset($mi["page_id.active"]) ? $mi["page_id.active"] : null),
+					"level" => $mi["level"],
+					"link_label" => $mi["link_label"],
+					"link_url" => $mi["link_url"],
+					"link_target" => $mi["link_target"]
 				);				
 			}
 
@@ -75,11 +78,14 @@ class MenuEditor extends RazorAPI
 				$menus[$mi["menu_id.name"]]["menu_items"][$parent]["sub_menu"][] = array(
 					"id" => $mi["id"],
 					"position" => $mi["position"],
-					"page_id" => $mi["page_id"],
-					"page_name" => $mi["page_id.name"],
-					"page_link" => $mi["page_id.link"],
-					"page_active" => $mi["page_id.active"],
-					"level" => $mi["level"]
+					"page_id" => (isset($mi["page_id"]) ? $mi["page_id"] : null),
+					"page_name" => (isset($mi["page_id.name"]) ? $mi["page_id.name"] : null),
+					"page_link" => (isset($mi["page_id.link"]) ? $mi["page_id.link"] : null),
+					"page_active" => (isset($mi["page_id.active"]) ? $mi["page_id.active"] : null),
+					"level" => $mi["level"],
+					"link_label" => $mi["link_label"],
+					"link_url" => $mi["link_url"],
+					"link_target" => $mi["link_target"]
 				);   
 			}
 		}
@@ -178,8 +184,10 @@ class MenuEditor extends RazorAPI
 						"menu_id" => (int) $new_menu["id"],
 						"position" => $pos,
 						"level" => 1,
-						"page_id" => $nmi["page_id"],
-						"link_id" => 0
+						"page_id" => (isset($nmi["page_id"]) ? $nmi["page_id"] : null),
+						"link_label" => (isset($nmi["link_label"]) ? $nmi["link_label"] : null),
+						"link_url" => (isset($nmi["link_label"]) ? $nmi["link_url"] : null),
+						"link_target" => (isset($nmi["link_label"]) ? $nmi["link_target"] : null)
 					);
 
 					$db->add_rows($row);  
@@ -205,8 +213,10 @@ class MenuEditor extends RazorAPI
 								"menu_id" => (int) $new_menu["id"],
 								"position" => $pos,
 								"level" => 2,
-								"page_id" => $nsmi["page_id"],
-								"link_id" => 0
+								"page_id" => (isset($nsmi["page_id"]) ? $nsmi["page_id"] : null),
+								"link_label" => (isset($nsmi["link_label"]) ? $nsmi["link_label"] : null),
+								"link_url" => (isset($nsmi["link_label"]) ? $nsmi["link_url"] : null),
+								"link_target" => (isset($nsmi["link_label"]) ? $nsmi["link_target"] : null)
 							);
 
 							$db->add_rows($row);  

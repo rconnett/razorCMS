@@ -79,7 +79,7 @@ $c = 0;
 foreach ($path_parts as $pp)
 {
 	$c++;
-	$filename.= "/".preg_replace("/[^a-z0-9_]/", '', strtolower($pp));
+	$filename.= "/".preg_replace("/[^a-z0-9_-]/", '', strtolower($pp));
 	$classname.= ucfirst(preg_replace("/[^a-z0-9_]/", '', strtolower($pp)));  
 	if (is_file(RARS_BASE_PATH."api{$filename}.php"))
 	{

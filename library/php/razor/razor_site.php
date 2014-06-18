@@ -265,18 +265,18 @@ OUTPUT;
 		{
 			echo <<<OUTPUT
 <li ng-if="changed" ng-repeat="mi in menus.{$loc}.menu_items" ng-class="{'click-and-sort': toggle, 'active': linkIsActive(mi.page_id), 'dropdown': mi.sub_menu || toggle, 'selected': \$parent.clickAndSort['{$loc}'].selected, 'place-holder': \$parent.clickAndSort['{$loc}'].picked != \$index && \$parent.clickAndSort['{$loc}'].selected}">
-	<a ng-href="{{(!toggle ? getMenuLink(mi.page_link) : '#')}}" ng-click="clickAndSortClick('{$loc}', \$index, menus.{$loc}.menu_items)">
-		<button class="btn btn-xs btn-default" ng-if="toggle" ng-click="menus.{$loc}.menu_items.splice(\$index, 1)"><i class="fa fa-times"></i></button>
-		<i class="fa fa-eye-slash" ng-hide="mi.page_active"></i>
-		{{mi.page_name}}
+	<a ng-href="{{(!toggle ? mi.link_url || getMenuLink(mi.page_link) : '#')}}" ng-click="clickAndSortClick('{$loc}', \$index, menus.{$loc}.menu_items); \$event.preventDefault()" target="{{mi.link_target}}">
+		<button class="btn btn-xs btn-default" ng-if="toggle" ng-click="menus.{$loc}.menu_items.splice(\$index, 1); \$event.preventDefault()"><i class="fa fa-times"></i></button>
+		<i class="fa fa-eye-slash" ng-hide="mi.page_active || mi.link_label"></i>
+		{{mi.page_name || mi.link_label}}
 		<i class="fa fa-caret-down" ng-if="mi.sub_menu"></i>
 	</a>
 	<ul class="dropdown-menu">
 		<li ng-repeat="mis in mi.sub_menu" ng-class="{'click-and-sort-sub': toggle, 'active': linkIsActive(mis.page_id), 'selected': \$parent.clickAndSort['{$loc}Sub'].selected, 'place-holder': \$parent.clickAndSort['{$loc}Sub'].picked != \$index && \$parent.clickAndSort['{$loc}Sub'].selected}">
-			<a ng-href="{{(!toggle ? getMenuLink(mis.page_link) : '#')}}" ng-click="clickAndSortClick('{$loc}Sub', \$index, mi.sub_menu)">
-				<button class="btn btn-xs btn-default" ng-if="toggle" ng-click="mi.sub_menu.splice(\$index, 1)"><i class="fa fa-times"></i></button>
-				<i class="fa fa-eye-slash" ng-hide="mis.page_active"></i> 
-				{{mis.page_name}}
+			<a ng-href="{{(!toggle ? mis.link_url || getMenuLink(mis.page_link) : '#')}}" ng-click="clickAndSortClick('{$loc}Sub', \$index, mi.sub_menu); \$event.preventDefault()" target="{{mis.link_target}}">
+				<button class="btn btn-xs btn-default" ng-if="toggle" ng-click="mi.sub_menu.splice(\$index, 1); \$event.preventDefault()"><i class="fa fa-times"></i></button>
+				<i class="fa fa-eye-slash" ng-hide="mis.page_active || mis.link_label"></i> 
+				{{mis.page_name || mis.link_label}}
 			</a>
 		</li>
 
@@ -294,32 +294,35 @@ OUTPUT;
 		// else carry on with nromal php loading
 		foreach ($this->menu[$loc] as $m_item)
 		{
-			if (!empty($m_item["page_id"]) && $m_item["page_id.access_level"] <= $this->logged_in && ($m_item["page_id.active"] || $this->logged_in > 5))
+			// link item or page item that has access
+			if (!empty($m_item["link_label"]) || (!empty($m_item["page_id"]) && $m_item["page_id.access_level"] <= $this->logged_in && ($m_item["page_id.active"] || $this->logged_in > 5)))
 			{
 				// sort any submenu items
 				if (!isset($m_item["sub_menu"]))
 				{
 					echo '<li '.($this->logged_in < 7 ? '' : 'ng-if="!changed"').' '.($m_item["page_id"] == $this->page["id"] ? ' class="active"' : '').'>';
-					echo '<a href="'.RAZOR_BASE_URL.$m_item["page_id.link"].'">';
-					if (!$m_item["page_id.active"]) echo '<i class="fa fa-eye-slash"></i> ';
-					echo $m_item["page_id.name"];
+					echo '<a href="'.(isset($m_item["page_id.link"]) ? RAZOR_BASE_URL.$m_item["page_id.link"] : $m_item["link_url"]).'" target="'.$m_item["link_target"].'" '.($m_item["link_url"] == "#" ? 'onclick="return false;"' : '').'>';
+					if (isset($m_item["page_id.active"]) && !$m_item["page_id.active"]) echo '<i class="fa fa-eye-slash"></i> ';
+					echo (isset($m_item["page_id.name"]) ? $m_item["page_id.name"] : $m_item["link_label"]);
 					echo '</a>';
 				}
 				else
 				{
-					echo '<li ng-if="!changed" class="dropdown'.($m_item["page_id"] == $this->page["id"] ? ' active' : '').'">';
-					echo '<a class="dropdown-toggle" href="'.RAZOR_BASE_URL.$m_item["page_id.link"].'">';
-					if (!$m_item["page_id.active"]) echo '<i class="fa fa-eye-slash"></i> ';
-					echo $m_item["page_id.name"];
+					echo '<li '.($this->logged_in < 7 ? '' : 'ng-if="!changed"').' class="dropdown'.($m_item["page_id"] == $this->page["id"] ? ' active' : '').'">';
+					echo '<a class="dropdown-toggle" href="'.(isset($m_item["page_id.link"]) ? RAZOR_BASE_URL.$m_item["page_id.link"] : $m_item["link_url"]).'" target="'.$m_item["link_target"].'" '.($m_item["link_url"] == "#" ? 'onclick="return false;"' : '').'>';
+					if (isset($m_item["page_id.active"]) && !$m_item["page_id.active"]) echo '<i class="fa fa-eye-slash"></i> ';
+					echo (isset($m_item["page_id.name"]) ? $m_item["page_id.name"] : $m_item["link_label"]);
 					echo ' <i class="fa fa-caret-down"></i></a>';
 					echo '<ul class="dropdown-menu">';
 					foreach ($m_item["sub_menu"] as $sm_item)
 					{
-						if (!empty($sm_item["page_id"]) && $sm_item["page_id.active"])
-						{
-							echo '<li'.($sm_item["page_id"] == $this->page["id"] ? ' class="active"' : '').'>';
-							echo '<a href="'.RAZOR_BASE_URL.$sm_item["page_id.link"].'">'.$sm_item["page_id.name"].'</a>';
-							echo '</li>';   
+						if (!empty($sm_item["link_label"]) || (!empty($sm_item["page_id"]) && $sm_item["page_id.access_level"] <= $this->logged_in && ($sm_item["page_id.active"] || $this->logged_in > 5)))
+						{  
+							echo '<li '.($this->logged_in < 7 ? '' : 'ng-if="!changed"').' '.($sm_item["page_id"] == $this->page["id"] ? ' class="active"' : '').'>';
+							echo '<a href="'.(isset($sm_item["page_id.link"]) ? RAZOR_BASE_URL.$sm_item["page_id.link"] : $sm_item["link_url"]).'" target="'.$sm_item["link_target"].'" '.($sm_item["link_url"] == "#" ? 'onclick="return false;"' : '').'>';
+							if (isset($sm_item["page_id.active"]) && !$sm_item["page_id.active"]) echo '<i class="fa fa-eye-slash"></i> ';
+							echo (isset($sm_item["page_id.name"]) ? $sm_item["page_id.name"] : $sm_item["link_label"]);
+							echo '</a>';
 						}
 					}
 					echo "</ul>";
