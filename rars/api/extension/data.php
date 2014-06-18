@@ -21,6 +21,7 @@ class ExtensionData extends RazorAPI
 
 		// set paths
 		$this->ext_path = RAZOR_BASE_PATH."extension";
+		$this->rars_path = RAZOR_BASE_PATH."rars/extension";
 	}
 
 	public function post($ext)
@@ -73,10 +74,16 @@ class ExtensionData extends RazorAPI
 		$handle = preg_replace('/[^a-z0-9-_]/', '', $parts[1]);
 		$extension = preg_replace('/[^a-z0-9-_]/', '', $parts[2]);
 		$remove_path = "{$this->ext_path}/{$category}/{$handle}/{$extension}";
+		$rars_remove_path = "{$this->ext_path}/{$category}/{$handle}/{$extension}";
 
 		if (!is_dir($remove_path)) $this->response(null, null, 400);
 
-		if (RazorFileTools::delete_directory($remove_path)) $this->response("success", "json");
+		if (RazorFileTools::delete_directory($remove_path)) 
+		{
+			if (is_dir($rars_remove_path)) RazorFileTools::delete_directory($rars_remove_path);
+			$this->response("success", "json");
+		}
+
 		$this->response(null, null, 400);
 	}
 }
