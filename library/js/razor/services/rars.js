@@ -24,9 +24,10 @@ define(["angular", "angular-resource"], function(angular)
 				if (!!data.files)
 				{
 					var fd = new FormData();
-					for (var i = 0; i < data.files.length; i++) {
-						fd.append('file', data.files[i]);
-					};
+
+					// any files and any other data
+					for (var key in data) if (key != "files") fd.append(key, data[key]);
+					for (var i = 0; i < data.files.length; i++) fd.append('file-' + i, data.files[i]);
 
 					return $http.post(RAZOR_BASE_URL + "rars/" + funcPath, fd, {transformRequest: angular.identity, headers: {'Content-Type': undefined, "Authorization": token}});
 				}
