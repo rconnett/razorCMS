@@ -187,6 +187,6 @@
 					</div>
 				</div>
 			</div>
-		</div>
-	<?php endif ?>
+		<?php endif ?>
+	</div>
 <!-- /body in template - do not close -->
