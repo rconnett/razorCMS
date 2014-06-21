@@ -70,7 +70,7 @@ $method = preg_replace("/[^a-z]/", '', strtolower($_SERVER["REQUEST_METHOD"]));
 
 // check for path data to REST classes and grab them
 if (!isset($_GET["path"])) RazorAPI::response(null , null, $code = 404);
-$path_parts = explode("/", strtolower($_GET["path"]));
+$path_parts = explode("/", $_GET["path"]);
 
 $filename = "";
 $classname = "";
