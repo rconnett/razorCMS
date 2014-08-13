@@ -12,9 +12,10 @@
  
 // auto defines 
 define("RARS_BASE_PATH", str_replace(array("index.php"), "", $_SERVER["SCRIPT_FILENAME"]));
-define("RARS_BASE_URL", "http://".$_SERVER["SERVER_NAME"].($_SERVER["SERVER_PORT"] == "80" ? "" : ":{$_SERVER["SERVER_PORT"]}").str_replace(array("index.php"), "", $_SERVER["SCRIPT_NAME"]));
+$port = ($_SERVER["SERVER_PORT"] == "80" || $_SERVER["SERVER_PORT"] == "443" ? "" : ":{$_SERVER["SERVER_PORT"]}");
+define("RARS_BASE_URL", (!empty($_SERVER['https']) ? "https://" : "http://").$_SERVER["SERVER_NAME"].$port.str_replace(array("index.php"), "", $_SERVER["SCRIPT_NAME"]));
 define("RAZOR_BASE_PATH", str_replace(array("rars/index.php"), "", $_SERVER["SCRIPT_FILENAME"]));
-define("RAZOR_BASE_URL", "http://".$_SERVER["SERVER_NAME"].($_SERVER["SERVER_PORT"] == "80" ? "" : ":{$_SERVER["SERVER_PORT"]}").str_replace(array("rars/index.php"), "", $_SERVER["SCRIPT_NAME"]));
+define("RAZOR_BASE_URL", (!empty($_SERVER['https']) ? "https://" : "http://").$_SERVER["SERVER_NAME"].$port.str_replace(array("rars/index.php"), "", $_SERVER["SCRIPT_NAME"]));
 
 // security defines
 define("RARS_ACCESS_ATTEMPTS", 5); // how many attempts are allowed before lockout, which will appear on the next attempt, (from 1 to 99) [this can be made longer by altering attemps col type]
