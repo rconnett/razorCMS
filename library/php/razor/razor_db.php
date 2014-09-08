@@ -848,6 +848,7 @@ class RazorDB
 		$filter = (isset($options['filter']) ? $options['filter'] : null);
 		$joins = (isset($options['join']) ? $options['join'] : null );
 		$order = (isset($options['order']) ? $options['order'] : null );
+		$join_filters = array();
 
 		// get table headers
 		if (empty($this->columns))
@@ -899,6 +900,19 @@ class RazorDB
 				{
 					trigger_error("Cannot join to column '{$join_data['join_to']}' in parent table '{$this->table}', column does not exist");
 					return false;
+				}
+
+				// collate filters if set
+				if (!empty($filter))
+				{
+					$join_filters[$join_data["table"]] = array("id");
+					
+					foreach ($filter as $f)
+					{
+						$filter_name = explode(".", $f);
+						if (count($filter_name) != 2 || $filter_name[0] != $join_data["join_to"]) continue;
+						$join_filters[$join_data["table"]][] = $filter_name[1];
+					}
 				}
 			}
 		}
@@ -993,7 +1007,7 @@ class RazorDB
 					}
 
 					// collect correct amount of rows
-					if ($amount !== null && count($matches) >= $amount)
+					if (empty($order) && $amount !== null && count($matches) >= $amount)
 					{
 						$result = array(
 							'table' 		=> $this->table,
@@ -1024,8 +1038,8 @@ class RazorDB
 
 				// no join data found, skip this join
 				if (!isset($join['join_data'])) continue;
-
-				$found = $join_ob->get_rows($join['join_data']);
+				$get_filters = (isset($join_filters[$join['table']]) ? array("filter" => $join_filters[$join['table']]) : array());
+				$found = $join_ob->get_rows($join['join_data'], $get_filters);
 
 				// attach data to matches
 				foreach ($matches as $key => $match)
@@ -1060,6 +1074,9 @@ class RazorDB
 			$this->order = $order;
 			usort($matches, array($this, 'sort'));
 		}
+
+		// get limit
+		if (!empty($amount)) $matches = array_slice($matches, 0, $amount);
 
 		$result = array(
 			'table' 		=> $this->table,
