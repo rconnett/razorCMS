@@ -13,7 +13,7 @@ require.config({
 	waitSeconds: 60,
 
 	paths: {
-		"angular": "angular/angular_1_2_14.min",
+		"angular": "angular/angular_1_2_25.min",
 		"angular-route": "angular/angular-route.min",
 		"angular-resource": "angular/angular-resource.min",
 		"angular-sanitize": "angular/angular-sanitize.min",
