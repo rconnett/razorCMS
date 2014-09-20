@@ -353,7 +353,7 @@ class RazorFileTools
 	{
 		if (mkdir($dir_to_create))
 		{
-			if (findServerOS() == 'LINUX')
+			if (self::findServerOS() == 'LINUX')
 			{
 				$perms = self::unix_file_permissions($dir_to_create);
 				if ( $perms != '0755') @chmod($dirPath, 0755);
@@ -411,7 +411,7 @@ class RazorFileTools
 		$fileFrom = $copyFrom;
 		$fileTo = $copyTo;
 		if (copy($fileFrom, $fileTo)) {
-			if (findServerOS() == 'LINUX') {
+			if (self::findServerOS() == 'LINUX') {
 				$perms = file_perms($fileTo);
 				if ( $perms != '0644') {
 					@chmod($fileTo, 0644);
@@ -440,6 +440,22 @@ class RazorFileTools
 			return false;
 		}
 	}
+
+
+	/**
+	 * find server OS type
+	 * detects server OS type
+	 *
+	 * @return string WIN on LINUX
+	 */
+    public static function findServerOS() 
+    {
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            return 'WIN';
+        }
+        
+        return 'LINUX';
+    }
 }
 
 /* EOF */
