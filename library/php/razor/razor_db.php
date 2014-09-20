@@ -1006,17 +1006,18 @@ class RazorDB
 						$matches[] = $match;
 					}
 
+					// don't think we need this, check if affects anything else, if it does not then remove
 					// collect correct amount of rows
-					if (empty($order) && $amount !== null && count($matches) >= $amount)
-					{
-						$result = array(
-							'table' 		=> $this->table,
-							'count'			=> count($matches),
-							'time'			=> microtime(true) - $time,
-							'result'		=> $matches
-						);
-						return $result;
-					}
+					// if (empty($order) && $amount !== null && count($matches) >= $amount)
+					// {
+					// 	$result = array(
+					// 		'table' 		=> $this->table,
+					// 		'count'			=> count($matches),
+					// 		'time'			=> microtime(true) - $time,
+					// 		'result'		=> $matches
+					// 	);
+					// 	return $result;
+					// }
 				}
 			}
 		}
