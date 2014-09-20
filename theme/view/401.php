@@ -13,16 +13,31 @@
 		<link rel="icon" href="<?php echo RAZOR_BASE_URL ?>theme/image/favicon.png" type="image/png">
 		<link rel="shortcut icon" href="<?php echo RAZOR_BASE_URL ?>theme/image/favicon.ico">
 
-		<!-- load razor base css (imports: bootstrap, font awesome) -->
-		<link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>library/style/bootstrap/bootstrap.min.css">
-		<link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>library/font/font-awesome/css/font-awesome.min.css">
+		<!-- resolve base URL/IP/U-AGENT for any js applications -->
+		<script type="text/javascript">
+			var RAZOR_BASE_URL = "<?php echo RAZOR_BASE_URL ?>";
+			var RAZOR_USERS_IP = "<?php echo RAZOR_USERS_IP ?>";
+			var RAZOR_USERS_UAGENT = "<?php echo RAZOR_USERS_UAGENT ?>";
+			var RAZOR_PAGE_ID = "<?php echo $this->page['id'] ?>";
+		</script>
+
+		<!-- require js -->
+		<script <?php $this->data_main() ?> src="<?php echo RAZOR_BASE_URL ?>library/js/require.js"></script>
+		<script src="<?php echo RAZOR_BASE_URL ?>library/js/require-config.js"></script>
+
+		<!-- load bootstrap, style overrides and public css -->
 		<link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>library/style/razor/razor_base.css">
+		<!--[if IE 9]><link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>library/style/razor/razor_base_ie9.css"><![endif]-->
+		<!--[if IE 8]><link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>library/style/razor/razor_base_ie8.css"><![endif]-->
 		
-		<!-- load theme specific (no mixins from bootstrap) -->
 		<link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>theme/style/default.css">
+		<!--[if IE 9]><link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>theme/style/default_ie9.css"><![endif]-->
+		<!--[if IE 8]><link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>theme/style/default_ie8.css"><![endif]-->
+
+		<link rel="shortcut icon" href="<?php echo RAZOR_BASE_URL ?>library/images/favicon.ico" type="image/x-icon">
 	</head>
-	<body>
-	<body>
+
+	<?php $this->body() ?>
 		<div class="template-wrapper">			
 			<div class="template-header">
 				<div class="container">
