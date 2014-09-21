@@ -136,76 +136,13 @@ class RazorSite
 						<input type="text" class="form-control" value="{{block.extension.split('/')[2]}}" disabled>
 					</div>
 				</div>
-				<div class="form-group" ng-if="block.extension_content_settings[0]">
-					<label class="col-sm-3 control-label">{{block.extension_content_settings[0].label}}</label>
+				<div class="form-group" ng-repeat="setting in block.extension_content_settings" ng-form="subForm">
+					<label class="col-sm-3 control-label">{{setting.label}}</label>
 					<div class="col-sm-7">
-						<input type="text" class="form-control" placeholder="{{block.extension_content_settings[0].placeholder}}" name="input0" ng-model="block.settings[block.extension_content_settings[0].name]" ng-pattern="{{block.extension_content_settings[0].regex}}" >
+						<input type="text" class="form-control" placeholder="{{setting.placeholder}}" name="input" ng-model="block.settings[setting.name]" ng-pattern="{{setting.regex}}" >
 					</div>
-					<div class="col-sm-2 error-block" ng-show="form.input0.\$dirty && form.input0.\$invalid">
-						<span class="alert alert-danger alert-form" ng-show="form.input0.\$error.pattern">Invalid</span>
-					</div>
-				</div>
-				<div class="form-group" ng-if="block.extension_content_settings[1]">
-					<label class="col-sm-3 control-label">{{block.extension_content_settings[1].label}}</label>
-					<div class="col-sm-7">
-						<input type="text" class="form-control" placeholder="{{block.extension_content_settings[1].placeholder}}" name="input1" ng-model="block.settings[block.extension_content_settings[1].name]" ng-pattern="{{block.extension_content_settings[1].regex}}" >
-					</div>
-					<div class="col-sm-2 error-block" ng-show="form.input1.\$dirty && form.input1.\$invalid">
-						<span class="alert alert-danger alert-form" ng-show="form.input1.\$error.pattern">Invalid</span>
-					</div>
-				</div>
-				<div class="form-group" ng-if="block.extension_content_settings[2]">
-					<label class="col-sm-3 control-label">{{block.extension_content_settings[2].label}}</label>
-					<div class="col-sm-7">
-						<input type="text" class="form-control" placeholder="{{block.extension_content_settings[2].placeholder}}" name="input2" ng-model="block.settings[block.extension_content_settings[2].name]" ng-pattern="{{block.extension_content_settings[2].regex}}" >
-					</div>
-					<div class="col-sm-2 error-block" ng-show="form.input2.\$dirty && form.input2.\$invalid">
-						<span class="alert alert-danger alert-form" ng-show="form.input2.\$error.pattern">Invalid</span>
-					</div>
-				</div>
-				<div class="form-group" ng-if="block.extension_content_settings[3]">
-					<label class="col-sm-3 control-label">{{block.extension_content_settings[3].label}}</label>
-					<div class="col-sm-7">
-						<input type="text" class="form-control" placeholder="{{block.extension_content_settings[3].placeholder}}" name="input3" ng-model="block.settings[block.extension_content_settings[3].name]" ng-pattern="{{block.extension_content_settings[3].regex}}" >
-					</div>
-					<div class="col-sm-2 error-block" ng-show="form.input3.\$dirty && form.input3.\$invalid">
-						<span class="alert alert-danger alert-form" ng-show="form.input3.\$error.pattern">Invalid</span>
-					</div>
-				</div>
-				<div class="form-group" ng-if="block.extension_content_settings[4]">
-					<label class="col-sm-3 control-label">{{block.extension_content_settings[4].label}}</label>
-					<div class="col-sm-7">
-						<input type="text" class="form-control" placeholder="{{block.extension_content_settings[4].placeholder}}" name="input4" ng-model="block.settings[block.extension_content_settings[4].name]" ng-pattern="{{block.extension_content_settings[4].regex}}" >
-					</div>
-					<div class="col-sm-2 error-block" ng-show="form.input4.\$dirty && form.input4.\$invalid">
-						<span class="alert alert-danger alert-form" ng-show="form.input4.\$error.pattern">Invalid</span>
-					</div>
-				</div>
-				<div class="form-group" ng-if="block.extension_content_settings[5]">
-					<label class="col-sm-3 control-label">{{block.extension_content_settings[5].label}}</label>
-					<div class="col-sm-7">
-						<input type="text" class="form-control" placeholder="{{block.extension_content_settings[5].placeholder}}" name="input5" ng-model="block.settings[block.extension_content_settings[5].name]" ng-pattern="{{block.extension_content_settings[5].regex}}" >
-					</div>
-					<div class="col-sm-2 error-block" ng-show="form.input5.\$dirty && form.input5.\$invalid">
-						<span class="alert alert-danger alert-form" ng-show="form.input5.\$error.pattern">Invalid</span>
-					</div>
-				</div>
-				<div class="form-group" ng-if="block.extension_content_settings[6]">
-					<label class="col-sm-3 control-label">{{block.extension_content_settings[6].label}}</label>
-					<div class="col-sm-7">
-						<input type="text" class="form-control" placeholder="{{block.extension_content_settings[6].placeholder}}" name="input6" ng-model="block.settings[block.extension_content_settings[6].name]" ng-pattern="{{block.extension_content_settings[6].regex}}" >
-					</div>
-					<div class="col-sm-2 error-block" ng-show="form.input6.\$dirty && form.input6.\$invalid">
-						<span class="alert alert-danger alert-form" ng-show="form.input6.\$error.pattern">Invalid</span>
-					</div>
-				</div>
-				<div class="form-group" ng-if="block.extension_content_settings[7]">
-					<label class="col-sm-3 control-label">{{block.extension_content_settings[7].label}}</label>
-					<div class="col-sm-7">
-						<input type="text" class="form-control" placeholder="{{block.extension_content_settings[7].placeholder}}" name="input7" ng-model="block.settings[block.extension_content_settings[7].name]" ng-pattern="{{block.extension_content_settings[7].regex}}" >
-					</div>
-					<div class="col-sm-2 error-block" ng-show="form.input7.\$dirty && form.input7.\$invalid">
-						<span class="alert alert-danger alert-form" ng-show="form.input7.\$error.pattern">Invalid</span>
+					<div class="col-sm-2 error-block" ng-show="subForm.input.\$dirty && subForm.input.\$invalid">
+						<span class="alert alert-danger alert-form" ng-show="subForm.input.\$error.pattern">Invalid</span>
 					</div>
 				</div>
 			</form>	  
