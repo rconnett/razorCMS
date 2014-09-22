@@ -100,6 +100,7 @@ class ContentEditor extends RazorAPI
 
 		// update or add content
 		$new_content_map = array();
+		$edit_rows = array();
 		foreach ($data["content"] as $key => $content)
 		{	
 			// if content name empty, try to resolve this to something
@@ -116,12 +117,7 @@ class ContentEditor extends RazorAPI
 				continue;
 			}
 
-			if (stripos($content["content_id"], "new-") === false)
-			{
-				// update
-				$search = array("column" => "id", "value" => $content["content_id"]);
-				$db->edit_rows($search, array("content" => $content["content"], "name" => $content["name"]));
-			}
+			if (stripos($content["content_id"], "new-") === false) $edit_rows[] = array("id" => $content["content_id"], "content" => $content["content"], "name" => $content["name"]);
 			else
 			{
 				// add new content and map the ID to the new id for locations table
@@ -130,6 +126,9 @@ class ContentEditor extends RazorAPI
 				$new_content_map[$content["content_id"]] = $result["result"][0]["id"];   
 			}
 		}
+
+		// do any updates
+		if (!empty($edit_rows))	$db->edit_rows(null, $edit_rows);
 
 		$db->disconnect(); 
 
@@ -145,6 +144,7 @@ class ContentEditor extends RazorAPI
 
 		// 2. iterate through updating or adding, make a note of all id's
 		$page_content_map = array();
+		$edit_rows = array();
 		foreach ($data["locations"] as $location => $columns)
 		{
 			foreach ($columns as $column => $blocks)
@@ -155,11 +155,10 @@ class ContentEditor extends RazorAPI
 					{
 						// update
 						$search = array("column" => "id", "value" => $block["id"]);
-						$row = array("location" => $location, "column" => (int) $column, "position" => $pos + 1, "json_settings" => json_encode($block["settings"]));
+						$edit_rows[] = array("id" => $block["id"], "location" => $location, "column" => (int) $column, "position" => $pos + 1, "json_settings" => json_encode($block["settings"]));
 
 						if (isset($block["extension"])) $row["extension"] = $block["extension"];
 						
-						$db->edit_rows($search, $row);
 						$page_content_map[] = $block["id"];
 					}
 					else
@@ -190,6 +189,9 @@ class ContentEditor extends RazorAPI
 				}
 			}
 		}
+
+		// do any updates
+		if (!empty($edit_rows)) $db->edit_rows(null, $edit_rows);
 
 		// 3. run through id's affected against snapshot, if any missing, remove them.
 		foreach ($current_page_content as $row)

@@ -16,6 +16,7 @@ class RazorDB
 	private $handle = null;
 	private $lock = null;
 	private $file = null;
+	private $bck_file = null;
 	private $table = null;
 	private $counter = null;
 	private $columns = null;
@@ -42,7 +43,14 @@ class RazorDB
 
 	private function open($type = 'r')
 	{
+		// try file open
 		$this->handle = fopen($this->file, $type);
+		if ($this->handle)  {
+	  		return true;
+	  	}
+
+	  	// if editing is going on, try to open temp if file not present, this will only happen if master is removed during edit and will always be updated first.
+		$this->handle = fopen($this->bck_file, $type);
 		if ($this->handle)  {
 	  		return true;
 	  	}
@@ -752,6 +760,7 @@ class RazorDB
 		// resolve table
 		$this->table = strtolower($table);
 		$this->file = RAZOR_BASE_PATH."storage/database/{$this->table}.db.php";
+		$this->bck_file = RAZOR_BASE_PATH."storage/database/~{$this->table}.db.php";
 
 		if (!is_file($this->file))
 		{
@@ -1005,19 +1014,6 @@ class RazorDB
 						}
 						$matches[] = $match;
 					}
-
-					// don't think we need this, check if affects anything else, if it does not then remove
-					// collect correct amount of rows
-					// if (empty($order) && $amount !== null && count($matches) >= $amount)
-					// {
-					// 	$result = array(
-					// 		'table' 		=> $this->table,
-					// 		'count'			=> count($matches),
-					// 		'time'			=> microtime(true) - $time,
-					// 		'result'		=> $matches
-					// 	);
-					// 	return $result;
-					// }
 				}
 			}
 		}
@@ -1205,6 +1201,9 @@ class RazorDB
 			$lines[] = $comp_line;
 		}
 
+		// create backup file
+		@copy($this->file, $this->bck_file);
+
 		// apply lock
 		if (!$this->lock()) return false;
 
@@ -1241,11 +1240,11 @@ class RazorDB
 	 * Edit rows from search
 	 *
 	 * Edit the rows found from a search on a columns
-	 * @param array $search Search [column => string, value => mixed[, not => bool, and => bool, case_insensitive => bool, wildcard => bool]]
-	 * @param array $changes Changes to make [column_name => value]... chain changes by wrapping in array
+	 * @param array $search Search [column => string, value => mixed[, not => bool, and => bool, case_insensitive => bool, wildcard => bool]], null if multiple edits
+	 * @param array $changes Changes to make [column_name => value]... chain changes by wrapping in array, or array of changes including id, with no search to update multiple rows with different data
 	 * @return mixed The data in array format ('table' => 'name, 'count' => resultCount, 'result' => rows(('col' => 'val',...)) or false on fail
 	 */
-	public function edit_rows($search, $changes)
+	public function edit_rows($search = null, $changes)
 	{
 		// check connected
 		if (!$this->connected)
@@ -1263,20 +1262,40 @@ class RazorDB
 			if (!$this->headers()) return false;
 		}
 
-		// check for single or multi array
-		if (isset($search['column'])) $search = array($search);
-		foreach ($search as $search_data)
-		{
-			if (!isset($search_data['column']))
-			{
-				trigger_error("'column' not provided in search");
-				return false;
-			}
+		if (!empty($changes) && !is_array(reset($changes))) $changes = array($changes);
 
-			if (!isset($this->columns[$search_data['column']]))
+		// check for single or multi array
+		if (!empty($search))		
+		{
+			if (isset($search['column'])) $search = array($search);
+			foreach ($search as $search_data)
 			{
-				trigger_error("Column '{$search_data['column']}' does not exist in table '{$this->table}'");
-				return false;
+				if (!isset($search_data['column']))
+				{
+					trigger_error("'column' not provided in search");
+					return false;
+				}
+
+				if (!isset($this->columns[$search_data['column']]))
+				{
+					trigger_error("Column '{$search_data['column']}' does not exist in table '{$this->table}'");
+					return false;
+				}
+			}
+		}
+		else
+		{
+			// build a search up from all rows
+			$id_search = array();
+			foreach ($changes as $change)
+			{
+				if (!isset($change["id"]))
+				{
+					trigger_error("'id' not provided, must provide id with null search");
+					return false;
+				}
+
+				$id_search[] = array("column" => "id", "value" => $change["id"]);
 			}
 		}
 
@@ -1289,50 +1308,58 @@ class RazorDB
 
 		// check change values to ensure they are correct type for column
 		$error = false;
-		foreach ($changes as $change_col => $change_val)
+		foreach ($changes as $change)
 		{
-			if ($change_col == 'id')
+			foreach ($change as $change_col => $change_val)
 			{
-				trigger_error("Cannot change the column 'id' in table '{$this->table}' as this is primary key, cannot perform edit");
-				return false;
-			}
+				if (empty($search) && $change_col == 'id') continue;
 
-			if ($change_val === null)
-			{
-				if ($this->columns[$change_col]['nullable'] !== true) $error = true;
-			}
-			else
-			{
-				switch ($this->columns[$change_col]['type'])
+				if ($change_col == 'id')
 				{
-					case 'int':
-						if (!is_int($change_val)) $error = true;
-					break;
-					case 'float':
-						if (!is_float($change_val)) $error = true;
-					break;
-					case 'bool':
-						if (!is_bool($change_val))
-						{
-							$error = true;
-						}
-						else
-						{
-							$changes[$change_col] = (int) $change_val; // force int for bool, gets changed back at later date
-						}
-					break;
-					default:
-						if (!is_string($change_val)) $error = true;
-					break;
+					trigger_error("Cannot change the column 'id' in table '{$this->table}' as this is primary key, cannot perform edit");
+					return false;
+				}
+
+				if ($change_val === null)
+				{
+					if ($this->columns[$change_col]['nullable'] !== true) $error = true;
+				}
+				else
+				{
+					switch ($this->columns[$change_col]['type'])
+					{
+						case 'int':
+							if (!is_int($change_val)) $error = true;
+						break;
+						case 'float':
+							if (!is_float($change_val)) $error = true;
+						break;
+						case 'bool':
+							if (!is_bool($change_val))
+							{
+								$error = true;
+							}
+							else
+							{
+								$changes[$change_col] = (int) $change_val; // force int for bool, gets changed back at later date
+							}
+						break;
+						default:
+							if (!is_string($change_val)) $error = true;
+						break;
+					}
+				}
+
+				if ($error)
+				{
+					trigger_error("Type miss-match for change data on column '{$change_col}' in table '{$this->table}', cannot perform edit.");
+					return false;
 				}
 			}
-
-			if ($error)
-			{
-				trigger_error("Type miss-match for change data on column '{$change_col}' in table '{$this->table}', cannot perform edit.");
-				return false;
-			}
 		}
+
+		// create temp file so if not present during edit update, this can be used, doesn't need to be writable, only readable.
+		@copy($this->file, $this->bck_file);
 
 		// lock and move to start
 		if (!$this->lock()) return false;
@@ -1364,8 +1391,9 @@ class RazorDB
 		$matches = array();
 		$cpq = 0;
 
-		// skip headers
+		// skip headers and change lock
 		$headers = stream_get_line($this->handle, 2048, "--- end headers ---\n");
+		$headers = str_replace("// lock:1", "// lock:0", $headers);
 		fwrite($temp_handle, $headers."--- end headers ---");
 
 		while (!feof($this->handle))
@@ -1389,7 +1417,7 @@ class RazorDB
 			fseek($this->handle, $pre_query_position, SEEK_SET);
 
 			// send pq cache off for pre-query
-			if ($this->pre_query($pq_cache, $search) !== false)
+			if ($this->pre_query($pq_cache, (!empty($search) ? $search : $id_search)) !== false)
 			{
 				// if match, iterate over $pq_cache, maybe explode it by \n and query each value
 				$rows = explode("\n", $pq_cache);
@@ -1406,11 +1434,26 @@ class RazorDB
 					}
 
 					// query further
-					$match = $this->query($row_data, $search, true);
+					$match = $this->query($row_data, (!empty($search) ? $search : $id_search), true);
 
 					// if match, update the data
 					if (!empty($match))
 					{
+						// search through all changes to find match
+						$change = $changes[0];
+						if (empty($search))
+						{
+							foreach ($changes as $c)
+							{
+								if ($c["id"] === $match["id"])
+								{
+									$change = $c;
+									unset($change["id"]);
+									break;
+								}
+							}							
+						}
+
 						$temp_match = array();
 						$row_data = "// row:";
 						foreach ($this->columns as $column)
@@ -1418,9 +1461,9 @@ class RazorDB
 							if ($column['column'] > 1) $row_data.= '|';
 
 							// make change if one
-							$row_data.= $column['column'].'`'.$this->data_in((isset($changes[$column['name']]) ? $changes[$column['name']] : $match[$column['name']])).'`';
+							$row_data.= $column['column'].'`'.$this->data_in((isset($change[$column['name']]) ? $change[$column['name']] : $match[$column['name']])).'`';
 							// update matches
-							$temp_match[$column['name']] = $this->data_out($this->data_in((isset($changes[$column['name']]) ? $changes[$column['name']] : $match[$column['name']])));
+							$temp_match[$column['name']] = $this->data_out($this->data_in((isset($change[$column['name']]) ? $change[$column['name']] : $match[$column['name']])));
 						}
 						$matches[] = $temp_match;
 
@@ -1431,6 +1474,7 @@ class RazorDB
 							@unlink($temp_file);
 							return false;
 						}
+
 					}
 
 					// write row to temp file
@@ -1449,31 +1493,10 @@ class RazorDB
 		fflush($temp_handle);
 		fclose($temp_handle);
 
-		// overwrite file with temp, windows issue with rename and system closing handle after reload cause it's shite!!!
-		$c = 0;
-		$rename = false;
-
-		while ($c <= 40)
-		{
-			usleep(150000);
-			$writable = is_writable(RAZOR_BASE_PATH."storage/database/{$this->table}.db.php");
-			if ($writable) 
-			{
-				$rename = rename($temp_file, RAZOR_BASE_PATH."storage/database/{$this->table}.db.php");
-				break;
-			}
-			$c++;
-		}
-
-		if (!$rename)
-		{
-			trigger_error("Failed update file for table '{$this->table}'");
-			unlink($temp_file);
-			$this->unlock();
-			return false;
-		}
-		// remove lock
-		$this->unlock();
+		// remove master file and replace with new file, temp file is always available incase temp file missing during edit for other users
+		unlink($this->file);
+		copy($temp_file, $this->file);
+		unlink($temp_file);
 
 		$result = array(
 			'table' 		=> $this->table,
@@ -1527,6 +1550,9 @@ class RazorDB
 			}
 		}
 
+		// create temp file so if not present during delete, this can be used, doesn't need to be writable, only readable.
+		@copy($this->file, $this->bck_file);
+		
 		// lock and move to start
 		if (!$this->lock()) return false;
 
@@ -1624,23 +1650,10 @@ class RazorDB
 		fclose($temp_handle);
 		$this->close();
 
-		// overwrite file with temp, windows issue with rename and system closing handle after reload cause it's shite!!!
-		$c = 0;
-		$rename = false;
-		while ($c <= 100)
-		{
-			$rename = @rename($temp_file, RAZOR_BASE_PATH."storage/database/{$this->table}.db.php");
-			if ($rename === true) break;
-			usleep(10000);
-			$c++;
-		}
-		if (!$rename)
-		{
-			trigger_error("Failed update file for table '{$this->table}'");
-			unlink($temp_file);
-			$this->unlock();
-			return false;
-		}
+		// remove master file and replace with new file, temp file is always available incase temp file missing during edit for other users
+		unlink($this->file);
+		copy($temp_file, $this->file);
+		unlink($temp_file);
 
 		// update and unlock
 		$this->row_count-= count($matches);

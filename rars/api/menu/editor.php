@@ -167,6 +167,7 @@ class MenuEditor extends RazorAPI
 		// 3. update all of sent menu data, by looping through the new $data
 		foreach ($data as $new_menu)
 		{
+			$edit_rows = array();
 			$pos = 1;
 			// each menu
 			foreach ($new_menu["menu_items"] as $nmi)
@@ -174,8 +175,7 @@ class MenuEditor extends RazorAPI
 				if (isset($nmi["id"]) && in_array($nmi["id"], $current_menus_flat[$new_menu["id"]]))
 				{
 					// update menu item
-					$search = array("column" => "id", "value" => $nmi["id"]);
-					$db->edit_rows($search, array("position" => $pos));
+					$edit_rows[] = array("id" => $nmi["id"], "position" => $pos);
 				}
 				else
 				{
@@ -198,13 +198,14 @@ class MenuEditor extends RazorAPI
 				// now check for sub menu
 				if (isset($nmi["sub_menu"]) && !empty($nmi["sub_menu"]))
 				{
+					$edit_sub_rows = array();
+		
 					foreach ($nmi["sub_menu"] as $nsmi)
 					{
 						if (isset($nsmi["id"]) && in_array($nsmi["id"], $current_menus_flat[$new_menu["id"]]))
 						{
 							// update menu item
-							$search = array("column" => "id", "value" => $nsmi["id"]);
-							$db->edit_rows($search, array("position" => $pos));
+							$edit_sub_rows[] = array("id" => $nsmi["id"], "position" => $pos);
 						}
 						else
 						{
@@ -221,11 +222,15 @@ class MenuEditor extends RazorAPI
 
 							$db->add_rows($row);  
 						}
-
+						
 						$pos++;
 					}
+
+					if (!empty($edit_sub_rows)) $db->edit_rows(null, $edit_sub_rows);
 				}
 			}
+
+			if (!empty($edit_rows)) $db->edit_rows(null, $edit_rows);
 		}
 
 		$db->disconnect();  
