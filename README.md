@@ -73,7 +73,7 @@ The prefered upgrade method is to use the auto upgrade tool. This tool can be fo
 1. Download upgrade.
 2. Unpack.
 3. Upload the unpacked files to your system merging any folders, and overwriting any files.
-4. Hit the url **yourwebsiteurl/storage/tmp/package/system_upgrade_post_install.php** to run any post upgrade requirements.
+4. Hit the url **yourwebsiteurl/storage/tmp/package/system\_upgrade\_post\_install.php** to run any post upgrade requirements.
 
 
 ---

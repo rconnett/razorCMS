@@ -32,152 +32,85 @@
 								Details
 								<button class="btn btn-danger pull-right" ng-click="removeExtension(e)"><i class="fa fa-trash-o"></i> Remove</button>
 							</h3>
-							<table class="table table-condensed table-striped table-bordered">
-								<tbody>
-									<tr>
-										<td>Extension</td>
-										<td>{{e.extension}}</td>
-									</tr>
-									<tr>
-										<td>Author</td>
-										<td>{{e.handle}}</td>
-									</tr>
-									<tr>
-										<td>Type</td>
-										<td>{{e.type}}</td>
-									</tr>
-									<tr ng-if="e.version">
-										<td>Version</td>
-										<td>{{e.version}} <i class="fa fa-exclamation-triangle red" ng-if="extensionDetails.version > e.version" tooltip="New version available"></i></td>
-									</tr>
-									<tr ng-if="e.created">
-										<td>Created</td>
-										<td>{{e.created * 1000 | date:'EEE, MMM d, y'}}</td>
-									</tr>
-									<tr>
-										<td>Description</td>
-										<td>{{e.description}}</td>
-									</tr>
-								</tbody>
-							</table>
-							<div class="layouts" ng-repeat="l in e.layouts" ng-if="e.layouts">
-								<h4>{{l.layout}}</h4>
-								<table class="table table-condensed table-striped table-bordered">
-									<tbody>
-										<tr>
-											<td>Version</td>
-											<td>{{l.version}} <i class="fa fa-exclamation-triangle red" ng-if="extensionDetails.version > l.version" tooltip="New version available"></i></td>
-										</tr>
-										<tr>
-											<td>Created</td>
-											<td>{{l.created * 1000 | date:'EEE, MMM d, y'}}</td>
-										</tr>
-										<tr><td>Menus</td><td><span ng-repeat="menu in l.menus">{{($index > 0 ? ', ' + menu : menu)}}</span></td></tr>
-										<tr><td>Header Columns</td><td>{{l.content.header}}</td></tr>
-										<tr><td>Main Columns</td><td>{{l.content.main}}</td></tr>
-										<tr><td>Footer Columns</td><td>{{l.content.footer}}</td></tr>
-									</tbody>
-								</table>
+							<div class="row">
+								<div class="col-sm-6">
+									<table class="table table-condensed table-striped table-bordered">
+										<tbody>
+											<tr>
+												<td>Extension</td>
+												<td>{{e.extension}}</td>
+											</tr>
+											<tr>
+												<td>Author</td>
+												<td>{{e.handle}}</td>
+											</tr>
+											<tr>
+												<td>Type</td>
+												<td>{{e.type}}</td>
+											</tr>
+											<tr ng-if="e.version">
+												<td>Version</td>
+												<td>{{e.version}} <i class="fa fa-exclamation-triangle red" ng-if="extensionDetails.version > e.version" tooltip="New version available"></i></td>
+											</tr>
+											<tr ng-if="e.created">
+												<td>Created</td>
+												<td>{{e.created * 1000 | date:'EEE, MMM d, y'}}</td>
+											</tr>
+											<tr>
+												<td>Description</td>
+												<td>{{e.description}}</td>
+											</tr>
+										</tbody>
+									</table>
+									<div class="layouts" ng-repeat="l in e.layouts" ng-if="e.layouts">
+										<h4>{{l.layout}}</h4>
+										<table class="table table-condensed table-striped table-bordered">
+											<tbody>
+												<tr>
+													<td>Version</td>
+													<td>{{l.version}} <i class="fa fa-exclamation-triangle red" ng-if="extensionDetails.version > l.version" tooltip="New version available"></i></td>
+												</tr>
+												<tr>
+													<td>Created</td>
+													<td>{{l.created * 1000 | date:'EEE, MMM d, y'}}</td>
+												</tr>
+												<tr><td>Menus</td><td><span ng-repeat="menu in l.menus">{{($index > 0 ? ', ' + menu : menu)}}</span></td></tr>
+												<tr><td>Header Columns</td><td>{{l.content.header}}</td></tr>
+												<tr><td>Main Columns</td><td>{{l.content.main}}</td></tr>
+												<tr><td>Footer Columns</td><td>{{l.content.footer}}</td></tr>
+											</tbody>
+										</table>
+									</div>
+									<h3 ng-if="e.settings">Settings</h3>
+									<form name="form" class="form-horizontal" role="form" ng-if="e.settings" novalidate>
+										<div class="form-group" ng-repeat="setting in e.settings" ng-form="subForm">
+											<label class="col-sm-3 control-label">
+												{{(setting.label ? setting.label : setting.name)}}
+											</label>
+											<div class="col-sm-7">
+												<input name="input" class="form-control" type="text" ng-model="setting.value" placeholder="{{setting.placeholder}}" ng-pattern="{{setting.regex}}">
+											</div>
+											<div class="col-sm-2 error-block ng-cloak" ng-show="subForm.input.$dirty && subForm.input.$invalid">
+												<span class="alert alert-danger alert-form" ng-show="subForm.input.$error.pattern">Invalid</span>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="col-sm-offset-3 col-sm-7">
+												<button type="submit" class="btn btn-success" ng-click="saveSettings(e)" ng-disabled="form.$dirty && form.$invalid">
+													<i class="fa fa-check"></i> 
+													Save Settings
+												</button>
+											</div>
+										</div>
+									</form>
+								</div>
+								<div class="col-sm-6">
+									<div ng-if="(exts.extensions | filter:{'type': e.type, 'handle': e.handle, 'extension': e.extension})[0].images">
+										<button class="btn btn-default" ng-repeat="img in (exts.extensions | filter:{'type': e.type, 'handle': e.handle, 'extension': e.extension})[0].images" ng-click="$parent.screenshot = img" style="margin: 0 5px 5px 0;">{{$index + 1}}</button>
+										<img ng-src="{{screenshot}}" width="100%" ng-init="screenshot = (exts.extensions | filter:{'type': e.type, 'handle': e.handle, 'extension': e.extension})[0].images[0]">					
+									</div>
+								</div>
 							</div>
-							<h3 ng-if="e.settings">Settings</h3>
-							<form name="form" class="form-horizontal" role="form" ng-if="e.settings" novalidate>
-								<div class="form-group" ng-if="e.settings[0]">
-									<label class="col-sm-3 control-label">
-										{{(e.settings[0].label ? e.settings[0].label : e.settings[0].name)}}
-									</label>
-									<div class="col-sm-7">
-										<input name="input0" class="form-control" type="text" ng-model="e.settings[0].value" placeholder="{{e.settings[0].placeholder}}" ng-pattern="{{e.settings[0].regex}}">
-									</div>
-									<div class="col-sm-2 error-block ng-cloak" ng-show="form.input0.$dirty && form.input0.$invalid">
-										<span class="alert alert-danger alert-form" ng-show="form.input0.$error.pattern">Invalid</span>
-									</div>
-								</div>
-								<div class="form-group" ng-if="e.settings[1]">
-									<label class="col-sm-3 control-label">
-										{{(e.settings[1].label ? e.settings[1].label : e.settings[1].name)}}
-									</label>
-									<div class="col-sm-7">
-										<input name="input1" class="form-control" type="text" ng-model="e.settings[1].value" placeholder="{{e.settings[1].placeholder}}" ng-pattern="{{e.settings[1].regex}}">
-									</div>
-									<div class="col-sm-2 error-block ng-cloak" ng-show="form.input1.$dirty && form.input1.$invalid">
-										<span class="alert alert-danger alert-form" ng-show="form.input1.$error.pattern">Invalid</span>
-									</div>
-								</div>
-								<div class="form-group" ng-if="e.settings[2]">
-									<label class="col-sm-3 control-label">
-										{{(e.settings[2].label ? e.settings[2].label : e.settings[2].name)}}
-									</label>
-									<div class="col-sm-7">
-										<input name="input2" class="form-control" type="text" ng-model="e.settings[2].value" placeholder="{{e.settings[2].placeholder}}" ng-pattern="{{e.settings[2].regex}}">
-									</div>
-									<div class="col-sm-2 error-block ng-cloak" ng-show="form.input2.$dirty && form.input2.$invalid">
-										<span class="alert alert-danger alert-form" ng-show="form.input2.$error.pattern">Invalid</span>
-									</div>
-								</div>
-								<div class="form-group" ng-if="e.settings[3]">
-									<label class="col-sm-3 control-label">
-										{{(e.settings[3].label ? e.settings[3].label : e.settings[3].name)}}
-									</label>
-									<div class="col-sm-7">
-										<input name="input3" class="form-control" type="text" ng-model="e.settings[3].value" placeholder="{{e.settings[3].placeholder}}" ng-pattern="{{e.settings[3].regex}}">
-									</div>
-									<div class="col-sm-2 error-block ng-cloak" ng-show="form.input3.$dirty && form.input3.$invalid">
-										<span class="alert alert-danger alert-form" ng-show="form.input3.$error.pattern">Invalid</span>
-									</div>
-								</div>
-								<div class="form-group" ng-if="e.settings[4]">
-									<label class="col-sm-3 control-label">
-										{{(e.settings[4].label ? e.settings[4].label : e.settings[4].name)}}
-									</label>
-									<div class="col-sm-7">
-										<input name="input4" class="form-control" type="text" ng-model="e.settings[4].value" placeholder="{{e.settings[4].placeholder}}" ng-pattern="{{e.settings[4].regex}}">
-									</div>
-									<div class="col-sm-2 error-block ng-cloak" ng-show="form.input4.$dirty && form.input4.$invalid">
-										<span class="alert alert-danger alert-form" ng-show="form.input4.$error.pattern">Invalid</span>
-									</div>
-								</div>
-								<div class="form-group" ng-if="e.settings[5]">
-									<label class="col-sm-3 control-label">
-										{{(e.settings[5].label ? e.settings[5].label : e.settings[5].name)}}
-									</label>
-									<div class="col-sm-7">
-										<input name="input5" class="form-control" type="text" ng-model="e.settings[5].value" placeholder="{{e.settings[5].placeholder}}" ng-pattern="{{e.settings[5].regex}}">
-									</div>
-									<div class="col-sm-2 error-block ng-cloak" ng-show="form.input5.$dirty && form.input5.$invalid">
-										<span class="alert alert-danger alert-form" ng-show="form.input5.$error.pattern">Invalid</span>
-									</div>
-								</div>
-								<div class="form-group" ng-if="e.settings[6]">
-									<label class="col-sm-3 control-label">
-										{{(e.settings[6].label ? e.settings[6].label : e.settings[6].name)}}
-									</label>
-									<div class="col-sm-7">
-										<input name="input6" class="form-control" type="text" ng-model="e.settings[6].value" placeholder="{{e.settings[6].placeholder}}" ng-pattern="{{e.settings[6].regex}}">
-									</div>
-									<div class="col-sm-2 error-block ng-cloak" ng-show="form.input6.$dirty && form.input6.$invalid">
-										<span class="alert alert-danger alert-form" ng-show="form.input6.$error.pattern">Invalid</span>
-									</div>
-								</div>
-								<div class="form-group" ng-if="e.settings[7]">
-									<label class="col-sm-3 control-label">
-										{{(e.settings[7].label ? e.settings[7].label : e.settings[7].name)}}
-									</label>
-									<div class="col-sm-7">
-										<input name="input7" class="form-control" type="text" ng-model="e.settings[7].value" placeholder="{{e.settings[7].placeholder}}" ng-pattern="{{e.settings[7].regex}}">
-									</div>
-									<div class="col-sm-2 error-block ng-cloak" ng-show="form.input7.$dirty && form.input7.$invalid">
-										<span class="alert alert-danger alert-form" ng-show="form.input7.$error.pattern">Invalid</span>
-									</div>
-								</div>
-								<div class="form-group">
-									<div class="col-sm-offset-3 col-sm-7">
-										<button type="submit" class="btn btn-success" ng-click="saveSettings(e)" ng-disabled="form.input0.$dirty && form.input0.$invalid">
-											<i class="fa fa-check"></i> 
-											Save Settings
-										</button>
-									</div>
-								</div>
-							</form>
 						</div>
 					</accordion-group>
 				</accordion>

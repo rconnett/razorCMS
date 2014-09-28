@@ -31,6 +31,14 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 			}).error(function(){
 				$rootScope.$broadcast("global-notification", {"type": "danger", "text": "Failed to load category list."});
 			}); 
+
+			// grab extension list
+			rars.get("list/repository", "extension", monster.get("token")).success(function(data)
+			{
+				$scope.exts = data.list;
+			}).error(function(){
+				$rootScope.$broadcast("global-notification", {"type": "danger", "text": "Failed to load extension list."});
+			}); 
 		};
 
 		$scope.searchExtensions = function()
