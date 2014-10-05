@@ -97,6 +97,17 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 			$scope.themes = data.extensions;
 		}); 
 
+		// grab content list
+		rars.get("list/repository", "extension", monster.get("token")).success(function(data)
+		{
+			$scope.themeDetails = data.list.extensions.filter(function(obj)
+			{
+				return obj.type === 'theme'; 
+			});
+		}).error(function(){
+			$rootScope.$broadcast("global-notification", {"type": "danger", "text": "Failed to load extension list."});
+		}); 
+
 		$scope.selectTheme = function(theme)
 		{
 			$scope.$parent.close(theme);
