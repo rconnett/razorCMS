@@ -122,23 +122,29 @@ class RazorErrorHandler {
 	 * Log the error to log file
 	 *
 	 * @param array $error Error data array
+	 * @param string $log_book The log book to write to
 	 * @return bool False on fail
 	 */
-	private function log_error($error)
+	private function log_error($error, $log_book = 'razor-error-log')
 	{
 		if (empty($error)) return false;
 
 		// get file contents
 		$log = array();
-		if (is_file(RAZOR_BASE_PATH.'storage/log/razor-error-log.php'))
+		if (is_file(RAZOR_BASE_PATH."storage/log/{$log_book}.php"))
 		{
-			$log = RazorFileTools::read_file_contents(RAZOR_BASE_PATH.'storage/log/razor-error-log.php', 'array');
+			$log = RazorFileTools::read_file_contents(RAZOR_BASE_PATH."storage/log/{$log_book}.php", 'array');
 		}
 
 		// set date time
 		$date_time = @date('d m Y - h:i:s', time());
 
-		$log[] = "<?php /* [{$date_time}] [{$error['error']}] [type: {$error['type']}] [file: {$error['file']}] [line: {$error['line']}] [message: {$error['string']}] */ ?>\n\r";
+		$entry = "<?php /* [{$date_time}] [{$error['error']}]";
+		$entry.= (isset($error['type']) ? " [type: {$error['type']}]" : "");
+		$entry.= (isset($error['file']) ? " [file: {$error['file']}]" : "");
+		$entry.= (isset($error['line']) ? " [line: {$error['line']}]" : "");
+		$entry.= " [message: {$error['string']}] */ ?>\n\r";
+		$log[] = $entry;
 
 		if (count($log) > 100)
 		{
@@ -147,7 +153,7 @@ class RazorErrorHandler {
 
 		$log_string = implode('',$log);
 		if (!is_dir(RAZOR_BASE_PATH.'storage/log')) mkdir(RAZOR_BASE_PATH.'storage/log');
-		RazorFileTools::write_file_contents(RAZOR_BASE_PATH.'storage/log/razor-error-log.php', $log_string);
+		RazorFileTools::write_file_contents(RAZOR_BASE_PATH."storage/log/{$log_book}.php", $log_string);
 	}
 
 
