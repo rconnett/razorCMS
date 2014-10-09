@@ -89,7 +89,7 @@ class RazorDB
 		  		trigger_error("Failed to obtain lock for {$this->table} db file, file in use");
 				return false;
 			}
-			usleep(rand(10, 10000));
+			usleep(rand(100, 10000));
 			$c++;
 		}
 
@@ -1201,9 +1201,6 @@ class RazorDB
 			$lines[] = $comp_line;
 		}
 
-		// create backup file
-		@copy($this->file, $this->bck_file);
-
 		// apply lock
 		if (!$this->lock()) return false;
 
@@ -1246,6 +1243,9 @@ class RazorDB
 	 */
 	public function edit_rows($search = null, $changes)
 	{
+		// create backup
+		@copy($this->file, $this->bck_file);
+	
 		// check connected
 		if (!$this->connected)
 		{
@@ -1358,8 +1358,9 @@ class RazorDB
 			}
 		}
 
-		// create temp file so if not present during edit update, this can be used, doesn't need to be writable, only readable.
-		@copy($this->file, $this->bck_file);
+		// switch filenames to read to the copy, this should stop permission issues in windows
+		$original_file = $this->file;
+		$this->file = $this->bck_file;
 
 		// lock and move to start
 		if (!$this->lock()) return false;
@@ -1490,25 +1491,13 @@ class RazorDB
 
 		// close both files
 		$this->close();
+		$this->unlock();
 		fflush($temp_handle);
 		fclose($temp_handle);
 
-		// remove master file and replace with new file, temp file is always available incase temp file missing during edit for other users
-		unlink($this->file);
-		$wait = 0;
-		while ($wait <= 10 || file_exists($this->file))
-		{
-			usleep(100);
-			$wait++;
-		}
-		copy($temp_file, $this->file);
-		$wait = 0;
-		while ($wait <= 10 || !file_exists($this->file))
-		{
-			usleep(100);
-			$wait++;
-		}
-		unlink($temp_file);
+		// now switch filename back to original and write temp to original to save changes
+		$this->file = $original_file;
+		rename($temp_file, $this->file);
 
 		$result = array(
 			'table' 		=> $this->table,
@@ -1529,6 +1518,9 @@ class RazorDB
 	 */
 	public function delete_rows($search)
 	{
+		// create backup
+		@copy($this->file, $this->bck_file);
+
 		// check connected
 		if (!$this->connected)
 		{
@@ -1562,8 +1554,9 @@ class RazorDB
 			}
 		}
 
-		// create temp file so if not present during delete, this can be used, doesn't need to be writable, only readable.
-		@copy($this->file, $this->bck_file);
+		// switch filenames to read to the copy, this should stop permission issues in windows
+		$original_file = $this->file;
+		$this->file = $this->bck_file;
 		
 		// lock and move to start
 		if (!$this->lock()) return false;
@@ -1661,11 +1654,11 @@ class RazorDB
 		// close both files
 		fclose($temp_handle);
 		$this->close();
+		$this->unlock();
 
-		// remove master file and replace with new file, temp file is always available incase temp file missing during edit for other users
-		unlink($this->file);
-		copy($temp_file, $this->file);
-		unlink($temp_file);
+		// now switch filename back to original and rename temp to original to write changes
+		$this->file = $original_file;
+		rename($temp_file, $this->file);
 
 		// update and unlock
 		$this->row_count-= count($matches);
