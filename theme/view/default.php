@@ -1,7 +1,7 @@
 <?php if (!defined("RAZOR_BASE_PATH")) die("No direct script access to this content"); ?>
 
 <!DOCTYPE html>
-<html xmlns:ng="http://angularjs.org" id="ng-app">
+<html xmlns:ng="http://angularjs.org">
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
