@@ -73,6 +73,7 @@ define(["angular", "cookie-monster", "jquery", "summernote", "ui-bootstrap"], fu
 			rars.get("setting/editor", "all", monster.get("token")).success(function(data)
 			{
 				$scope.site = data.settings;
+				if (!$scope.site.icon_position) $scope.site["icon_position"] = "tl"; // default to top left
 			});
 
 			// grab content for page
