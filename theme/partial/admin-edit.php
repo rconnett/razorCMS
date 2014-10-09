@@ -13,7 +13,6 @@
 
 	<global-notification></global-notification>
 
-
 	<?php if ($this->logged_in > 0): ?>
 		<div class="razor-access-panel" ng-class="site.icon_position" ng-show="user.id">
 			<i class="razor-logo razor-logo-50 razor-logo-black-circle dashboard-icon mobile-hide-inline-block {{site.icon_position}}" ng-click="persist = !persist"></i>

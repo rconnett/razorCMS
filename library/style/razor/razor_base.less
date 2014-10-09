@@ -520,6 +520,15 @@ li.dropdown
 		}
 	}
 
+	@media (max-width:830px) 
+	{
+		.dashboard-icon
+		{
+			&.ml, &.mr { top: 12px; }
+			&.ll, &.bl, &.lr, &.br { top: 24px; }
+		}
+	}
+
 	.razor-access-panel
 	{
 		position: fixed;
@@ -528,9 +537,9 @@ li.dropdown
 		&.tl, &.hl, &.ml, &.ll, &.bl { left: 3px; }		
 		&.tr, &.hr, &.mr, &.lr, &.br { right: 3px; }
 		&.tl, &.tr { top: 3px; }
-		&.hl, &.hr { top: 50px; }
+		&.hl, &.hr { top: 53px; }
 		&.ml, &.mr { top: 45%; }
-		&.ll, &.lr { bottom: 50px; }
+		&.ll, &.lr { bottom: 53px; }
 		&.bl, &.br { bottom: 3px; }
 
 		.inner-panel
@@ -684,8 +693,6 @@ li.dropdown
 		{
 			overflow: auto;
 			height: 100%;
-			/* position: relative; */
-			/* top: 120px; */
 			padding-top: 10px;
 			border-top: 50px solid #222;
 		}
