@@ -104,3 +104,9 @@ class ExtensionList extends RazorAPI
 		$extensions = array_values($extensions);
 
 		$db->disconnect(); 
+		
+		$this->response(array("extensions" => $extensions), "json");
+	}
+}
+
+/* EOF */
