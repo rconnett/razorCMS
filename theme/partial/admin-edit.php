@@ -21,9 +21,6 @@
 
 			<div class="inner-panel {{site.icon_position}}" ng-class="{'persist': persist}">
 				<div class="account-details text-right">
-					<?php if ($this->logged_in > 5): ?>
-						<i class="fa fa-cog fa-4x pull-left admin-panel-icon" ng-click="persist = false; openDash()"></i>
-					<?php endif ?>
 					<span class="name">
 						{{user.name}} 
 						<a href="#" ng-click="editProfile()"><i class="fa fa-user" data-toggle="tooltip" data-placement="bottom" title="User Profile"></i></a>
