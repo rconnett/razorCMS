@@ -1495,7 +1495,19 @@ class RazorDB
 
 		// remove master file and replace with new file, temp file is always available incase temp file missing during edit for other users
 		unlink($this->file);
+		$wait = 0;
+		while ($wait <= 10 || file_exists($this->file))
+		{
+			usleep(100);
+			$wait++;
+		}
 		copy($temp_file, $this->file);
+		$wait = 0;
+		while ($wait <= 10 || !file_exists($this->file))
+		{
+			usleep(100);
+			$wait++;
+		}
 		unlink($temp_file);
 
 		$result = array(
