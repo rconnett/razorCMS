@@ -539,14 +539,14 @@ li.dropdown
 		&.tl, &.tr { top: 3px; }
 		&.hl, &.hr { top: 53px; }
 		&.ml, &.mr { top: 45%; }
-		&.ll, &.lr { bottom: 53px; }
-		&.bl, &.br { bottom: 3px; }
+		&.ll, &.lr { bottom: 105px; }
+		&.bl, &.br { bottom: 55px; }
 
 		.inner-panel
 		{
+			position: fixed;
 			opacity: 0;	
-			-webkit-transition: margin-left 0.4s, margin-right 0.4s, opacity 0.4s ease-out;
-			transition: margin-left 0.4s, margin-right 0.4s, opacity 0.4s, ease-out;
+			transition: transform 0.4s, opacity 0.4s ease-in-out;
 
 			.editor-controls, .account-details
 			{
@@ -593,14 +593,14 @@ li.dropdown
 
 			&.tl, &.hl, &.ml, &.ll, &.bl
 			{
-				margin-left: -500px;
-				&.persist { margin-left: 60px; }
+				left: -500px;
+				&.persist { transform: translate(560px, 0); }
 			}
 
 			&.tr, &.hr, &.mr, &.lr, &.br
-			{
-				margin-right: -500px;
-				&.persist { margin-right: 60px; }
+			{				
+				right: -500px;
+				&.persist { transform: translate(-560px, 0); }
 			}
 
 			&.ml, &.mr { margin-top: -35px; }
