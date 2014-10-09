@@ -31,116 +31,60 @@
 			</p>
 		</div>
 	<![endif]-->
-	<div id="razor-access" class="ng-cloak" ng-controller="access" ng-init="init()">
+	<div id="razor-access" class="ng-cloak" ng-controller="access" ng-init="init('<?php echo $this->site['name'] ?>', '<?php echo $this->site["allow_registration"] ?>')">
 
 		<global-notification></global-notification>
 
-		<div class="razor-admin-panel">
-			<div class="container">
-				<div ng-if="showLogin" class="row">
-					<form ng-if="activePage != 'password-reset'" name="form" class="form-inline login-form" role="form" ng-submit="login()" novalidate>
-						<div class="form-group">
-							<!--[if IE 9]>
-								<label for="email">Email</label>
-							<![endif]-->
-							<input name="email" type="email" class="form-control" placeholder="Email address" ng-model="loginDetails.u" ng-class="{'input-error' :form.email.$dirty && (form.email.$invalid || form.email.$error.required)}" required>
-						</div>
-						<div class="form-group">
-							<!--[if IE 9]>
-								<label for="password">Password</label>
-							<![endif]-->
-							<input name="password" type="password" class="form-control" placeholder="Password" ng-model="loginDetails.p" ng-class="{'input-error' :form.password.$dirty && (form.password.$invalid || form.password.$error.required)}" required>
-						</div>
-						<button type="submit" class="btn btn-default" ng-disabled="form.$invalid || processing || !loginDetails.p || loginDetails.p.length < 1">
-							<i class="fa fa-sign-in" ng-hide="processing"></i>
-							<i class="fa fa-spinner fa-spin" ng-show="processing"></i>
-							<span class="mobile-hide-inline"> Sign In</span>
-						</button>
-						<div class="btn-group pull-right">
-							<button type="submit" class="btn btn-default" ng-click="forgotLogin()" ng-disabled="form.email.$invalid">
-								<i class="fa fa-question-circle"></i>
-								<span class="mobile-hide-inline"> Forgot Login</span>
-							</button>
-							<?php if ($this->site["allow_registration"]): ?>
-								<a href="#" class="btn btn-default" ng-click="register()">
-									<i class="fa fa-users"></i>
-									<span class="mobile-hide-inline"> register</span>
-								</a>
-							<?php endif ?>
-						</div>
-					</form>
-					<form ng-if="activePage == 'password-reset'" name="form" role="form" class="form-inline login-form" ng-submit="passwordReset()" novalidate>
-						<div class="form-group">
-							<!--[if IE 9]>
-								<label for="password">Password</label>
-							<![endif]-->
-							<input name="password" type="password" class="form-control" placeholder="Password" ng-model="passwordDetails.password" ng-class="{'input-error' :form.password.$dirty && form.password.$invalid && form.password.$error.required}" required>
-						</div>
-							<div class="form-group">
-							<!--[if IE 9]>
-								<label for="password">New Password</label>
-							<![endif]-->
-							<input name="repeat_password" type="password" class="form-control" placeholder="New Password" ng-model="passwordDetails.repeat_password" ng-class="{'input-error' :form.repeat_password.$dirty && form.repeat_password.$invalid && (form.repeat_password.$error.required || form.repeatPassword.$error.confirm)}"  confirm="{{passwordDetails.password}}" required>
-						</div>
-						<button type="submit" class="btn btn-default" ng-disabled="form.$invalid || processing">
-							<i class="fa fa-key" ng-hide="processing"></i>
-							<i class="fa fa-spinner fa-spin" ng-show="processing"></i>
-							<span class="mobile-hide-inline"> Reset Password</span>
-						</button>
-					</form>
-				</div>
-				<div class="row" ng-if="user.id">
-					<div class="col-xs-6">
+		<?php if ($this->logged_in > 0): ?>
+			<div class="razor-access-panel" ng-class="site.icon_position" ng-show="user.id">
+				<i class="razor-logo razor-logo-50 razor-logo-black-circle dashboard-icon mobile-hide-inline-block {{site.icon_position}}" ng-class="{'flash': !!firstAccess}" ng-hide="changed" ng-click="persist = !persist"></i>
+				<i class="razor-logo razor-logo-25 razor-logo-black-circle dashboard-icon mobile-show-inline-block {{site.icon_position}}" ng-class="{'flash': !!firstAccess}" ng-hide="changed" ng-click="persist = !persist"></i>
+
+				<div class="inner-panel {{site.icon_position}}" ng-class="{'persist': persist}">
+					<div class="account-details text-right">
 						<?php if ($this->logged_in > 5): ?>
-							<i class="razor-logo razor-logo-50 razor-logo-black-circle dashboard-icon mobile-hide-block" ng-hide="changed" ng-click="openDash()"></i>
-							<div class="editor-controls">
-								<button class="btn btn-sm btn-default mobile-show-inline-block" ng-hide="changed" ng-click="openDash()">
-									<i class="fa fa-dot-circle-o"></i>
-								</button>
-								<a href="?edit" class="btn btn-sm btn-primary" ng-if="user.access_level > 6 || !page.active">
-									<i class="fa fa-pencil"></i><span class="mobile-hide-inline"> Edit Page</span>
-								</a>
-								<button class="btn btn-sm btn-default" ng-click="addNewPage()" ng-hide="toggle || changed">
-									<i class="fa fa-file-text-o"></i><span class="mobile-hide-inline"> Add New Page</span>
-								</button>
-								<button class="btn btn-sm btn-default" ng-click="copyPage()" ng-hide="toggle || changed">
-									<i class="fa fa-files-o"></i><span class="mobile-hide-inline"> Copy This Page</span>
-								</button>
-							</div>
+							<i class="fa fa-cog fa-4x pull-left admin-panel-icon" ng-click="persist = false; openDash()"></i>
 						<?php endif ?>
-					</div>
-					<div class="col-xs-6">
-						<div class="account-details text-right" ng-show="user.id">
-							<span class="name">
-								{{user.name}} 
-								<a href="#" ng-click="editProfile()"><i class="fa fa-user" data-toggle="tooltip" data-placement="bottom" title="User Profile"></i></a>
-								<a href="#" ng-click="logout()"><i class="fa fa-sign-out" data-toggle="tooltip" data-placement="bottom" title="Sign Out"></i></a>
-							</span>
-							<span class="last-login-date">Last login: {{user.last_logged_in * 1000 | date:'EEE, MMM d, y'}}</span>
+						<span class="name">
+							{{user.name}} 
+							<a href="#" ng-click="editProfile()"><i class="fa fa-user" data-toggle="tooltip" data-placement="bottom" title="User Profile"></i></a>
+							<a href="#" ng-click="logout()"><i class="fa fa-sign-out" data-toggle="tooltip" data-placement="bottom" title="Sign Out"></i></a>
+						</span>
+						<span class="last-login-date">Last login: {{user.last_logged_in * 1000 | date:'EEE, MMM d, y'}}</span>
+					</div>				
+					<?php if ($this->logged_in > 5): ?>
+						<div class="editor-controls">
+							<a href="?edit" class="btn btn-sm btn-primary" ng-if="user.access_level > 6 || !page.active">
+								<i class="fa fa-pencil"></i><span class="mobile-hide-inline"> Edit Page</span>
+							</a>
+							<button class="btn btn-sm btn-default" ng-click="addNewPage()" ng-hide="toggle || changed">
+								<i class="fa fa-file-text-o"></i><span class="mobile-hide-inline"> Add New Page</span>
+							</button>
+							<button class="btn btn-sm btn-default" ng-click="copyPage()" ng-hide="toggle || changed">
+								<i class="fa fa-files-o"></i><span class="mobile-hide-inline"> Copy This Page</span>
+							</button>
 						</div>
-					</div>
+					<?php endif ?>
 				</div>
 			</div>
-		</div>
+		<?php endif ?>
+
 		<?php if ($this->logged_in > 5): ?>
 			<div class="razor-admin-dashboard" ng-if="dash && user.id">
 				<div class="dash-nav">
 					<div class="container">
 						<div class="row">
 							<div class="col-sm-12">	
-								<i class="razor-logo razor-logo-50 razor-logo-white-circle dashboard-icon mobile-hide-block" ng-click="closeDash();"></i>
 								<div class="dash-controls">
-									<ul class="dashbar-nav pull-left mobile-show-inline-block">
-										<li>
-											<a href="#" ng-click="closeDash();">
-												<i class="fa fa-dot-circle-o"></i>
+									<ul class="dashbar-nav pull-left">
+										<li class="close-dash">
+											<a href="#" ng-click="closeDash()">
+												<i class="fa fa-times close-dash"></i><span class="mobile-hide-inline"> Close</span>
 											</a>
 										</li>
-									</ul>
-									<ul class="dashbar-nav pull-left">
-										<li ng-class="{'active':activePage == 'page'}">
+										<li class="page-details" ng-class="{'active':activePage == 'page'}">
 											<a href="#page">
-												<i class="fa fa-file-text-o"></i><span class="mobile-hide-inline"> Details</span>
+												<i class="fa fa-file-text-o"></i><span class="mobile-hide-inline"> Page</span>
 											</a>
 										</li>
 									</ul>

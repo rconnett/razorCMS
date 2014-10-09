@@ -40,6 +40,23 @@
 					</div>
 				</div>
 				<div class="form-group">
+					<label for="icon-position" class="col-sm-3 control-label">razorCMS Icon Position</label>
+					<div class="col-sm-7">
+						<select class="form-control" ng-model="site.icon_position">
+							<option value="tl">Top Left</option>
+							<option value="hl">High Left</option>
+							<option value="ml">Middle Left</option>
+							<option value="ll">Low Left</option>
+							<option value="bl">Bottom Left</option>
+							<option value="tr">Top Right</option>
+							<option value="hr">High Right</option>
+							<option value="mr">Middle Right</option>
+							<option value="lr">Low Right</option>
+							<option value="br">Bottom Right</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
 					<label for="google-analytics-code" class="col-sm-3 control-label">Google Analytics Code</label>
 					<div class="col-sm-7">
 						<input id="google-analytics-code" name="googleAnalyticsCode" class="form-control" type="text" ng-model="site.google_analytics_code" placeholder="Use google anlytics to track users">

@@ -34,6 +34,13 @@ class SettingData extends RazorAPI
 			$res = $db->edit_rows($search, array("value" => $data["name"]));
 			if ($res["count"] == 0)	$db->add_rows(array("name" => "name", "value" => (string) $data["name"], "type" => "string"));
 		}
+
+		if (isset($data["icon_position"]))
+		{
+			$search = array("column" => "name", "value" => "icon_position");
+			$res = $db->edit_rows($search, array("value" => $data["icon_position"]));
+			if ($res["count"] == 0)	$db->add_rows(array("name" => "icon_position", "value" => (string) $data["icon_position"], "type" => "string"));
+		}
 	
 		if (isset($data["google_analytics_code"]))
 		{

@@ -26,7 +26,6 @@
 @border-radius-large: 0px;
 @border-radius-small: 0px;
 
-
 // fix for ui-bootstrap cursor issue
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
@@ -431,9 +430,6 @@ li.dropdown
 // admin specific
 .razor-admin, .razor-access
 {	
-	// push site down due to panel
-	.template-wrapper { padding-top: 60px; }
-
 	.version-tag
 	{
 		position: fixed;
@@ -442,6 +438,165 @@ li.dropdown
 		color: #fff;
 		padding: 3px;
 		font-size: 12px;
+	}
+
+	@-webkit-keyframes dashiconflash {  
+		0% { opacity: 0.4; }
+		40% { opacity: 1; }
+		60% { opacity: 1; } 
+		100% { opacity: 0.4; }
+	}
+	
+	@-moz-keyframes dashiconflash {
+		0% { opacity: 0.4; }
+		40% { opacity: 1; }
+		60% { opacity: 1; } 
+		100% { opacity: 0.4; }
+	}
+	
+	@-ms-keyframes dashiconflash {
+		0% { opacity: 0.4; }
+		40% { opacity: 1; }
+		60% { opacity: 1; } 
+		100% { opacity: 0.4; }
+	}
+	
+	@-o-keyframes dashiconflash {
+		0% { opacity: 0.4; }
+		40% { opacity: 1; }
+		60% { opacity: 1; } 
+		100% { opacity: 0.4; }
+	}
+	
+	@keyframes dashiconflash {
+		0% { opacity: 0.4; }
+		40% { opacity: 1; }
+		60% { opacity: 1; } 
+		100% { opacity: 0.4; }
+	}
+
+	.dashboard-icon
+	{
+		position: absolute;
+		top: 0px;
+		padding: 7px;
+		font-size: 40px; 
+		cursor: pointer;
+		opacity: 0;
+		z-index: 1001;
+		border-radius: 100px;
+		padding: 10px;
+		width: 52px;
+		height: 52px;
+		box-shadow: 0 0 5px 0 #6f6f6f;
+		background-color: #fff !important;
+
+		&.tl, &.hl, &.ml, &.ll, &.bl
+		{
+			opacity: 0.6;
+			left: 0px;
+		}
+
+		&.tr, &.hr, &.mr, &.lr, &.br
+		{
+			opacity: 0.6;
+			right: 0px;
+		}
+
+		&.razor-logo-25
+		{
+			width: 27px;
+			height: 27px;
+		}
+
+		&:hover { opacity: 1; }
+		&.flash 
+		{ 
+			-webkit-animation: dashiconflash 0.5s 5;
+			-moz-animation: dashiconflash 0.5s 5;
+			-ms-animation: dashiconflash 0.5s 5;
+			-o-animation: dashiconflash 0.5s 5;
+			animation: dashiconflash 0.5s 5;
+		}
+	}
+
+	.razor-access-panel
+	{
+		position: fixed;
+		z-index: 1000;
+
+		&.tl, &.hl, &.ml, &.ll, &.bl { left: 3px; }		
+		&.tr, &.hr, &.mr, &.lr, &.br { right: 3px; }
+		&.tl, &.tr { top: 3px; }
+		&.hl, &.hr { top: 50px; }
+		&.ml, &.mr { top: 45%; }
+		&.ll, &.lr { bottom: 50px; }
+		&.bl, &.br { bottom: 3px; }
+
+		.inner-panel
+		{
+			opacity: 0;	
+			-webkit-transition: margin-left 0.4s, margin-right 0.4s, opacity 0.4s ease-out;
+			transition: margin-left 0.4s, margin-right 0.4s, opacity 0.4s, ease-out;
+
+			.editor-controls, .account-details
+			{
+				margin-top: 3px;
+				margin-bottom: 3px;
+				padding: 10px;
+				background-color: rgba(255, 255, 255, 0.85);
+				box-shadow: 0px 0px 5px 0px rgba(111, 111, 111, 1);
+				
+				&.account-details
+				{
+					padding: 5px 10px 10px 10px;
+
+					span
+					{
+						display: block;
+						font-size: 12px;
+						margin-left: 70px;
+
+						&.name 
+						{ 
+							font-weight: bold;
+							font-size: 22px;
+
+							.fa-user
+							{
+								margin-left: 5px;
+								margin-right: 5px;
+							}
+						}
+					}
+				}
+
+				.admin-panel-icon
+				{
+					opacity: 0.9;
+					cursor: pointer;
+
+					&:hover { opacity: 1; }
+				}
+			}
+
+			&.persist { opacity: 1; }
+
+			&.tl, &.hl, &.ml, &.ll, &.bl
+			{
+				margin-left: -500px;
+				&.persist { margin-left: 60px; }
+			}
+
+			&.tr, &.hr, &.mr, &.lr, &.br
+			{
+				margin-right: -500px;
+				&.persist { margin-right: 60px; }
+			}
+
+			&.ml, &.mr { margin-top: -35px; }
+			&.ll, &.lr, &.bl, &.br { margin-top: -70px; }
+		}
 	}
 
 	// admin panel
@@ -455,57 +610,10 @@ li.dropdown
 		width: 100%;
 		min-height: 58px; // not 60 due to box shadow
 		z-index: 1000;
-
-		// login form in admin-panel
-		.login-form
-		{
-			padding-top: 10px;
-			padding-bottom: 10px;
-
-			.error-message { padding: 6px; }
-		}
-
-		// account details in admin panel
-		.account-details
-		{
-			padding: 0px 0px 5px 0px;
-
-			span
-			{
-				display: block;
-				font-size: 12px;
-
-				&.name 
-				{ 
-					font-weight: bold;
-					font-size: 25px;
-				}
-			}
-		}
-
-		// editor panel
-		.editor-controls
-		{
-			margin-top: 12px;
-		}
-	}
-
-	.dashboard-icon
-	{
-		padding: 7px;
-		font-size: 40px; 
-		cursor: pointer;
-		position: fixed;
-		top: 3px;
-		left: 4px;
-		opacity: 0.7;
-
-		&:hover { opacity: 1; }
 	}
 
 	.razor-admin-dashboard
 	{
-		margin-top: 60px;
 		position: fixed;
 		width: 100%;
 		background-color: rgba(0, 0, 0, 0.90);
@@ -516,11 +624,8 @@ li.dropdown
 
 		.dash-nav
 		{
-			position: fixed;
-			top: 0px;
 			width: 100%;
 			height: 60px;
-			background-color: #111;
 			z-index: 1020;
 
 			.navbar
@@ -567,6 +672,9 @@ li.dropdown
 					text-decoration: none;
 					color: #84C4FC;
 				}
+
+				&.close-dash a { color: white; }
+				&.page-details a { color: rgb(0, 214, 0); }
 			}
 		}
 
