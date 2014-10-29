@@ -9,7 +9,7 @@
 		<meta name="keywords" content="<?php echo $this->page["keywords"] ?>">
 
 		<title><?php echo $this->site["name"] ?>::<?php echo $this->page["title"] ?></title>
-		<link href='http<?php echo $_SERVER["HTTPS"] == 'on' ? 's' : '' ?>://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,700italic,800italic,400,700,800,600' rel='stylesheet' type='text/css'>
+		<link href='http<?php echo isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == 'on' ? 's' : '' ?>://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,700italic,800italic,400,700,800,600' rel='stylesheet' type='text/css'>
 
 		<!-- resolve base URL/IP/U-AGENT for any js applications -->
 		<script type="text/javascript">

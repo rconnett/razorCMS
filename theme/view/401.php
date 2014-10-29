@@ -9,7 +9,7 @@
 		<meta name="keywords" content="404, Not, Found">
 
 		<title><?php echo $this->site["name"] ?>::404 Not Found</title>
-		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,700italic,800italic,400,700,800,600' rel='stylesheet' type='text/css'>
+		<link href='http<?php echo isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == 'on' ? 's' : '' ?>://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,700italic,800italic,400,700,800,600' rel='stylesheet' type='text/css'>
 		<link rel="icon" href="<?php echo RAZOR_BASE_URL ?>theme/image/favicon.png" type="image/png">
 		<link rel="shortcut icon" href="<?php echo RAZOR_BASE_URL ?>theme/image/favicon.ico">
 
