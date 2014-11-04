@@ -594,13 +594,27 @@ li.dropdown
 			&.tl, &.hl, &.ml, &.ll, &.bl
 			{
 				left: -500px;
-				&.persist { transform: translate(560px, 0); }
+				&.persist 
+				{ 
+					-moz-transform: translate(560px, 0); 
+					-ms-transform: translate(560px, 0); 
+					-webkit-transform: translate(560px, 0);
+					-o-transform: translate(560px, 0); 
+					transform: translate(560px, 0); 
+				}
 			}
 
 			&.tr, &.hr, &.mr, &.lr, &.br
 			{				
 				right: -500px;
-				&.persist { transform: translate(-560px, 0); }
+				&.persist 
+				{ 
+					-moz-transform: translate(560px, 0); 
+					-ms-transform: translate(560px, 0); 
+					-webkit-transform: translate(560px, 0);
+					-o-transform: translate(560px, 0);
+					transform: translate(-560px, 0); 
+				}
 			}
 
 			&.ml, &.mr { margin-top: -35px; }
