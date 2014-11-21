@@ -1553,13 +1553,13 @@ class RazorDB
 				return false;
 			}
 		}
+		
+		// lock and move to start
+		// if (!$this->lock()) return false;
 
 		// switch filenames to read to the copy, this should stop permission issues in windows
 		$original_file = $this->file;
 		$this->file = $this->bck_file;
-		
-		// lock and move to start
-		if (!$this->lock()) return false;
 
 		// setup temp file
 		$temp_ext = rand(1, 1000000);
@@ -1654,7 +1654,6 @@ class RazorDB
 		// close both files
 		fclose($temp_handle);
 		$this->close();
-		$this->unlock();
 
 		// now switch filename back to original and rename temp to original to write changes
 		$this->file = $original_file;
@@ -1663,7 +1662,6 @@ class RazorDB
 		// update and unlock
 		$this->row_count-= count($matches);
 		$this->update_row_count();
-		$this->unlock();
 
 		$result = array(
 			'table' 		=> $this->table,
