@@ -14,8 +14,6 @@
 		<link rel="shortcut icon" href="<?php echo RAZOR_BASE_URL ?>theme/image/favicon.ico">
 
 		<!-- load razor base css (imports: bootstrap, font awesome) -->
-		<link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>library/style/bootstrap/bootstrap.min.css">
-		<link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>library/font/font-awesome/css/font-awesome.min.css">
 		<link type="text/css" rel="stylesheet" href="<?php echo RAZOR_BASE_URL ?>library/style/razor/razor_base.css">
 		
 		<!-- load theme specific (no mixins from bootstrap) -->
