@@ -250,8 +250,8 @@ class RazorAPI
 			"access_level"
 		);
 
-		$this->user = $this->razor_db->edit_data('user', array('last_accessed' => time()), array('id' => $this->user['id']), $return_columns);
-		
+		$this->user = $this->razor_db->edit_data('user', array('last_accessed' => time()), array('id' => $this->user['id']), $return_columns)[0];
+
 		return $this->user["access_level"];
 	}
 
