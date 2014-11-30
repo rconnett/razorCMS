@@ -55,7 +55,7 @@ class RazorSite
 	public function render()
 	{
 		// is 404 ?
-		if (empty($this->page) || (!isset($_COOKIE["token"]) && !$this->page["active"]))
+		if (empty($this->page) || (!isset($_COOKIE["token"]) && !(int) $this->page["active"]))
 		{ 
 			header("HTTP/1.0 404 Not Found");
 			include_once(RAZOR_BASE_PATH."theme/view/404.php");
@@ -87,7 +87,7 @@ class RazorSite
 		$ext_dep_list = array();
 		
 		// admin angluar loading for editor, return
-		if (isset($_GET["edit"]) && ($this->logged_in > 6 || ($this->logged_in > 5 && !$this->page["active"])))
+		if (isset($_GET["edit"]) && ($this->logged_in > 6 || ($this->logged_in > 5 && !(int) $this->page["active"])))
 		{
 //<div text-angular name="{$loc}{$col}{{block.content_id}}" ng-if="!block.extension" ta-disabled="!editingThis('{$loc}{$col}' + block.content_id)" class="content-edit" ng-model="content[block.content_id].content" ng-click="startBlockEdit('{$loc}{$col}',  block.content_id)" ></div>
 
@@ -156,7 +156,7 @@ OUTPUT;
 			return;
 		}
 	   
-		$db = new RazorDB();
+		$db = new RazorPDO();
 
 		// if not editor and not empty, output content for public
 		foreach ($this->content as $c_data)
@@ -168,11 +168,8 @@ OUTPUT;
 					// load content	
 					echo '<div ng-if="!changed" content-id="'.$c_data["content_id"].'">';
 
-					$db->connect("content");
-					$search = array("column" => "id", "value" => $c_data["content_id"]);
-					$content = $db->get_rows($search);
-					$content = $content["result"][0];
-					$db->disconnect(); 
+					// content
+					$content = $db->get_first('content', '*', array('id' => $c_data['content_id']));
 
 					echo str_replace("\\n", "", $content["content"]);
 
@@ -362,12 +359,11 @@ OUTPUT;
 
 	private function get_site_data()
 	{
-		$db = new RazorDB();
-		$db->connect("setting");
-		$res = $db->get_rows(array("column" => "id", "value" => null, "not" => true));
-		$db->disconnect(); 
+		// get site data
+		$db = new RazorPDO();
+		$setting = $db->get_all('setting');
 
-		foreach ($res["result"] as $result)
+		foreach ($setting as $result)
 		{
 			switch ($result["type"])
 			{
@@ -386,13 +382,20 @@ OUTPUT;
 
 	private function get_page_data()
 	{
-		$db = new RazorDB();
-		$db->connect("page");
-		$search = (empty($this->link) ? array("column" => "id", "value" => $this->site["home_page"]) : array("column" => "link", "value" => $this->link));
-		$res = $db->get_rows($search);
-		$db->disconnect(); 
+		// get page data
+		$db = new RazorPDO();
+        $where = (empty($this->link) ? array('id' => $this->site["home_page"]) : array('link' => $this->link));
+		$page = $db->get_first('page', '*', $where);
 
-		$this->page = ($res["count"] == 1 ? $res["result"][0] : null);
+		// ensure type correct
+		if (!empty($page))
+		{
+			$this->page = $page;
+			$this->page['id'] = (int) $this->page['id'];
+			$this->page['active'] = (int) $this->page['active']; 
+			$this->page['access_level'] = (int) $this->page['access_level'];
+		}
+		else $this->page = null;
 	}
 
 	private function get_menu_data()
@@ -403,18 +406,27 @@ OUTPUT;
 		// collate all menus (to cut down on duplicate searches)
 		$this->menu = array();
 
-		$db = new RazorDB();
-		$db->connect("menu_item");
-
-		// set options
-		$options = array(
-			"join" => array(array("table" => "page", "join_to" => "page_id"), array("table" => "menu", "join_to" => "menu_id")),
-			"order" => array("column" => "position", "direction" => "asc")
+		$db = new RazorPDO();
+		$menus = $db->query_all('SELECT a.*'
+			.", b.id AS 'page_id.id'"
+			.", b.active AS 'page_id.active'"
+			.", b.theme AS 'page_id.theme'"
+			.", b.name AS 'page_id.name'"
+			.", b.title AS 'page_id.title'"
+			.", b.link AS 'page_id.link'"
+			.", b.keywords AS 'page_id.keywords'"
+			.", b.description AS 'page_id.description'"
+			.", b.access_level AS 'page_id.access_level'"
+			.", b.json_settings AS 'page_id.json_settings'"
+			.", c.id AS 'menu_id.id'"
+			.", c.name AS 'menu_id.name'"
+			.", c.json_settings AS 'menu_id.json_settings'"
+			.", c.access_level AS 'menu_id.access_level'"
+			.' FROM menu_item AS a'
+			.' JOIN page AS b ON a.page_id = b.id'
+			.' JOIN menu AS c ON a.menu_id = c.id'
+			.' ORDER BY position ASC'
 		);
-
-		// get all menu_links
-		$menus = $db->get_rows(array("column" => "id", "not" => true, "value" => null), $options);
-		$menus = $menus["result"];
 
 		// sort them into name
 		foreach ($menus as $menu)
@@ -432,8 +444,6 @@ OUTPUT;
 				$this->menu[$menu["menu_id.name"]][$parent]["sub_menu"][] = $menu;
 			}
 		}
-		
-		$db->disconnect();
 	}
 
 	private function add_new_menu($loc)
@@ -442,10 +452,13 @@ OUTPUT;
 		if (in_array($loc, $this->all_menus)) return false;
 
 		// create new menu
-		$db = new RazorDB();
-		$db->connect("menu");
-		$db->add_rows(array("name" => $loc));
-		$db->disconnect(); 
+		// remove
+		// $db = new RazorDB();
+		// $db->connect("menu");
+		// $db->add_rows(array("name" => $loc));
+		// $db->disconnect(); 
+		$db = new RazorPDO();
+		$db->add_data('menu', array('name' => $loc));
 
 		return true;
 	}
@@ -456,30 +469,17 @@ OUTPUT;
 		if (empty($this->page)) return;
 
 		// grab all content
-		$db = new RazorDB();
-		$db->connect("page_content");
-
-		// set options
-		$options = array(
-			"order" => array("column" => "position", "direction" => "asc")
-		);
-
-		$search = array("column" => "page_id", "value" => $this->page["id"]);
-
-		$content = $db->get_rows($search, $options);
-		$this->content = $content["result"];
-		$db->disconnect(); 
+		$db = new RazorPDO();
+		$this->content = $db->query_all('SELECT * FROM page_content WHERE page_id = :page_id ORDER BY position ASC', array('page_id' => $this->page['id']));
 	}
 
 	private function get_all_menus()
 	{
-		$db = new RazorDB();
-		$db->connect("menu");
-		$search = array("column" => "id", "not" => true, "value" => null);
-		$menus = $db->get_rows($search);
-		$all_menus = array();
-		foreach ($menus["result"] as $menu) $all_menus[] = $menu["name"];
-		$this->all_menus = $all_menus;
+		$db = new RazorPDO();
+		$menus = $db->get_all('menu');
+
+		$this->all_menus = array();
+		foreach ($menus as $menu) $this->all_menus[] = $menu["name"];
 	}
 }
 /* EOF */

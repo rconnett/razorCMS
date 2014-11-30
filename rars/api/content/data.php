@@ -18,24 +18,16 @@ class ContentData extends RazorAPI
 		parent::__construct();
 	}
 
-	// add or update content
+	// delete content
 	public function delete($id)
 	{
 		// login check - if fail, return no data to stop error flagging to user
 		if ((int) $this->check_access() < 8) $this->response(null, null, 401);
 		if (!is_numeric($id)) $this->response(null, null, 400);
 
-		$db = new RazorDB();
-		
-		// delete page
-		$db->connect("content");
-		$db->delete_rows(array("column" => "id", "value" => (int) $id));
-		$db->disconnect(); 
-
-		// remove any page_content items
-		$db->connect("page_content");
-		$db->delete_rows(array("column" => "content_id", "value" => (int) $id));
-		$db->disconnect(); 
+		// delete page 
+		$this->razor_db->delete_data('content', array('id' => (int) $id));
+		$this->razor_db->delete_data('page_content', array('content_id' => (int) $id));
 
 		// return the basic user details
 		$this->response("success", "json");

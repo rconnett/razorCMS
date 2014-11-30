@@ -15,10 +15,11 @@ class RazorAPI
 {
 	private $backtrace = null;
 	public $user = null;
+	public $razor_db = null;
 
 	function __construct()
 	{
-		// placeholder in case we need it
+		$this->razor_db = new RazorPDO();
 	}
 
 	public static function clean_data($data)
@@ -125,34 +126,18 @@ class RazorAPI
 		if (RARS_ACCESS_BAN_ATTEMPS > 0)
 		{
 			// find banned rows
-			$db = new RazorDB();
-			$db->connect("banned");
-			$search = array(
-				array("column" => "ip_address", "value" => $ip_address), 
-				array("column" => "user_agent", "value" => $user_agent, "and" => true)
-			);
-			$count = $db->get_rows($search);
-			$count = $count["count"];
-			$db->disconnect(); 
+			$banned = $this->razor_db->get_first('banned', '*', array('ip_address' => $ip_address, 'user_agent' => $user_agent));
 
-			if ($count > 0) return RazorAPI::response(array("message" => "Login failed: ip banned", "login_error_code" => 104), "json");  
+			if (!empty($banned)) return RazorAPI::response(array("message" => "Login failed: ip banned", "login_error_code" => 104), "json");  
 		}
 
 		/* carry on with login */
 
 		// find user
-		$db = new RazorDB();
-		$db->connect("user");
-		$search = array("column" => "email_address", "value" => $data["username"]);
-		$options = array("amount" => 1);
-		$res = $db->get_rows($search, $options);
-		$db->disconnect(); 
-
+		$user = $this->razor_db->get_first('user', '*', array('email_address' => $data['username']));
+		
 		// check user found
-		if ($res["count"] != 1) return RazorAPI::response(array("message" => "Login failed: username or password missmatch", "login_error_code" => 101), "json");
-
-		// grab user details
-		$user = $res["result"][0];
+		if (empty($user)) return RazorAPI::response(array("message" => "Login failed: username or password missmatch", "login_error_code" => 101), "json");
 
 		// check if user is locked out here
 		if (!empty($user["lock_until"]) && $user["lock_until"] > time())
@@ -166,23 +151,18 @@ class RazorAPI
 		// now check if password ok (we need password first to get salt from it before we can check it), if not then send response		
 		if (RazorAPI::create_hash($data["password"],substr($user["password"],0,(strlen($user["password"])/2)),'sha1') !== $user["password"])
 		{
-			// update failed attempts and lockout
-			$db = new RazorDB();
-			$db->connect("user");
-			$search = array("column" => "id", "value" => $user["id"]);
-			$changes = array("failed_attempts" => $user["failed_attempts"] + 1);
-			if ($user["failed_attempts"] > 0 && $user["failed_attempts"] % RARS_ACCESS_ATTEMPTS == 0) $changes["lock_until"] = time() + RARS_ACCESS_LOCKOUT;
-			$db->edit_rows($search, $changes);
-			$db->disconnect();
+			// data to update
+			$update_data = array('failed_attempts' => $user['failed_attempts']++);
+			if ($user["failed_attempts"] > 0 && $user["failed_attempts"] % RARS_ACCESS_ATTEMPTS == 0) $update_data['lock_until'] = time() + RARS_ACCESS_LOCKOUT;
+			
+			// update
+			$this->razor_db->edit_data('user', $update_data, array('id' => $user['id']));
 
 			// add to banned list if banned active and too many attempts
 			if (RARS_ACCESS_BAN_ATTEMPS > 0 && $user["failed_attempts"] + 1 >= RARS_ACCESS_BAN_ATTEMPS)
 			{
-				$db = new RazorDB();
-				$db->connect("banned");
-				$row = array("ip_address" => $ip_address, "user_agent" => $user_agent);
-				$db->add_rows($row);   
-				$db->disconnect(); 
+	            // add ip and agent to banned
+	            $this->razor_db->add_data('banned', array('ip_address' => $ip_address, 'user_agent' => $user_agent));
 			}
 
 			return RazorAPI::response(array("message" => "Login failed: username or password missmatch", "login_error_code" => 101), "json");
@@ -195,19 +175,15 @@ class RazorAPI
 		$pass_hash = $user["password"];
 		$token = sha1($last_logged.$user_agent.$ip_address.$pass_hash)."_".$user["id"];
 
-		// store last logged and reset lockout/attempts
-		$db = new RazorDB();
-		$db->connect("user");
-		$search = array("column" => "id", "value" => $user["id"]);
-		$changes = array(
-			"last_logged_in"	=> $last_logged,
-			"last_accessed"	 => $last_logged,
-			"failed_attempts"   => 0,
-			"lock_until"		=> null,
-			"ip_address"		=> $ip_address
+		// update data
+		$update_data = array(
+			'id' => $user['id'],
+			'last_logged_in' => $last_logged,
+			'last_accessed' => $last_logged,
+			'ip_address' => $ip_address
 		);
-		$db->edit_rows($search, $changes);
-		$db->disconnect();
+
+		$user = $this->razor_db->edit_data('user', $update_data, array('id' => $user['id']), '*')[0];
 
 		// collect user data
 		$user = array(
@@ -234,17 +210,11 @@ class RazorAPI
 		$token = preg_replace("/[^a-zA-Z0-9]/", '', $token_data[0]);
 		$id = (int) $token_data[1];
 
-		// find user
-		$db = new RazorDB();
-		$db->connect("user");
-		$search = array("column" => "id", "value" => $id);
-		$options = array("amount" => 1);
-		$res = $db->get_rows($search, $options);
-		$db->disconnect(); 
+        // find user
+		$user = $this->razor_db->get_first('user', '*', array('id' => $id));
 
 		// no user found or no access in XXX seconds
-		if ($res["count"] != 1) return false;	 
-		$user = $res["result"][0];
+		if (empty($user)) return false;	 
 		if ($user["last_accessed"] < time() - $access_timeout) return false;
 
 		/* all ok, so go verify user */
@@ -267,17 +237,21 @@ class RazorAPI
 			"access_level"	  => $user["access_level"]
 		);
 
-		// update access time to keep connection alive, only do this once an hour to keep writes to db down for user table
+		// update access time to keep connection alive, only do this every 30min to keep writes to db down for user table
 		// connection will stay live for a day anyway so we do not need to be this heavy on the last access time writes
-		if ($user["last_accessed"] > time() - 3600) return $this->user["access_level"];
+		if ($user["last_accessed"] > time() - 600) return $this->user["access_level"];
 
-		$db = new RazorDB();
-		$db->connect("user");
-		$search = array("column" => "id", "value" => $this->user["id"]);
-		$changes = array("last_accessed" => time());
-		$db->edit_rows($search, $changes);
-		$db->disconnect();
+		// update last accessed
+		$return_columns = array(
+			"id",
+			"name",
+			"email_address",
+			"last_logged_in",
+			"access_level"
+		);
 
+		$this->user = $this->razor_db->edit_data('user', array('last_accessed' => time()), array('id' => $this->user['id']), $return_columns);
+		
 		return $this->user["access_level"];
 	}
 

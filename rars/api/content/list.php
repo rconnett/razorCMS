@@ -20,47 +20,41 @@ class ContentList extends RazorAPI
 
 	public function get($id)
 	{
-		$db = new RazorDB();
+		$data = $this->razor_db->query_all(
+			'SELECT a.*'
+			.", c.id AS 'page.id'"
+			.", c.link AS 'page.link'"
+			.", c.name AS 'page.name'"
+			.' FROM content AS a' 
+			.' JOIN page_content AS b ON a.id = b.content_id' 
+			.' JOIN page AS c ON c.id = b.page_id'
+		); 
 
-		$db->connect("content");
-
-		// set options
-		$options = array(
-			"order" => array("column" => "id", "direction" => "desc")
-		);
-
-		$search = array("column" => "id", "value" => null, "not" => true);
-
-		$content = $db->get_rows($search, $options);
-		$content = $content["result"];
-		$db->disconnect(); 
-
-		// now get all page content so we can show what pages are using this content
-		$db->connect("page_content");
-
-		$options = array(
-			"join" => array("table" => "page", "join_to" => "page_id")
-		);
-
-		$search = array("column" => "id", "value" => null, "not" => true);
-
-		$page_content = $db->get_rows($search, $options);
-		$page_content = $page_content["result"];
-		$db->disconnect(); 
-
-		foreach ($content as $key => $row)
+		$content = array();
+		foreach ($data as $row)
 		{
-			foreach ($page_content as $pc)
+			// create if not exist
+			if (!isset($content[$row['id']])) $content[$row['id']] = array();
+			if (!isset($content[$row['id']]['used_on_pages'])) $content[$row['id']]['used_on_pages'] = array();
+
+			// write data
+			$content[$row['id']]['access_level'] = $row['access_level'];
+			$content[$row['id']]['content'] = $row['content'];
+			$content[$row['id']]['id'] = $row['id'];
+			$content[$row['id']]['json_settings'] = $row['json_settings'];
+			$content[$row['id']]['name'] = $row['name'];
+			
+			// write pages used on
+			if (isset($row['page.id'], $row['page.link'], $row['page.name']))
 			{
-				if ($row["id"] == $pc["content_id"])
-				{
-				   if (!isset($content[$key]["used_on_pages"])) $content[$key]["used_on_pages"] = array();
-				   $content[$key]["used_on_pages"][$pc["page_id"]] = array("id" => $pc["page_id"], "name" => $pc["page_id.name"], "link" => $pc["page_id.link"]);  
-				}
+				$content[$row['id']]['used_on_pages'][$row['page.id']] = array(
+					'id' => $row['page.id'],
+					'link' => $row['page.link'],
+					'name' => $row['page.name']
+				);
 			}
 		}
-
-		
+	
 		// return the basic user details
 		$this->response(array("content" => $content), "json");
 	}

@@ -31,24 +31,26 @@ class ExtensionList extends RazorAPI
 		// split into types, so we can filter a little
 		$extensions = array();
 
-		$db = new RazorDB();
-		$db->connect("extension");
-
+		$extension_settings = $this->razor_db->get_all('extension');
+				
 		foreach ($manifests as $mf)
 		{			
 			// grab settings if any
 			if (isset($mf->settings))
 			{
-				$options = array("amount" => 1);
-				$search = array(array("column" => "extension", "value" => $mf->extension),array("column" => "type", "value" => $mf->type),array("column" => "handle", "value" => $mf->handle));
-				$extension = $db->get_rows($search, $options);
-				if ($extension["count"] == 1)
+				if (is_array($extension_settings))
 				{
-					$db_settings = json_decode($extension["result"][0]["json_settings"]);
-
-					foreach ($mf->settings as $key => $setting) 
+					foreach ($extension_settings as $es)
 					{
-						if (isset($db_settings->{$setting->name})) $mf->settings[$key]->value = $db_settings->{$setting->name};
+						if ($es['extension'] == $mf->extension && $es['type'] == $mf->type && $es['handle'] == $mf->handle)
+						{
+							$db_settings = json_decode($es["json_settings"]);
+
+							foreach ($mf->settings as $key => $setting) 
+							{
+								if (isset($db_settings->{$setting->name})) $mf->settings[$key]->value = $db_settings->{$setting->name};
+							}
+						}
 					}
 				}
 			} 
@@ -102,8 +104,6 @@ class ExtensionList extends RazorAPI
 
 		// ensure we have array return and not object
 		$extensions = array_values($extensions);
-
-		$db->disconnect(); 
 		
 		$this->response(array("extensions" => $extensions), "json");
 	}

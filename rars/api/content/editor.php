@@ -20,37 +20,26 @@ class ContentEditor extends RazorAPI
 
 	public function get($page_id)
 	{
-		$db = new RazorDB();
-		$db->connect("page_content");
+		$query = 'SELECT a.*'
+			.", b.id AS 'content.id'"
+			.", b.name AS 'content.name'"
+			.", b.content AS 'content.content'"
+			.' FROM page_content AS a' 
+			.' LEFT JOIN content AS b ON a.content_id = b.id' 
+			.' WHERE a.page_id = :page_id'
+			.' ORDER BY a.position ASC';
+		$data = $this->razor_db->query_all($query, array('page_id' => $page_id)); 
 
-		// set options
-		$options = array(
-			"order" => array("column" => "position", "direction" => "asc")
-		);
-
-		$search = array("column" => "page_id", "value" => (int) $page_id);
-
-		$page_contents = $db->get_rows($search, $options);
-		$page_contents = $page_contents["result"];
-		$db->disconnect(); 
-
-		// split into content and locations
-		$db->connect("content");
 		$content = array();
 		$locations = array();
-		foreach ($page_contents as $row)
+		foreach ($data as $row)
 		{
-			if (!empty($row["content_id"]))
+			if (!empty($row["content.id"]))
 			{
-				$options = array("limit" => 1);
-				$search = array("column" => "id", "value" => (int) $row["content_id"]);
-				$found_content = $db->get_rows($search, $options);
-				$found_content = $found_content["result"][0];
-
-				$content[$found_content["id"]] = array(
-					"content_id" => $found_content["id"],
-					"name" => $found_content["name"],
-					"content" => $found_content["content"]
+				$content[$row['content.id']] = array(
+					"content_id" => $row["content.id"],
+					"name" => $row["content.name"],
+					"content" => $row["content.content"]
 				);
 			}
 
@@ -82,7 +71,6 @@ class ContentEditor extends RazorAPI
 
 			$locations[$row["location"]][$row["column"]][] = $location_data;
 		}		
-		$db->disconnect(); 
 
 		// return the basic user details
 		$this->response(array("content" => $content, "locations" => $locations), "json");
@@ -94,13 +82,8 @@ class ContentEditor extends RazorAPI
 		if ((int) $this->check_access() < 6) $this->response(null, null, 401);
 		if (!isset($data["content"])) $this->response(null, null, 400);
 
-		// update content
-		$db = new RazorDB();
-		$db->connect("content");
-
 		// update or add content
 		$new_content_map = array();
-		$edit_rows = array();
 		foreach ($data["content"] as $key => $content)
 		{	
 			// if content name empty, try to resolve this to something
@@ -117,34 +100,28 @@ class ContentEditor extends RazorAPI
 				continue;
 			}
 
-			if (stripos($content["content_id"], "new-") === false) $edit_rows[] = array("id" => $content["content_id"], "content" => $content["content"], "name" => $content["name"]);
+			if (stripos($content["content_id"], "new-") === false)
+			{
+				$query_data = array('content' => $content['content'], 'name' => $content['name']);
+				$query_where = array('id' => $content['content_id']);
+				$this->razor_db->edit_data('content', $query_data, $query_where);
+			}
 			else
 			{
 				// add new content and map the ID to the new id for locations table
 				$row = array("content" => $content["content"], "name" => $content["name"]);
-				$result = $db->add_rows($row);
-				$new_content_map[$content["content_id"]] = $result["result"][0]["id"];   
+				$result_id = $this->razor_db->add_data('content', $row)[0];
+				$new_content_map[$content["content_id"]] = $result_id; 
 			}
 		}
 
-		// do any updates
-		if (!empty($edit_rows))	$db->edit_rows(null, $edit_rows);
-
-		$db->disconnect(); 
-
-		// update or add locations
-
-		$db = new RazorDB();
-		$db->connect("page_content");
-
-		// 1. first take snapshot of current
-		$search = array("column" => "page_id", "value" => (int) $data["page_id"]);
-		$current_page_content = $db->get_rows($search);
-		$current_page_content = $current_page_content["result"];
+		$current_page_content = $this->razor_db->get_all('page_content', '*', array('page_id' => (int) $data["page_id"]));
 
 		// 2. iterate through updating or adding, make a note of all id's
+		$new_page_content = array();
 		$page_content_map = array();
 		$edit_rows = array();
+		
 		foreach ($data["locations"] as $location => $columns)
 		{
 			foreach ($columns as $column => $blocks)
@@ -157,8 +134,10 @@ class ContentEditor extends RazorAPI
 						$search = array("column" => "id", "value" => $block["id"]);
 						$edit_rows[] = array("id" => $block["id"], "location" => $location, "column" => (int) $column, "position" => $pos + 1, "json_settings" => json_encode($block["settings"]));
 
-						if (isset($block["extension"])) $row["extension"] = $block["extension"];
-						
+						$query_data = array('location' => $location, 'column' => (int) $column, 'position' => $pos + 1, 'json_settings' => json_encode($block['settings']));	
+						$query_where = array('id' => $block['id']);	
+						$this->razor_db->edit_data('page_content', $query_data, $query_where);					
+
 						$page_content_map[] = $block["id"];
 					}
 					else
@@ -182,24 +161,25 @@ class ContentEditor extends RazorAPI
 								$row["json_settings"] = (isset($block["settings"]) ? json_encode($block["settings"]) : null);
 							}
 
-							$result = $db->add_rows($row);
-							$page_content_map[] = $result["result"][0];
+							$new_page_content[] = $row;
 						}
 					}
 				}
 			}
 		}
 
-		// do any updates
-		if (!empty($edit_rows)) $db->edit_rows(null, $edit_rows);
+		// do any additions
+		if (!empty($new_page_content))
+		{
+			$new_ids = $this->razor_db->add_data('page_content', $new_page_content);		
+			array_merge($page_content_map, $new_ids);
+		}
 
 		// 3. run through id's affected against snapshot, if any missing, remove them.
 		foreach ($current_page_content as $row)
 		{
-			if (!in_array($row["id"], $page_content_map)) $db->delete_rows(array("column" => "id", "value" => (int) $row["id"]));
+			if (!in_array($row["id"], $page_content_map)) $this->razor_db->delete_data('page_content', array('id' => (int) $row['id']));
 		}
-
-		$db->disconnect(); 
 
 		// return the basic user details
 		$this->response("success", "json");

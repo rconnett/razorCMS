@@ -32,32 +32,24 @@ class ExtensionData extends RazorAPI
 		$settings = array();
 		foreach ($ext["settings"] as $set) $settings[$set["name"]] = $set["value"];
 
-		$db = new RazorDB();
-		$db->connect("extension");
-		$options = array("amount" => 1);
-		$search = array(
-			array("column" => "extension", "value" => $ext["extension"]),
-			array("column" => "type", "value" => $ext["type"]),
-			array("column" => "handle", "value" => $ext["handle"])
-		);
-		$extension = $db->get_rows($search, $options);
+		$columns = array('id');
+		$where = array('extension' => $ext['extension'], 'type' => $ext['type'], 'handle' => $ext['handle']);
+		$extension = $this->razor_db->get_first('extension', $columns, $where);
 
-		if ($extension["count"] == 1) $db->edit_rows($search, array("json_settings" => json_encode($settings)));
+		if (!empty($extension)) $this->razor_db->edit_data('extension', array("json_settings" => json_encode($settings)), $where);
 		else 
 		{
 			// add new
-			$row = array(
-				"extension" => $ext["extension"],
-				"type" => $ext["type"],
-				"handle" => $ext["handle"],
+			$data = array(
+				"extension" => strtolower($ext["extension"]),
+				"type" => strtolower($ext["type"]),
+				"handle" => strtolower($ext["handle"]),
 				"json_settings" => json_encode($settings),
 				"user_id" => $this->user["id"],
 				"access_level" => 0
 			);
-			$db->add_rows($row);
+			$this->razor_db->add_data('extension', $data);
 		}
-
-		$db->disconnect(); 
 
 		$this->response("success", "json");
 	}
