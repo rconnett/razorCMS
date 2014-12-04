@@ -45,7 +45,6 @@ define('RAZOR_PDO', 'sqlite:'.RAZOR_BASE_PATH.'storage/database/razorcms.sqlite3
 include_once(RAZOR_BASE_PATH.'library/php/razor/razor_file_tools.php');
 include_once(RAZOR_BASE_PATH.'library/php/razor/razor_error_handler.php');
 include_once(RAZOR_BASE_PATH.'library/php/razor/razor_api.php');
-include_once(RAZOR_BASE_PATH."library/php/razor/razor_db.php");
 include_once(RAZOR_BASE_PATH."library/php/razor/razor_pdo.php");
 
 // Load error handler

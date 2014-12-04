@@ -44,12 +44,7 @@ class SystemUpgrade extends RazorAPI
 		}
 
 		// lets grab the current system data before we upgrade, after it is too late.
-		$db = new RazorDB();
-		$db->connect("system");
-
-		$search = array("column" => "id", "value" => 1);
-		$system = $db->get_rows($search);
-		$system = $system["result"][0];
+		$system = $this->razor_db->get_first('system');
 	
 		// compress the whole system to a single zip backup file
 		$zip = new RazorZip;

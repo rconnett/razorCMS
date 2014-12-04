@@ -21,17 +21,11 @@ class SettingEditor extends RazorAPI
 	public function get($id)
 	{
 		if ((int) $this->check_access() < 6) $this->response(null, null, 401);
-		
-		$db = new RazorDB();
 
-		// get menu data too
-		$db->connect("setting");
-		$res = $db->get_rows(array("column" => "id", "value" => null, "not" => true));
-		$db->disconnect(); 
+		$res = $this->razor_db->get_all('setting');
 
 		$settings = array();
-
-		foreach ($res["result"] as $result)
+		foreach ($res as $result)
 		{
 			switch ($result["type"])
 			{

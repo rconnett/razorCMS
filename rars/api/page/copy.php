@@ -25,14 +25,9 @@ class PageCopy extends RazorAPI
 		if ((int) $this->check_access() < 6) $this->response(null, null, 401);
 		if (empty($data)) $this->response(null, null, 400);
 
-		$db = new RazorDB();
-		$db->connect("page");
+		$page = $this->razor_db->get_first('page', '*', array('link' => (isset($data["link"]) ? $data["link"] : "")));
 
-		// check link unique
-		$options = array("amount" => 1);
-		$search = array("column" => "link", "value" => (isset($data["link"]) ? $data["link"] : ""));
-		$count = $db->get_rows($search, $options);
-		if ($count["count"] > 0) $this->response(array("error" => "duplicate link found", "code" => 101), 'json', 409);
+		if (!empty($page)) $this->response(array("error" => "duplicate link found", "code" => 101), 'json', 409);
 
 		// copy the page
 		$row = array(
@@ -46,37 +41,34 @@ class PageCopy extends RazorAPI
 			"json_settings" => $data["json_settings"], 
 			"active" => false
 		);
+		$new_page = $this->razor_db->add_data('page', $row, '*')[0];
 
-		$new_page = $db->add_rows($row);
-		$db->disconnect(); 		
-		if ($new_page["count"] != 1) $this->response(null, null, 400);
+		if (empty($new_page)) $this->response(null, null, 400);
 
 		// next lets get all the page content for page we are copying
-		$db->connect("page_content");
-		$search = array("column" => "page_id", "value" => $data["id"]);
-		$page_content = $db->get_rows($search);
+		$page_content = $this->razor_db->get_all('page_content', '*', array('page_id' => $data['id']));		
 
 		// now copy if any found
-		if ($page_content["count"] > 0)
+		if (count($page_content) > 0)
 		{
 			$new_rows = array();
-			foreach ($page_content["result"] as $row)
+			foreach ($page_content as $row)
 			{
 				$new_row = array();
 				foreach ($row as $key => $col)
 				{
 					if ($key == "id") continue;
-					else if ($key == "page_id") $new_row[$key] = $new_page["result"][0]["id"];
+					else if ($key == "page_id") $new_row[$key] = $new_page["id"];
 					else $new_row[$key] = $col;
 				}
 				$new_rows[] = $new_row;
 			}
-			$db->add_rows($new_rows);
+
+			$this->razor_db->add_data('page_content', $new_rows);
 		} 
-		$db->disconnect(); 
 
 		// return the basic page details
-		$this->response($new_page["result"][0], "json");
+		$this->response($new_page, "json");
 	}
 }
 

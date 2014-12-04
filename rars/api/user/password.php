@@ -34,16 +34,10 @@ class UserPassword extends RazorAPI
 		/* data present and pre check good, lets do a user search and check */
 
 		// try find user
-		$db = new RazorDB();
-		$db->connect("user");
-		$search = array("column" => "id", "value" => (int) $token_data[1]);
-		$user = $db->get_rows($search);
-		$db->disconnect(); 
+		$user = $this->razor_db->get_first('user', '*', array('id' => (int) $token_data[1]));
 
 		// no valid user found
-		if ($user["count"] != 1) $this->response("Bad data", null, 400);
-
-		$user = $user["result"][0];
+		if (empty($user)) $this->response("Bad data", null, 400);
 
 		// check token
 		if (empty($user["reminder_token"]) || $token_data[0] != $user["reminder_token"] || $user["reminder_time"] + 3600 < time()) $this->response("Bad data", null, 400);
@@ -53,14 +47,11 @@ class UserPassword extends RazorAPI
 		$password = RazorAPI::create_hash($data["passwords"]["password"]);
 
 		// set new reminder
-		$db->connect("user");
-		$search = array("column" => "id", "value" => $user["id"]);
 		$row = array(
 			"password" => $password,
 			"reminder_token" => ""
 		);
-		$db->edit_rows($search, $row);
-		$db->disconnect(); 
+		$this->razor_db->edit_data('user', $row, array('id' => $user['id']));
 
 		$this->response("success", "json");
 	}

@@ -20,11 +20,14 @@ class RazorSite
 	private $content = null;
 	private $login = false;
 	private $logged_in = false;
+	private $db = null;
 
 	function __construct()
 	{
 		// generate path from get
 		$this->link = (isset($_GET["path"]) ? $_GET["path"] : null);
+
+		$this->db = new RazorPDO();
 	}
 
 	public function load()
@@ -156,8 +159,6 @@ OUTPUT;
 			return;
 		}
 	   
-		$db = new RazorPDO();
-
 		// if not editor and not empty, output content for public
 		foreach ($this->content as $c_data)
 		{
@@ -169,7 +170,7 @@ OUTPUT;
 					echo '<div ng-if="!changed" content-id="'.$c_data["content_id"].'">';
 
 					// content
-					$content = $db->get_first('content', '*', array('id' => $c_data['content_id']));
+					$content = $this->db->get_first('content', '*', array('id' => $c_data['content_id']));
 
 					echo str_replace("\\n", "", $content["content"]);
 
@@ -360,8 +361,7 @@ OUTPUT;
 	private function get_site_data()
 	{
 		// get site data
-		$db = new RazorPDO();
-		$setting = $db->get_all('setting');
+		$setting = $this->db->get_all('setting');
 
 		foreach ($setting as $result)
 		{
@@ -383,9 +383,8 @@ OUTPUT;
 	private function get_page_data()
 	{
 		// get page data
-		$db = new RazorPDO();
         $where = (empty($this->link) ? array('id' => $this->site["home_page"]) : array('link' => $this->link));
-		$page = $db->get_first('page', '*', $where);
+		$page = $this->db->get_first('page', '*', $where);
 
 		// ensure type correct
 		if (!empty($page))
@@ -406,8 +405,7 @@ OUTPUT;
 		// collate all menus (to cut down on duplicate searches)
 		$this->menu = array();
 
-		$db = new RazorPDO();
-		$menus = $db->query_all('SELECT a.*'
+		$menus = $this->db->query_all('SELECT a.*'
 			.", b.id AS 'page_id.id'"
 			.", b.active AS 'page_id.active'"
 			.", b.theme AS 'page_id.theme'"
@@ -452,13 +450,7 @@ OUTPUT;
 		if (in_array($loc, $this->all_menus)) return false;
 
 		// create new menu
-		// remove
-		// $db = new RazorDB();
-		// $db->connect("menu");
-		// $db->add_rows(array("name" => $loc));
-		// $db->disconnect(); 
-		$db = new RazorPDO();
-		$db->add_data('menu', array('name' => $loc));
+		$this->db->add_data('menu', array('name' => $loc));
 
 		return true;
 	}
@@ -469,14 +461,12 @@ OUTPUT;
 		if (empty($this->page)) return;
 
 		// grab all content
-		$db = new RazorPDO();
-		$this->content = $db->query_all('SELECT * FROM page_content WHERE page_id = :page_id ORDER BY position ASC', array('page_id' => $this->page['id']));
+		$this->content = $this->db->query_all('SELECT * FROM page_content WHERE page_id = :page_id ORDER BY position ASC', array('page_id' => $this->page['id']));
 	}
 
 	private function get_all_menus()
 	{
-		$db = new RazorPDO();
-		$menus = $db->get_all('menu');
+		$menus = $this->db->get_all('menu');
 
 		$this->all_menus = array();
 		foreach ($menus as $menu) $this->all_menus[] = $menu["name"];

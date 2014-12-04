@@ -24,17 +24,14 @@ class UserRegister extends RazorAPI
 	public function post($data)
 	{
 		// are we accepting registrations
-		$db = new RazorDB();
-
 		// get menu data too
-		$db->connect("setting");
-		$allow = $db->get_rows(array("column" => "name", "value" => "allow_registration"));
-		$manual = $db->get_rows(array("column" => "name", "value" => "manual_activation"));
-		$registration_email = $db->get_rows(array("column" => "name", "value" => "registration_email"));
-		$activation_email = $db->get_rows(array("column" => "name", "value" => "activation_email"));
-		$activate_user_email = $db->get_rows(array("column" => "name", "value" => "activate_user_email"));
-		$db->disconnect(); 
-		if (!isset($allow["result"][0]["value"]) || !$allow["result"][0]["value"]) $this->response(null, null, 405);
+		$allow = $this->razor_db->get_first('setting', array('value'), array('name' => 'allow_registration'));
+		$manual = $this->razor_db->get_first('setting', array('value'), array('name' => 'manual_activation'));
+		$registration_email = $this->razor_db->get_first('setting', array('value'), array('name' => 'registration_email'));
+		$activation_email = $this->razor_db->get_first('setting', array('value'), array('name' => 'activation_email'));
+		$activate_user_email = $this->razor_db->get_first('setting', array('value'), array('name' => 'activate_user_email'));
+
+		if (!isset($allow["value"]) || !$allow["value"]) $this->response(null, null, 405);
 
 		// verify form is coming from site and that human has sent it
 		// Check details
@@ -55,12 +52,11 @@ class UserRegister extends RazorAPI
 		session_destroy();
  
 		// now we know registrations allowed, form came from website etc so lets check email unique and proceed with adding user
-		$db->connect("user");
 
 		// check email is unique
-		$search = array("column" => "email_address", "value" => $data["email_address"]);
-		$user = $db->get_rows($search);
-		if ($user["count"] > 0) $this->response(null, null, 409);
+		$user = $this->razor_db->get_all('user', '*', array('email_address' => $data['email_address']));
+
+		if (!empty($user)) $this->response(null, null, 409);
 		
 		// create new user
 		$password = $this->create_hash($data["new_password"]);
@@ -74,16 +70,15 @@ class UserRegister extends RazorAPI
 		);
 
 		$activate_link = "";
-		if (!$manual["result"][0]["value"])
+		if (!$manual["value"])
 		{ 
 			$activate_token = sha1($_SERVER["HTTP_USER_AGENT"].$_SERVER["REMOTE_ADDR"].$password);  
 			$row["activate_token"] = $activate_token;
 			$activate_link = RAZOR_BASE_URL."rars/user/activate/{$activate_token}";
 		}
 
-		$db->add_rows($row);
-		$db->disconnect();
-	 
+	 	$this->razor_db->add_data('user', $row);
+
 		$server_email = str_replace("www.", "", $_SERVER["SERVER_NAME"]);
 
 		// email text replacement
@@ -99,29 +94,26 @@ class UserRegister extends RazorAPI
 			$activate_link
 		);
 	
-		if ($manual["result"][0]["value"])
+		if ($manual["value"])
 		{
 			// send notifcation of registration and activation is manual to user
-			$message1 = str_replace($search, $replace, $registration_email["result"][0]["value"]);
+			$message1 = str_replace($search, $replace, $registration_email["value"]);
 			$this->email("no-reply@{$server_email}", $data["email_address"], "{$_SERVER["SERVER_NAME"]} Account Registered", $message1);			
 		 
 			// send notifcation to super admin email that someone has registered and needs activation
-			$db->connect("user");
-			$res = $db->get_rows(array("column" => "id", "value" => 1));
-			$super_email = $res["result"][0]["email_address"];
-			$db->disconnect(); 
+			$super_email = $this->razor_db->get_first('user', '*', array('id' => 1));
 
-			$message2 = str_replace($search, $replace, $activate_user_email["result"][0]["value"]);
+			$message2 = str_replace($search, $replace, $activate_user_email["value"]);
 
 			$this->email("no-reply@{$server_email}", $super_email, "{$_SERVER["SERVER_NAME"]} Account Registered", $message2);
 		}
 		else
 		{	  
-			$message3 = str_replace($search, $replace, $activation_email["result"][0]["value"]);
+			$message3 = str_replace($search, $replace, $activation_email["value"]);
 			$this->email("no-reply@{$server_email}", $data["email_address"], "{$_SERVER["SERVER_NAME"]} Account Activation", $message3);
 		}
 
-		$this->response(array("manual_activation" => $manual["result"][0]["value"]), "json");
+		$this->response(array("manual_activation" => $manual["value"]), "json");
 	}
 }
 

@@ -24,14 +24,7 @@ class SystemData extends RazorAPI
 		if (empty($id)) $this->response(null, null, 400);
 
 		// get menu data too
-		$db = new RazorDB();
-		$db->connect("system");
-
-		$search = array("column" => "id", "value" => 1);
-		$system = $db->get_rows($search);
-		$system = $system["result"][0];
-		
-		$db->disconnect(); 
+		$system = $this->razor_db->get_first('system');
 
 		$this->response(array("system" => $system), "json");
 	}

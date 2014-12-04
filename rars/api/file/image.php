@@ -23,6 +23,7 @@ class FileImage extends RazorAPI
 		parent::__construct();
 
 		// imagepath and relative url (important when shifting domains)
+		$this->root_files = RAZOR_BASE_PATH.'storage/files';
 		$this->root_path = RAZOR_BASE_PATH.'storage/files/images';
 		$this->root_url = str_replace("http://{$_SERVER["SERVER_NAME"]}".($_SERVER["SERVER_PORT"] == "80" ? "" : ":{$_SERVER["SERVER_PORT"]}"), "", RAZOR_BASE_URL).'storage/files/images';
 	}
@@ -32,7 +33,8 @@ class FileImage extends RazorAPI
 		if ((int) $this->check_access() < 6) $this->response(null, null, 401);
 		
 		// check if folders exist
-		if (!is_dir($this->root_path)) $this->response(null, null, 401);
+		if (!is_dir($this->root_files)) mkdir($this->root_files);
+		if (!is_dir($this->root_files)) mkdir($this->root_path);
 
 		// grab folder here, load in the files for a particular folder
 		$files = RazorFileTools::read_dir_contents($this->root_path, $type = 'files');

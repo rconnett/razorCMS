@@ -22,30 +22,20 @@ class UserList extends RazorAPI
 	{
 		if ((int) $this->check_access() < 10) $this->response(null, null, 401);
 
-		$db = new RazorDB();
-
-		$db->connect("user");
-
 		// set options
-		$options = array(
-			"filter" => array(
-				"id", 
-				"name", 
-				"email_address", 
-				"access_level", 
-				"active", 
-				"ip_address", 
-				"last_logged_in"
-			)
+		$columns = array(
+			"id", 
+			"name", 
+			"email_address", 
+			"access_level", 
+			"active", 
+			"ip_address", 
+			"last_logged_in"
 		);
-
-		$search = array("column" => "id", "value" => null, "not" => true);
-
-		$user = $db->get_rows($search, $options);
-		$db->disconnect(); 
+		$users = $this->razor_db->get_all('user', $columns);
 		
 		// return the basic user details
-		$this->response(array("users" => $user["result"]), "json");
+		$this->response(array("users" => $users), "json");
 	}
 }
 

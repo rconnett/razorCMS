@@ -24,22 +24,17 @@ class UserActivate extends RazorAPI
 	{
 		if (strlen($id) < 20) $this->response("Activation key not set",  400);
 
-		$db = new RazorDB();
-		$db->connect("user");
-		$search = array("column" => "activate_token", "value" => $id);
-		$user = $db->get_rows($search);
-		if ($user["count"] != 1) $this->response(null, null, 409);
+		$user = $this->razor_db->get_first('user' '*', array("column" => "activate_token", "value" => $id));		
+		if (empty($user)) $this->response(null, null, 409);
 
 		// now we know token is ok, lets activate user
 
-		// set new reminder
-		$search = array("column" => "id", "value" => $user["result"][0]["id"]);
+		// set active
 		$row = array(
 			"activate_token" => null,
 			"active" => true
 		);
-		$db->edit_rows($search, $row);
-		$db->disconnect(); 
+		$this->razor_db->edit_data('user', $row, array('id' => $user['id']));
 
 		// if all ok, redirect to login page and set activate message off
 		$redirect = RAZOR_BASE_URL."login#/user-activated";

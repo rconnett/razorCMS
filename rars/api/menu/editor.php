@@ -20,45 +20,38 @@ class MenuEditor extends RazorAPI
 
 	public function get($page_id)
 	{
-		$db = new RazorDB();
-
-		// get menu data too
-		$db->connect("menu_item");
-
-		$options = array(
-			"join" => array(
-				array("table" => "menu", "join_to" => "menu_id"),
-				array("table" => "page", "join_to" => "page_id")
-			),
-			"order" => array("column" => "position", "direction" => "asc")
-		);
-		$search = array("column" => "id", "not" => true, "value" => null);
-		$menu_items = $db->get_rows($search, $options);
-		$menu_items = $menu_items["result"];
-		
-		$db->disconnect();  
+		$menu_items = $this->razor_db->query_all('SELECT a.*'
+			.", b.id AS 'menu.id'"
+			.", b.name AS 'menu.name'"
+			.", c.name AS 'page.name'"
+			.", c.link AS 'page.link'"
+			.", c.active AS 'page.active'"
+			.' FROM menu_item AS a' 
+			.' LEFT JOIN menu AS b ON a.menu_id = b.id'
+			.' LEFT JOIN page AS c ON a.page_id = c.id'
+			.' ORDER BY a.position ASC');
 
 		$menus = array();
 		foreach ($menu_items as $mi)
 		{
-			if (!isset($menus[$mi["menu_id.name"]]))
+			if (!isset($menus[$mi["menu.name"]]))
 			{
-				$menus[$mi["menu_id.name"]] = array(
-					"id" => $mi["menu_id.id"], 
-					"name" => $mi["menu_id.name"],
+				$menus[$mi["menu.name"]] = array(
+					"id" => $mi["menu.id"], 
+					"name" => $mi["menu.name"],
 					"menu_items" => array()
 				);
 			}
 
 			if ($mi["level"] == 1)
 			{
-				$menus[$mi["menu_id.name"]]["menu_items"][] = array(
+				$menus[$mi["menu.name"]]["menu_items"][] = array(
 					"id" => $mi["id"],
 					"position" => $mi["position"],
 					"page_id" => (isset($mi["page_id"]) ? $mi["page_id"] : null),
-					"page_name" => (isset($mi["page_id.name"]) ? $mi["page_id.name"] : null),
-					"page_link" => (isset($mi["page_id.link"]) ? $mi["page_id.link"] : null),
-					"page_active" => (isset($mi["page_id.active"]) ? $mi["page_id.active"] : null),
+					"page_name" => (isset($mi["page.name"]) ? $mi["page.name"] : null),
+					"page_link" => (isset($mi["page.link"]) ? $mi["page.link"] : null),
+					"page_active" => (isset($mi["page.active"]) ? $mi["page.active"] : null),
 					"level" => $mi["level"],
 					"link_label" => $mi["link_label"],
 					"link_url" => $mi["link_url"],
@@ -68,20 +61,20 @@ class MenuEditor extends RazorAPI
 
 			if ($mi["level"] == 2)
 			{
-				$parent = count($menus[$mi["menu_id.name"]]["menu_items"]) - 1;
+				$parent = count($menus[$mi["menu.name"]]["menu_items"]) - 1;
 				
-				if (!isset($menus[$mi["menu_id.name"]]["menu_items"][$parent]["sub_menu"]))
+				if (!isset($menus[$mi["menu.name"]]["menu_items"][$parent]["sub_menu"]))
 				{
-					$menus[$mi["menu_id.name"]]["menu_items"][$parent]["sub_menu"] = array();
+					$menus[$mi["menu.name"]]["menu_items"][$parent]["sub_menu"] = array();
 				}
 
-				$menus[$mi["menu_id.name"]]["menu_items"][$parent]["sub_menu"][] = array(
+				$menus[$mi["menu.name"]]["menu_items"][$parent]["sub_menu"][] = array(
 					"id" => $mi["id"],
 					"position" => $mi["position"],
 					"page_id" => (isset($mi["page_id"]) ? $mi["page_id"] : null),
-					"page_name" => (isset($mi["page_id.name"]) ? $mi["page_id.name"] : null),
-					"page_link" => (isset($mi["page_id.link"]) ? $mi["page_id.link"] : null),
-					"page_active" => (isset($mi["page_id.active"]) ? $mi["page_id.active"] : null),
+					"page_name" => (isset($mi["page.name"]) ? $mi["page.name"] : null),
+					"page_link" => (isset($mi["page.link"]) ? $mi["page.link"] : null),
+					"page_active" => (isset($mi["page.active"]) ? $mi["page.active"] : null),
 					"level" => $mi["level"],
 					"link_label" => $mi["link_label"],
 					"link_url" => $mi["link_url"],
@@ -91,13 +84,7 @@ class MenuEditor extends RazorAPI
 		}
 
 		// if menu items missing, build a clean array to allow people to add new
-		$db->connect("menu");
-
-		$search = array("column" => "id", "not" => true, "value" => null);
-		$menus_clean = $db->get_rows($search);
-		$menus_clean = $menus_clean["result"];
-		
-		$db->disconnect();  
+		$menus_clean = $this->razor_db->get_all('menu');
 
 		foreach ($menus_clean as $mc) 
 		{
@@ -120,17 +107,8 @@ class MenuEditor extends RazorAPI
 		// login check - if fail, return no data to stop error flagging to user
 		if ((int) $this->check_access() < 8) $this->response(null, null, 401);
 	
-		// menu item
-		$db = new RazorDB();
-		$db->connect("menu_item");
-
 		// 1. grab all menus in position order
-		$options = array(
-			"order" => array("column" => "position", "direction" => "asc")
-		);
-		$search = array("column" => "id", "not" => true, "value" => null);
-		$all_menu_items = $db->get_rows($search, $options);
-		$all_menu_items = $all_menu_items["result"];
+		$all_menu_items = $this->razor_db->query_all('SELECT * FROM menu_item ORDER BY position ASC');
 
 		// 2. make flat arrays
 		$new_menus_flat = array();
@@ -161,7 +139,7 @@ class MenuEditor extends RazorAPI
 			$current_menus_flat[$ami["menu_id"]][] = $ami["id"];
 
 			// at same time remove any items missing		  
-			if (!in_array($ami["id"], $new_menus_flat[$ami["menu_id"]])) $db->delete_rows(array("column" => "id", "value" => (int) $ami["id"]));
+			if (!in_array($ami["id"], $new_menus_flat[$ami["menu_id"]])) $this->razor_db->delete_data('menu_item', array('id' => (int) $ami["id"]));
 		}
 
 		// 3. update all of sent menu data, by looping through the new $data
@@ -175,7 +153,7 @@ class MenuEditor extends RazorAPI
 				if (isset($nmi["id"]) && in_array($nmi["id"], $current_menus_flat[$new_menu["id"]]))
 				{
 					// update menu item
-					$edit_rows[] = array("id" => $nmi["id"], "position" => $pos);
+					$this->razor_db->edit_data('menu_item', array('position' => $pos), array('id' => $nmi['id']));
 				}
 				else
 				{
@@ -190,7 +168,7 @@ class MenuEditor extends RazorAPI
 						"link_target" => (isset($nmi["link_label"]) ? $nmi["link_target"] : null)
 					);
 
-					$db->add_rows($row);  
+					$this->razor_db->add_data('menu_item', $row);
 				}
 
 				$pos++;
@@ -205,7 +183,7 @@ class MenuEditor extends RazorAPI
 						if (isset($nsmi["id"]) && in_array($nsmi["id"], $current_menus_flat[$new_menu["id"]]))
 						{
 							// update menu item
-							$edit_sub_rows[] = array("id" => $nsmi["id"], "position" => $pos);
+							$this->razor_db->edit_data('menu_item', array('position' => $pos), array('id' => $nsmi['id']));
 						}
 						else
 						{
@@ -220,20 +198,14 @@ class MenuEditor extends RazorAPI
 								"link_target" => (isset($nsmi["link_label"]) ? $nsmi["link_target"] : null)
 							);
 
-							$db->add_rows($row);  
+							$this->razor_db->add_data('menu_item', $row); 
 						}
 						
 						$pos++;
 					}
-
-					if (!empty($edit_sub_rows)) $db->edit_rows(null, $edit_sub_rows);
 				}
 			}
-
-			if (!empty($edit_rows)) $db->edit_rows(null, $edit_rows);
 		}
-
-		$db->disconnect();  
 
 		$this->response("success", "json");
 	}

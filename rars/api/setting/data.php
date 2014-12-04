@@ -25,87 +25,78 @@ class SettingData extends RazorAPI
 		if ((int) $this->check_access() < 9) $this->response(null, null, 401);
 		if (empty($data)) $this->response(null, null, 400);
 
-		$db = new RazorDB();
-		$db->connect("setting");
-
 		if (isset($data["name"]))
 		{
-			$search = array("column" => "name", "value" => "name");
-			$res = $db->edit_rows($search, array("value" => $data["name"]));
-			if ($res["count"] == 0)	$db->add_rows(array("name" => "name", "value" => (string) $data["name"], "type" => "string"));
+			$res = $this->razor_db->edit_data('setting', array("value" => $data["name"]), array('name' => 'name'));
+			if (empty($res)) $this->razor_db->add_data('setting', array("name" => "name", "value" => (string) $data["name"], "type" => "string"));
+		}
+
+		if (isset($data["home_page"]))
+		{
+			$res = $this->razor_db->edit_data('setting', array("value" => $data["home_page"]), array('name' => 'home_page'));
+			if (empty($res)) $this->razor_db->add_data('setting', array("name" => "home_page", "value" => (string) $data["home_page"], "type" => "int"));
 		}
 
 		if (isset($data["icon_position"]))
 		{
-			$search = array("column" => "name", "value" => "icon_position");
-			$res = $db->edit_rows($search, array("value" => $data["icon_position"]));
-			if ($res["count"] == 0)	$db->add_rows(array("name" => "icon_position", "value" => (string) $data["icon_position"], "type" => "string"));
+			$res = $this->razor_db->edit_data('setting', array("value" => $data["icon_position"]), array('name' => 'icon_position'));
+			if (empty($res)) $this->razor_db->add_data('setting', array("name" => "icon_position", "value" => (string) $data["icon_position"], "type" => "string"));
 		}
 	
 		if (isset($data["google_analytics_code"]))
 		{
-			$search = array("column" => "name", "value" => "google_analytics_code");
-			$res = $db->edit_rows($search, array("value" => $data["google_analytics_code"]));
-			if ($res["count"] == 0)	$db->add_rows(array("name" => "google_analytics_code", "value" => (string) $data["google_analytics_code"], "type" => "string"));
+			$res = $this->razor_db->edit_data('setting', array("value" => $data["google_analytics_code"]), array('name' => 'google_analytics_code'));
+			if (empty($res)) $this->razor_db->add_data('setting', array("name" => "google_analytics_code", "value" => (string) $data["google_analytics_code"], "type" => "string"));
 		}
 	
 		if (isset($data["forgot_password_email"]))
 		{
-			$search = array("column" => "name", "value" => "forgot_password_email");
-			$res = $db->edit_rows($search, array("value" => (string) $data["forgot_password_email"]));
-			if ($res["count"] == 0)	$db->add_rows(array("name" => "forgot_password_email", "value" => (string) $data["forgot_password_email"], "type" => "string"));
+			$res = $this->razor_db->edit_data('setting', array("value" => $data["forgot_password_email"]), array('name' => 'forgot_password_email'));
+			if (empty($res)) $this->razor_db->add_data('setting', array("name" => "forgot_password_email", "value" => (string) $data["forgot_password_email"], "type" => "string"));
 		}
 	
 		if (isset($data["allow_registration"]))
 		{
-			$search = array("column" => "name", "value" => "allow_registration");
-			$res = $db->edit_rows($search, array("value" => (string) $data["allow_registration"]));
-			if ($res["count"] == 0)	$db->add_rows(array("name" => "allow_registration", "value" => (string) $data["allow_registration"], "type" => "bool"));
+			$res = $this->razor_db->edit_data('setting', array("value" => $data["allow_registration"]), array('name' => 'allow_registration'));
+			if (empty($res)) $this->razor_db->add_data('setting', array("name" => "allow_registration", "value" => (string) $data["allow_registration"], "type" => "bool"));
 		}
 	
 		if (isset($data["manual_activation"]))
 		{
-			$search = array("column" => "name", "value" => "manual_activation");
-			$res = $db->edit_rows($search, array("value" => (string) $data["manual_activation"]));
-			if ($res["count"] == 0)	$db->add_rows(array("name" => "manual_activation", "value" => (string) $data["manual_activation"], "type" => "bool"));
+			$res = $this->razor_db->edit_data('setting', array("value" => $data["manual_activation"]), array('name' => 'manual_activation'));
+			if (empty($res)) $this->razor_db->add_data('setting', array("name" => "manual_activation", "value" => (string) $data["manual_activation"], "type" => "bool"));
 		}
 	
 		if (isset($data["registration_email"]))
 		{
-			$search = array("column" => "name", "value" => "registration_email");
-			$res = $db->edit_rows($search, array("value" => (string) $data["registration_email"]));
-			if ($res["count"] == 0)	$db->add_rows(array("name" => "registration_email", "value" => (string) $data["registration_email"], "type" => "string"));
+			$res = $this->razor_db->edit_data('setting', array("value" => $data["registration_email"]), array('name' => 'registration_email'));
+			if (empty($res)) $this->razor_db->add_data('setting', array("name" => "registration_email", "value" => (string) $data["registration_email"], "type" => "string"));
 		}
 	
 		if (isset($data["activation_email"]))
 		{
-			$search = array("column" => "name", "value" => "activation_email");
-			$res = $db->edit_rows($search, array("value" => (string) $data["activation_email"]));
-			if ($res["count"] == 0)	$db->add_rows(array("name" => "activation_email", "value" => (string) $data["activation_email"], "type" => "string"));
+			$res = $this->razor_db->edit_data('setting', array("value" => $data["activation_email"]), array('name' => 'activation_email'));
+			if (empty($res)) $this->razor_db->add_data('setting', array("name" => "activation_email", "value" => (string) $data["activation_email"], "type" => "string"));
 		}
 	
 		if (isset($data["activate_user_email"]))
 		{
-			$search = array("column" => "name", "value" => "activate_user_email");
-			$res = $db->edit_rows($search, array("value" => (string) $data["activate_user_email"]));
-			if ($res["count"] == 0)	$db->add_rows(array("name" => "activate_user_email", "value" => (string) $data["activate_user_email"], "type" => "string"));
+			$res = $this->razor_db->edit_data('setting', array("value" => $data["activate_user_email"]), array('name' => 'activate_user_email'));
+			if (empty($res)) $this->razor_db->add_data('setting', array("name" => "activate_user_email", "value" => (string) $data["activate_user_email"], "type" => "string"));
 		}
 	
 		if (isset($data["cookie_message"]))
 		{
-			$search = array("column" => "name", "value" => "cookie_message");
-			$res = $db->edit_rows($search, array("value" => (string) $data["cookie_message"]));
-			if ($res["count"] == 0)	$db->add_rows(array("name" => "cookie_message", "value" => (string) $data["cookie_message"], "type" => "string"));
+			$res = $this->razor_db->edit_data('setting', array("value" => $data["cookie_message"]), array('name' => 'cookie_message'));
+			if (empty($res)) $this->razor_db->add_data('setting', array("name" => "cookie_message", "value" => (string) $data["cookie_message"], "type" => "string"));
 		}
 	
 		if (isset($data["cookie_message_button"]))
 		{
-			$search = array("column" => "name", "value" => "cookie_message_button");
-			$res = $db->edit_rows($search, array("value" => (string) $data["cookie_message_button"]));
-			if ($res["count"] == 0)	$db->add_rows(array("name" => "cookie_message_button", "value" => (string) $data["cookie_message_button"], "type" => "string"));
+			$res = $this->razor_db->edit_data('setting', array("value" => $data["cookie_message_button"]), array('name' => 'cookie_message_button'));
+			if (empty($res)) $this->razor_db->add_data('setting', array("name" => "cookie_message_button", "value" => (string) $data["cookie_message_button"], "type" => "string"));
 		}
 
-		$db->disconnect(); 
 		$this->response("success", "json");
 	}
 }

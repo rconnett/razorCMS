@@ -24,9 +24,6 @@ class UserData extends RazorAPI
 		if ((int) $this->check_access() < 1) $this->response(null, null, 401);
 		if (empty($data)) $this->response(null, null, 400);
 
-		$db = new RazorDB();
-		$db->connect("user");
-
 		if (!isset($data["id"]))
 		{
 			// do you have access to make create new user
@@ -34,10 +31,9 @@ class UserData extends RazorAPI
 			if (!isset($data["new_password"]) || empty($data["new_password"])) $this->response(null, null, 400);
 
 			// check email is unique
-			$search = array("column" => "email_address", "value" => $data["email_address"]);
-			$user = $db->get_rows($search);
-			if ($user["count"] > 0) $this->response(null, null, 409);
-			
+			$user = $this->razor_db->get_first('user', '*', array('email_address' => $data["email_address"]));
+			if (!empty($user)) $this->response(null, null, 409);
+
 			// create new user
 			$row = array(
 				"name" => $data["name"], 
@@ -47,21 +43,18 @@ class UserData extends RazorAPI
 				"password" => $this->create_hash($data["new_password"])
 			);
 
-			$db->add_rows($row);
+			$this->razor_db->add_data('user', $row);
 		}
 		elseif ($this->user["id"] == $data["id"])
 		{
 			// check email is unique if changed
 			if ($data["email_address"] != $this->user["email_address"])
 			{
-				$search = array("column" => "email_address", "value" => $data["email_address"]);
-				$user = $db->get_rows($search);
-				if ($user["count"] > 0) $this->response(null, null, 409);
+				$user = $this->razor_db->get_first('user', '*', array('email_address' => $data["email_address"]));
+				if (!empty($user)) $this->response(null, null, 409);
 			}
 
 			// if this is your account, alter name, email or password
-			$search = array("column" => "id", "value" => $this->user["id"]);
-
 			$row = array(
 				"name" => $data["name"], 
 				"email_address" => $data["email_address"]
@@ -69,7 +62,7 @@ class UserData extends RazorAPI
 
 			if (isset($data["new_password"])) $row["password"] = $this->create_hash($data["new_password"]);
 
-			$db->edit_rows($search, $row);
+			$this->razor_db->edit_data('user', $row, array('id' => $this->user['id']));
 			
 			// return the basic user details
 			if (isset($data["new_password"])) $this->response(array("reload" => true), "json");
@@ -80,18 +73,14 @@ class UserData extends RazorAPI
 			// do not allow anyone to be set to level 10, only one account aloud
 			if (isset($data["access_level"]) && $data["access_level"] == 10) $this->response(null, null, 400);
 
-			$search = array("column" => "id", "value" => $data["id"]);
-
 			$row = array(
 				"access_level" => $data["access_level"], 
 				"active" => $data["active"]
 			);
 
-			$db->edit_rows($search, $row);
+			$this->razor_db->edit_data('user', $row, array('id' => $data['id']));
 		}
 		else $this->response(null, null, 401);
-
-		$db->disconnect(); 
 
 		$this->response("success", "json");
 	}
@@ -105,26 +94,19 @@ class UserData extends RazorAPI
 		if ($id == 1) $this->response(null, null, 400);
 		$id = (int) $id;
 
-		$db = new RazorDB();
-		$db->connect("user");
-
 		if ($this->user["id"] == $id)
 		{
 			// this is your account, allow removal of own account
-			$search = array("column" => "id", "value" => $this->user["id"]);
-			$db->delete_rows($search);
+			$this->razor_db->delete_data('user', array('id' => $this->user['id']));
 			$response = "reload";
 		}
 		elseif ($this->check_access() == 10)
 		{
 			// if not account owner, but acces of 10, can remove account
-			$search = array("column" => "id", "value" => $id);
-			$db->delete_rows($search);
+			$this->razor_db->delete_data('user', array('id' => $id));
 			$response = "success";
 		}
 		else $this->response(null, null, 401);
-
-		$db->disconnect(); 
 
 		$this->response($response, "json");		
 	}

@@ -27,15 +27,10 @@ class UserReminder extends RazorAPI
 		if (empty($data["email"])) $this->response("User not found", "json", 404);
 
 		// try find user
-		$db = new RazorDB();
-		$db->connect("user");
-		$options = array("amount" => 1);
-		$search = array("column" => "email_address", "value" => $data["email"]);
-		$user = $db->get_rows($search);
-		$db->disconnect(); 
+		$user = $this->razor_db->get_first('user', '*', array('email_address' => $data['email']));
 
 		// check for match
-		if ($user["count"] != 1) $this->response("User not found", "json", 404);
+		if (empty($user)) $this->response("User not found", "json", 404);
 
 		// check attempts
 		$user = $user["result"][0];
@@ -51,20 +46,14 @@ class UserReminder extends RazorAPI
 		$reminder_token = sha1($reminder_time.$user_agent.$ip_address.$pass_hash);
 
 		// set new reminder
-		$db->connect("user");
-		$search = array("column" => "id", "value" => $user["id"]);
 		$row = array(
 			"reminder_token" => $reminder_token,
 			"reminder_time" => $reminder_time
 		);
-		$db->edit_rows($search, $row);
-		$db->disconnect(); 
+		$this->razor_db->edit_data('user', $row, array('id' => $user['id']));
 
 		// get setting
-		$db->connect("setting");
-		$setting = $db->get_rows(array("column" => "name", "value" => "forgot_password_email"));
-		$forgot_password_email = $setting["result"][0]["value"];
-		$db->disconnect(); 
+		$forgot_password_email = $this->razor_db->get_first('setting', array('value'), array('name' => 'forget_password_email'))['value'];
 
 		// email user pasword reset email
 		$server_email = str_replace("www.", "", $_SERVER["SERVER_NAME"]);

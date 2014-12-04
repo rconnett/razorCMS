@@ -135,6 +135,7 @@ define(["angular", "cookie-monster", "jquery", "summernote", "ui-bootstrap"], fu
 			// clear edit stuff
 			$scope.editing = {"handle": null, "id": null};
 			$scope.savedEditContent = false;
+			$scope.savedEditMenu = false;
 
 			// save all content for page
 			rars.post("content/editor", {"locations": $scope.locations, "content": $scope.content, "page_id": RAZOR_PAGE_ID}, monster.get("token")).success(function(data)
@@ -142,6 +143,10 @@ define(["angular", "cookie-monster", "jquery", "summernote", "ui-bootstrap"], fu
 				// stop edit
 				$scope.savedEditContent = true;
 				$scope.saveSuccess();
+			}).error(function(){
+				// stop edit
+				$scope.savedEditContent = true;
+				$scope.saveSuccess();	
 			});	  
 
 			// save all content for page
@@ -149,7 +154,11 @@ define(["angular", "cookie-monster", "jquery", "summernote", "ui-bootstrap"], fu
 			{
 				$scope.savedEditMenu = true;
 				$scope.saveSuccess();
-			});		
+			}).error(function(){
+				// stop edit
+				$scope.savedEditMenu = true;
+				$scope.saveSuccess();
+			});	  
 
 			$scope.toggle = false;
 		};

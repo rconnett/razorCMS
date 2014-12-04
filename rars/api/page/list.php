@@ -20,14 +20,7 @@ class PageList extends RazorAPI
 
 	public function get($id)
 	{
-		$db = new RazorDB();
-		$db->connect("page");
-
-		$search = array("column" => "id", "value" => null, "not" => true);
-
-		$pages = $db->get_rows($search);
-		$pages = $pages["result"];
-		$db->disconnect(); 
+		$pages = $this->razor_db->get_all('page');
 		
 		// return the basic user details
 		$this->response(array("pages" => $pages), "json");
