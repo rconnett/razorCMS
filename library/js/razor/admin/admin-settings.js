@@ -159,27 +159,13 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 			$scope.stage = 4;
 			$scope.upgrading = 6;
 
-			// use timer to slow down
-			var timed = false;
-			var finished = false;
-			$timeout(function()
-			{
-				timed = true;
-				if (finished)
-				{
-					$scope.stage = 5;
-					$scope.reloadSystem();
-				}
-			}, 5000);
-
 			rars.get("system/upgrade", "complete", monster.get("token")).success(function(data)
 			{
-				finished = true;
-				if (time)
+				$timeout(function()
 				{
 					$scope.stage = 5;
 					$scope.reloadSystem();
-				}
+				}, 5000);
 			}).error(function(data)
 			{
 				$rootScope.$broadcast("global-notification", {"type": "danger", "text": "Error completing upgrade, please manually remove the 'tmp' folder found in 'storage' to tidy up your system."});
