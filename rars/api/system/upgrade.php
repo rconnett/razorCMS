@@ -33,20 +33,21 @@ class SystemUpgrade extends RazorAPI
 	// perform system upgrade of all files
 	public function get($type)
 	{
-		if ((int) $this->check_access() < 10 || empty($type)) $this->response(null, null, 401);
-		if ($type != "now" && $type != "complete") $this->response(null, null, 400);	
-		if (!is_file("{$this->package_path}/system_upgrade.zip")) throw new exception("Upgrade file not found.");
-
+		// this was moved to allow system to complete after migration to sqlite (and login lost during process)
 		if ($type == "complete")
 		{
 			RazorFileTools::delete_directory($this->tmp_path);
 			$this->response("success", "json");
 		}
 
+		if ((int) $this->check_access() < 10 || empty($type)) $this->response(null, null, 401);
+		if ($type != "now") $this->response(null, null, 400);	
+		if (!is_file("{$this->package_path}/system_upgrade.zip")) throw new exception("Upgrade file not found.");
+
 		// lets grab the current system data before we upgrade, after it is too late.
 		$system = $this->razor_db->get_first('system');
 	
-		// compress the whole system to a single zip backup file
+		// upgrade the system from hte upgrade zip
 		$zip = new RazorZip;
 		$zip->open("{$this->package_path}/system_upgrade.zip");
 
@@ -63,7 +64,7 @@ class SystemUpgrade extends RazorAPI
 		$this->response("success", "json");
 	}
 
-	// perform system upgrade of all files
+	// perform revert of upgrade
 	public function post($data)
 	{
 		if ((int) $this->check_access() < 10) $this->response(null, null, 401);
