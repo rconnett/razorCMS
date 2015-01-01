@@ -39,7 +39,7 @@ define("USER_2", 2); // base level, can onlyalter profile and user areas of publ
 define("USER_1", 1); // base level, can onlyalter profile and user areas of public site that are protected to level 1
 
 // PDO 
-define('RAZOR_PDO', 'sqlite:'.RAZOR_BASE_PATH.'storage/database/razorcms.sqlite3');
+define('RAZOR_PDO', 'sqlite:'.RAZOR_BASE_PATH.'storage/database/razorcms.sqlite');
 
 // include error handler
 include_once(RAZOR_BASE_PATH.'library/php/razor/razor_file_tools.php');
