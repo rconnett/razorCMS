@@ -183,7 +183,8 @@ class RazorAPI
 			'ip_address' => $ip_address
 		);
 
-		$user = $this->razor_db->edit_data('user', $update_data, array('id' => $user['id']), '*')[0];
+		$user = $this->razor_db->edit_data('user', $update_data, array('id' => $user['id']), '*');
+		$user = $user[0];
 
 		// collect user data
 		$user = array(
@@ -250,7 +251,8 @@ class RazorAPI
 			"access_level"
 		);
 
-		$this->user = $this->razor_db->edit_data('user', array('last_accessed' => time()), array('id' => $this->user['id']), $return_columns)[0];
+		$this->user = $this->razor_db->edit_data('user', array('last_accessed' => time()), array('id' => $this->user['id']), $return_columns);
+		$this->user = $this->user[0];
 
 		return $this->user["access_level"];
 	}
