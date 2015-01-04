@@ -10,7 +10,7 @@ File Based CMS (FBCMS)
 
 **razorCMS** is a *File Based Content Management System*.
 This means it helps you to build a website without the means of a database backend.
-All data in **razorCMS** is stored in flat files, and uses a "database" engine called **razorDB**.
+All data in **razorCMS** is stored into sqlite db files, using the sqlite DB engine.
 
 It has been primarily designed for Apache on a *Unix* machine, although it may well function just fine on a *Microsoft* based environment. Please note that all testing is performed on *Unix* machines, and no guarantee is offered outside of this environment.
 
@@ -35,6 +35,19 @@ Apache running on a Unix type machine.
 
 You may find it possible to make **razorCMS** work outside of its comfort zone, awesome. I tilt my hat in your general direction. However, I do not support this. Too many developers are keeping institutions alive purely by supporting old defunct outdated crap. I will not do this. I loose enough sleep at night without the need to support things that should be put out of their misery.
 
+The following modules are required in order to install and run razorCMS.
+
+1. exif
+2. session
+3. xml
+4. zip
+5. zlib
+6. json
+7. suphp
+8. mod rewrite
+9. sqlite3 PDO
+
+In addition to the above, it is also required that allow overrides is set to allow htaccess configurations to be parsed.
 
 ---
 
@@ -62,11 +75,11 @@ Installation is now complete, you may now log in using the new credentials in th
 ---
 
 
-## Installation UPGRADE
+## Upgrading
 
 **Prefered Upgrade Method**
 
-The prefered upgrade method is to use the auto upgrade tool. This tool can be found in the settings area of the **Administration Overlay**. This tool is a simply two click method for updating your sytem to the latest release. During the process you will be able to download a complete system backup, should the process not be successful.
+The prefered upgrade method is to use the auto upgrade tool. This tool can be found in the settings area of the **Administration Overlay**. This tool is a simple two click method for updating your sytem to the latest release. During the process you will be able to download a complete system backup, should the process not be successful.
 
 **Manual Upgrade - Follow These Steps:**
 
