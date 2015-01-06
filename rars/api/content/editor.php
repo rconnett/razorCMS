@@ -110,7 +110,8 @@ class ContentEditor extends RazorAPI
 			{
 				// add new content and map the ID to the new id for locations table
 				$row = array("content" => $content["content"], "name" => $content["name"]);
-				$result_id = $this->razor_db->add_data('content', $row)[0];
+				$result_id = $this->razor_db->add_data('content', $row);
+				$result_id = $result_id[0];
 				$new_content_map[$content["content_id"]] = $result_id; 
 			}
 		}

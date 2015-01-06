@@ -53,7 +53,8 @@ class UserReminder extends RazorAPI
 		$this->razor_db->edit_data('user', $row, array('id' => $user['id']));
 
 		// get setting
-		$forgot_password_email = $this->razor_db->get_first('setting', array('value'), array('name' => 'forget_password_email'))['value'];
+		$forgot_password_email = $this->razor_db->get_first('setting', array('value'), array('name' => 'forget_password_email'));
+		$forgot_password_email = $forgot_password_email['value'];
 
 		// email user pasword reset email
 		$server_email = str_replace("www.", "", $_SERVER["SERVER_NAME"]);
