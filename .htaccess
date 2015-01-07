@@ -15,6 +15,11 @@ order deny,allow
 deny from all
 </Limit>
 
+<Files ~ "\.sqlite$">
+Order allow,deny
+Deny from all
+</Files>
+
 <Files index>
 ForceType application/x-httpd-php
 </Files>
