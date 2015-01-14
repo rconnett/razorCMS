@@ -12,6 +12,22 @@
  
 class RazorFileTools
 {
+	// fetch remote file using CURL
+	public static function get_remote_content($url)
+	{
+	    $ch = curl_init();
+	    curl_setopt($ch, CURLOPT_HEADER, 0);
+	    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,  FALSE);
+	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	    curl_setopt($ch, CURLOPT_URL, $url);
+	    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+	    curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
+	    $data = curl_exec($ch);
+	    curl_close($ch);
+	    
+	    return $data;
+	}
+
 	/**
 	 * Look recursively through folders and return a flat array of paths or contents for each match
 	 * 

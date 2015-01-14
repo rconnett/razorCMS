@@ -48,41 +48,31 @@ class ExtensionInstall extends RazorAPI
 
 		// fetch details
 		$package_url = $this->package_url."{$category}/{$handle}/{$name}/{$name}.zip";
-		$headers = @get_headers($package_url);
 
-		if(strpos($headers[0], "404") === false) 
+		$package_contents = RazorFileTools::get_remote_content($package_url);
+
+		// copy package to temp location
+		if (!empty($package_contents))
 		{
-			$ctx = stream_context_create(array( 
-				'http' => array( 
-					'timeout' => 60
-					) 
-				) 
-			);			 
-
-			// copy package to temp location
-			$package_contents = @file_get_contents($package_url, false, $ctx);
-			if (!empty($package_contents))
-			{
-				if (!RazorFileTools::write_file_contents("{$this->tmp_package_path}/{$name}.zip", $package_contents)) throw new Exception("Could not write upgrade file to storage/tmp/package.");
-			}
-
-			// extract to file system
-			if (!is_file("{$this->tmp_package_path}/{$name}.zip")) throw new exception("Extension file not found.");
-
-			// open extension package
-			$zip = new RazorZip;
-			$zip->open("{$this->tmp_package_path}/{$name}.zip");
-
-			// extract
-			$zip->extractTo(RAZOR_BASE_PATH);
-			$zip->close();
-
-			// cleanup
-			RazorFileTools::delete_directory($this->tmp_path);
-
-			// send back not found if no details
-			$this->response("success", "json");
+			if (!RazorFileTools::write_file_contents("{$this->tmp_package_path}/{$name}.zip", $package_contents)) throw new Exception("Could not write upgrade file to storage/tmp/package.");
 		}
+
+		// extract to file system
+		if (!is_file("{$this->tmp_package_path}/{$name}.zip")) throw new exception("Extension file not found.");
+
+		// open extension package
+		$zip = new RazorZip;
+		$zip->open("{$this->tmp_package_path}/{$name}.zip");
+
+		// extract
+		$zip->extractTo(RAZOR_BASE_PATH);
+		$zip->close();
+
+		// cleanup
+		RazorFileTools::delete_directory($this->tmp_path);
+
+		// send back not found if no details
+		$this->response("success", "json");
 
 		// send back not found if no details
 		$this->response(null, null, 404);

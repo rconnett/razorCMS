@@ -26,28 +26,17 @@ class ToolsVersion extends RazorAPI
 
 		$host = (isset($_SERVER["SERVER_NAME"]) ? urlencode($_SERVER["SERVER_NAME"]) : (isset($_SERVER["HTTP_HOST"]) ? urlencode($_SERVER["HTTP_HOST"]) : "current"));
 
-		$headers = @get_headers($this->check_url);
-		
-		if(strpos($headers[0], "404") === false) 
-		{
-			$ctx = stream_context_create(array( 
-				'http' => array( 
-					'timeout' => 60
-					) 
-				) 
-			);			 
+		$version_file = RazorFileTools::get_remote_content($this->check_url.$host);
 
-			$version_file = @file_get_contents($this->check_url.$host, false, $ctx);
-			if (!empty($version_file))
-			{
-				$version = json_decode($version_file);
-				$this->response($version, "json");
-			}
-			else
-			{
-				// send back unnavailable
-				$this->response(null, null, 404);
-			}
+		if (!empty($version_file))
+		{
+			$version = json_decode($version_file);
+			$this->response($version, "json");
+		}
+		else
+		{
+			// send back unnavailable
+			$this->response(null, null, 404);
 		}
 
 		// send back unnavailable

@@ -48,8 +48,8 @@ class FilePackage extends RazorAPI
 	private function package_system_upgrade()
 	{
 		if ((int) $this->check_access() < 10) $this->response(null, null, 401);
-		
-		$file_contents = file_get_contents($this->upgrade_url);
+
+		$file_contents = RazorFileTools::get_remote_content($this->upgrade_url);		
 		
 		if (empty($file_contents)) $this->response(null, null, 404);
 

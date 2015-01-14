@@ -44,24 +44,12 @@ class ListRepository extends RazorAPI
 			break;
 		}
 
-		$headers = @get_headers($this->repo_url.$list);
-	  
-		if(strpos($headers[0], "404") === false) 
+		$repo_file = RazorFileTools::get_remote_content($this->repo_url.$list);
+
+		if (!empty($repo_file))
 		{
-			$ctx = stream_context_create(array( 
-				'http' => array( 
-					'timeout' => 60
-					) 
-				) 
-			);			 
-
-			$repo_file = @file_get_contents($this->repo_url.$list, false, $ctx);
-
-			if (!empty($repo_file))
-			{
-				$repo = json_decode($repo_file);
-				$this->response(array("list" => $repo), "json");
-			}
+			$repo = json_decode($repo_file);
+			$this->response(array("list" => $repo), "json");
 		}
 
 		// send back unnavailable

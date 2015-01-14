@@ -34,24 +34,12 @@ class ExtensionRepository extends RazorAPI
 
 		// fetch details
 		$man_url = $this->repo_url."extension/{$category}/{$handle}/{$name}/{$manifest}.manifest.json";
-		$headers = @get_headers($man_url);
-		
-		if(strpos($headers[0], "404") === false) 
+
+		$details_file = RazorFileTools::get_remote_content($man_url);
+		if (!empty($details_file))
 		{
-			$ctx = stream_context_create(array( 
-				'http' => array( 
-					'timeout' => 60
-					) 
-				) 
-			);			 
-
-			$details_file = @file_get_contents($man_url, false, $ctx);
-
-			if (!empty($details_file))
-			{
-				$details = json_decode($details_file);
-				$this->response(array("details" => $details), "json");
-			}
+			$details = json_decode($details_file);
+			$this->response(array("details" => $details), "json");
 		}
 
 		// send back not found if no details
