@@ -19,14 +19,14 @@ class RazorPDO extends PDO
 	function __construct($pdo = RAZOR_PDO)
 	{
 		parent::__construct($pdo);
-	}	
+	}
 
 	/**
 	 * Perform a standard query from query string
 	 *
 	 * @example $result_obj = $db->query_execute('SELECT * FROM user WHERE id = :id', array(':id' => 1));
 	 * @example $data = $result_obj->fetch(PDO::FETCH_ASSOC);
-	 * 
+	 *
 	 * @param string $query The query string to process using :placeholders for data matching
 	 * @param mixed $data The data to bind to query placeholders as array [:name => value,...] or int/string (which binds to :id)
 	 * @return mixed Returns the result object of executing the query or execution result when query not executed correctly (false)
@@ -56,15 +56,15 @@ class RazorPDO extends PDO
 		$this->find_type();
 		$this->result = $this->db_query->fetch(PDO::FETCH_ASSOC);
 		$this->force_type();
-		
-		return $this->result; 
+
+		return $this->result;
 	}
 
 	/**
 	 * Perform a standard query from query string and returns the last result found forcing type on results
 	 *
 	 * @example $data = $db->query_last('SELECT * FROM page WHERE id IS NOT NULL');
-	 * 
+	 *
 	 * @param string $query The query string to process using :placeholders for data matching
 	 * @param mixed $data The data to bind to query placeholders as array [:name => value,...] or int/string (which binds to :id)
 	 * @return array Returns the result found or empty array if no result found
@@ -77,8 +77,8 @@ class RazorPDO extends PDO
 		$this->find_type();
 		$this->result = $this->db_query->fetch(PDO::FETCH_ASSOC);
 		$this->force_type();
-		
-		return $this->result; 
+
+		return $this->result;
 	}
 
 	/**
@@ -98,7 +98,7 @@ class RazorPDO extends PDO
 		$this->find_type();
 		$this->result = $this->db_query->fetchAll(PDO::FETCH_ASSOC);
 		$this->force_type();
-		
+
 		return $this->result;
 	}
 
@@ -132,8 +132,8 @@ class RazorPDO extends PDO
 		$this->find_type();
 		$this->result = $this->db_query->fetch(PDO::FETCH_ASSOC);
 		$this->force_type();
-		
-		return $this->result; 
+
+		return $this->result;
 	}
 
 	/**
@@ -166,8 +166,8 @@ class RazorPDO extends PDO
 		$this->find_type();
 		$this->result = $this->db_query->fetch(PDO::FETCH_ASSOC);
 		$this->force_type();
-		
-		return $this->result; 
+
+		return $this->result;
 	}
 
 	/**
@@ -181,7 +181,7 @@ class RazorPDO extends PDO
 	 * @return array Returns the results found or empty array if no results found
 	 */
 	public function get_all($table, $columns = '*', $where = array())
-	{		
+	{
 		// work out columns
 		if (is_array($columns)) $columns = implode(',', $columns);
 
@@ -200,7 +200,7 @@ class RazorPDO extends PDO
 		$this->find_type();
 		$this->result = $this->db_query->fetchAll(PDO::FETCH_ASSOC);
 		$this->force_type();
-		
+
 		return $this->result;
 	}
 
@@ -215,7 +215,7 @@ class RazorPDO extends PDO
 	 * @return mixed Returns the results id/s of the insert row as int or array of ints, execution result on fail (false)
 	 */
 	public function add_data($table, $data = array(), $return_inserted = array())
-	{	
+	{
 		if (!is_array($data) || empty($data)) return false;
 
 
@@ -241,7 +241,7 @@ class RazorPDO extends PDO
 			}
 			$values = substr($values, 0, -1);
 		}
-		else 
+		else
 		{
 			// work out columns
 			$columns = implode(',', array_keys($data));
@@ -256,14 +256,14 @@ class RazorPDO extends PDO
 		// run query
 		$this->beginTransaction();
 
-		try 
+		try
 		{
 			$this->db_query = $this->prepare("INSERT INTO {$table} ({$columns}) VALUES {$values}");
 			$this->bind_data($new_data);
 			$result = $this->db_query->execute();
 		    $this->commit();
 		}
-		catch(PDOException $e) 
+		catch(PDOException $e)
 		{
 		    $this->rollBack();
 		    return false;
@@ -309,7 +309,7 @@ class RazorPDO extends PDO
 	 * @return mixed Returns the results id/s of the insert row as int or array of ints, execution result on fail (false)
 	 */
 	public function edit_data($table, $data = array(), $where = array(), $return_edited = array())
-	{	
+	{
 		if (!is_array($data) || empty($data)) return false;
 		if (!is_array($where) || empty($where)) return false;
 
@@ -331,14 +331,14 @@ class RazorPDO extends PDO
 		// run query
 		$this->beginTransaction();
 
-		try 
+		try
 		{
 			$this->db_query = $this->prepare("UPDATE {$table} SET {$data_string} WHERE {$where_string}");
 			$this->bind_data(array_merge($data, $where));
 			$result = $this->db_query->execute();
 		    $this->commit();
 		}
-		catch(PDOException $e) 
+		catch(PDOException $e)
 		{
 		    $this->rollBack();
 		    return false;
@@ -363,7 +363,7 @@ class RazorPDO extends PDO
 	 * @return bool Returns the results of the deletion
 	 */
 	public function delete_data($table, $where = array())
-	{	
+	{
 		if (!is_array($where) || empty($where)) return false;
 
 		// work out where
@@ -374,14 +374,14 @@ class RazorPDO extends PDO
 		// run query
 		$this->beginTransaction();
 
-		try 
+		try
 		{
 			$this->db_query = $this->prepare("DELETE FROM {$table} WHERE {$where_string}");
 			$this->bind_data($where);
 			$result = $this->db_query->execute();
 		    $this->commit();
 		}
-		catch(PDOException $e) 
+		catch(PDOException $e)
 		{
 		    $this->rollBack();
 		    return false;
@@ -403,8 +403,8 @@ class RazorPDO extends PDO
 		$this->meta_type = array();
 
 		// grab meta data
-		for ($i = 0; ($meta = $this->db_query->getColumnMeta($i)) != false; $i++) 
-		{ 
+		for ($i = 0; ($meta = $this->db_query->getColumnMeta($i)) != false; $i++)
+		{
 			$this->meta_type[$meta['name']] = $meta['native_type'];
 		}
 	}
@@ -425,7 +425,7 @@ class RazorPDO extends PDO
 					elseif ($this->meta_type[$key2] == 'null') $this->result[$key][$key2] = null;
 					else $this->result[$key][$key2] = $val2;
 				}
-			}	
+			}
 			else
 			{
 				if ($this->meta_type[$key] == 'integer') $this->result[$key] = (int) $val;
