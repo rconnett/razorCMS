@@ -9,7 +9,7 @@
  * @site ulsmith.net
  * @created Feb 2014
  */
- 
+
 class RazorPDO extends PDO
 {
 	private $db_query = null;
@@ -53,9 +53,9 @@ class RazorPDO extends PDO
 		$this->db_query = $this->prepare($query);
 		$this->bind_data($data);
 		$this->db_query->execute();
-		$this->find_type();
+		//$this->find_type();
 		$this->result = $this->db_query->fetch(PDO::FETCH_ASSOC);
-		$this->force_type();
+		//$this->force_type();
 
 		return $this->result;
 	}
@@ -74,9 +74,9 @@ class RazorPDO extends PDO
 		$this->db_query = $this->prepare("{$query} ORDER BY id DESC");
 		$this->bind_data($data);
 		$this->db_query->execute();
-		$this->find_type();
+		//$this->find_type();
 		$this->result = $this->db_query->fetch(PDO::FETCH_ASSOC);
-		$this->force_type();
+		//$this->force_type();
 
 		return $this->result;
 	}
@@ -95,9 +95,9 @@ class RazorPDO extends PDO
 		$this->db_query = $this->prepare($query);
 		$this->bind_data($data);
 		$this->db_query->execute();
-		$this->find_type();
+		//$this->find_type();
 		$this->result = $this->db_query->fetchAll(PDO::FETCH_ASSOC);
-		$this->force_type();
+		//$this->force_type();
 
 		return $this->result;
 	}
@@ -129,9 +129,9 @@ class RazorPDO extends PDO
 		$this->db_query = $this->prepare("SELECT {$columns} FROM {$table} {$where_string}");
 		$this->bind_data($where);
 		$this->db_query->execute();
-		$this->find_type();
+		//$this->find_type();
 		$this->result = $this->db_query->fetch(PDO::FETCH_ASSOC);
-		$this->force_type();
+		//$this->force_type();
 
 		return $this->result;
 	}
@@ -163,9 +163,9 @@ class RazorPDO extends PDO
 		$this->db_query = $this->prepare("SELECT {$columns} FROM {$table} {$where_string} ORDER BY id DESC");
 		$this->bind_data($where);
 		$this->db_query->execute();
-		$this->find_type();
+		//$this->find_type();
 		$this->result = $this->db_query->fetch(PDO::FETCH_ASSOC);
-		$this->force_type();
+		//$this->force_type();
 
 		return $this->result;
 	}
@@ -197,9 +197,9 @@ class RazorPDO extends PDO
 		$this->db_query = $this->prepare("SELECT {$columns} FROM {$table} {$where_string}");
 		$this->bind_data($where);
 		$this->db_query->execute();
-		$this->find_type();
+		//$this->find_type();
 		$this->result = $this->db_query->fetchAll(PDO::FETCH_ASSOC);
-		$this->force_type();
+		//$this->force_type();
 
 		return $this->result;
 	}
