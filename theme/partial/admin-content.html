@@ -19,13 +19,13 @@
 				<accordion close-others="oneAtATime">
 					<accordion-group ng-repeat="c in content | filter:searchFilter | limitTo:searchLimit" is-open="isopen">
 						<accordion-heading>
-	   						<i class="fa fa-eye" ng-hide="c.used_on_pages == null" title="Active"></i>
+	   						<i class="fa fa-eye" ng-hide="c.used_on_pages.length == 0" title="Active"></i>
 							{{c.name}}
 							<i class="expander pull-right fa" ng-class="{'fa-chevron-down': isopen, 'fa-chevron-right': !isopen}"></i>
 						</accordion-heading>
 						<div class="content">
 							<div class="btn-toolbar" role="toolbar">
-								<div class="btn-group pull-right"> 
+								<div class="btn-group pull-right">
 									<button class="btn btn-danger" ng-click="deleteContent(c.id)" ng-disabled="user.access_level < 8"><i class="fa fa-trash-o"></i> Delete Content</button>
 								</div>
 							</div>

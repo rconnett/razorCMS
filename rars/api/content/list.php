@@ -9,7 +9,7 @@
  * @site ulsmith.net
  * @created Feb 2014
  */
- 
+
 class ContentList extends RazorAPI
 {
 	function __construct()
@@ -25,10 +25,10 @@ class ContentList extends RazorAPI
 			.", c.id AS 'page.id'"
 			.", c.link AS 'page.link'"
 			.", c.name AS 'page.name'"
-			.' FROM content AS a' 
-			.' JOIN page_content AS b ON a.id = b.content_id' 
-			.' JOIN page AS c ON c.id = b.page_id'
-		); 
+			.' FROM content AS a'
+			.' LEFT JOIN page_content AS b ON a.id = b.content_id'
+			.' LEFT JOIN page AS c ON c.id = b.page_id'
+		);
 
 		$content = array();
 		foreach ($data as $row)
@@ -43,7 +43,7 @@ class ContentList extends RazorAPI
 			$content[$row['id']]['id'] = $row['id'];
 			$content[$row['id']]['json_settings'] = $row['json_settings'];
 			$content[$row['id']]['name'] = $row['name'];
-			
+
 			// write pages used on
 			if (isset($row['page.id'], $row['page.link'], $row['page.name']))
 			{
@@ -54,7 +54,7 @@ class ContentList extends RazorAPI
 				);
 			}
 		}
-	
+
 		// return the basic user details
 		$this->response(array("content" => $content), "json");
 	}
