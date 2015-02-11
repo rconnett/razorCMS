@@ -9,7 +9,7 @@
  * @site ulsmith.net
  * @created Feb 2014
  */
- 
+
 class RazorSite
 {
 	private $link = null;
@@ -59,7 +59,7 @@ class RazorSite
 	{
 		// is 404 ?
 		if (empty($this->page) || (!isset($_COOKIE["token"]) && !(int) $this->page["active"]))
-		{ 
+		{
 			header("HTTP/1.0 404 Not Found");
 			include_once(RAZOR_BASE_PATH."theme/view/404.php");
 			return;
@@ -88,20 +88,17 @@ class RazorSite
 	{
 		// create extension dependancy list
 		$ext_dep_list = array();
-		
+
 		// admin angluar loading for editor, return
 		if (isset($_GET["edit"]) && ($this->logged_in > 6 || ($this->logged_in > 5 && !(int) $this->page["active"])))
 		{
-//<div text-angular name="{$loc}{$col}{{block.content_id}}" ng-if="!block.extension" ta-disabled="!editingThis('{$loc}{$col}' + block.content_id)" class="content-edit" ng-model="content[block.content_id].content" ng-click="startBlockEdit('{$loc}{$col}',  block.content_id)" ></div>
-
 			echo <<<OUTPUT
 <div class="content-column" ng-if="changed" ng-class="{'edit': toggle}">
-	<div class="content-block" ng-class="{'active': editingThis('{$loc}{$col}' + block.content_id)}" ng-repeat="block in locations.{$loc}.{$col}">
-
+	<div class="content-block" ng-class="{'active': editingThis('{$loc}{$col}' + block.content_id)}" ng-repeat="block in locations.{$loc}[{$col}]">
 		<div class="input-group block-controls" ng-if="!block.extension">
 			<span class="input-group-btn">
-				<button class="btn btn-default" ng-click="locations.{$loc}.{$col}.splice(\$index - 1, 0, locations.{$loc}.{$col}.splice(\$index, 1)[0])" ng-show="toggle"><i class="fa fa-arrow-up"></i></button>
-				<button class="btn btn-default" ng-click="locations.{$loc}.{$col}.splice(\$index + 1, 0, locations.{$loc}.{$col}.splice(\$index, 1)[0])" ng-show="toggle"><i class="fa fa-arrow-down"></i></button>
+				<button class="btn btn-default" ng-click="locations.{$loc}[{$col}].splice(\$index - 1, 0, locations.{$loc}[{$col}].splice(\$index, 1)[0])" ng-show="toggle"><i class="fa fa-arrow-up"></i></button>
+				<button class="btn btn-default" ng-click="locations.{$loc}[{$col}].splice(\$index + 1, 0, locations.{$loc}[{$col}].splice(\$index, 1)[0])" ng-show="toggle"><i class="fa fa-arrow-down"></i></button>
 			</span>
 			<input type="text" class="form-control" placeholder="Add Content Name" ng-show="toggle" ng-model="content[block.content_id].name"/>
 			<span class="input-group-btn">
@@ -114,8 +111,8 @@ class RazorSite
 		<div class="content-settings" ng-if="block.extension">
 			<div class="extension-controls">
 				<span class="btn-group pull-left">
-					<button class="btn btn-default" ng-click="locations.{$loc}.{$col}.splice(\$index - 1, 0, locations.{$loc}.{$col}.splice(\$index, 1)[0])" ng-show="toggle"><i class="fa fa-arrow-up"></i></button>
-					<button class="btn btn-default" ng-click="locations.{$loc}.{$col}.splice(\$index + 1, 0, locations.{$loc}.{$col}.splice(\$index, 1)[0])" ng-show="toggle"><i class="fa fa-arrow-down"></i></button>
+					<button class="btn btn-default" ng-click="locations.{$loc}[{$col}].splice(\$index - 1, 0, locations.{$loc}[{$col}].splice(\$index, 1)[0])" ng-show="toggle"><i class="fa fa-arrow-up"></i></button>
+					<button class="btn btn-default" ng-click="locations.{$loc}[{$col}].splice(\$index + 1, 0, locations.{$loc}[{$col}].splice(\$index, 1)[0])" ng-show="toggle"><i class="fa fa-arrow-down"></i></button>
 				</span>
 				<h3 class="extension-title pull-left"><i class="fa fa-puzzle-piece"></i> Extension</h3>
 				<button class="btn btn-warning pull-right" ng-show="toggle" ng-click="removeContent('{$loc}', '{$col}', \$index)"><i class="fa fa-times"></i></button>
@@ -148,9 +145,10 @@ class RazorSite
 						<span class="alert alert-danger alert-form" ng-show="subForm.input.\$error.pattern">Invalid</span>
 					</div>
 				</div>
-			</form>	  
+			</form>
 		</div>
 	</div>
+
 	<button class="btn btn-default" ng-show="toggle" ng-click="addNewBlock('{$loc}', '{$col}')"><i class="fa fa-plus"></i></button>
 	<button class="btn btn-default" ng-show="toggle" ng-click="findBlock('{$loc}', '{$col}')"><i class="fa fa-search"></i></button>
 	<button class="btn btn-default" ng-show="toggle" ng-click="findExtension('{$loc}', '{$col}')"><i class="fa fa-puzzle-piece"></i></button>
@@ -158,7 +156,7 @@ class RazorSite
 OUTPUT;
 			return;
 		}
-	   
+
 		// if not editor and not empty, output content for public
 		foreach ($this->content as $c_data)
 		{
@@ -166,7 +164,7 @@ OUTPUT;
 			{
 				if (!empty($c_data["content_id"]))
 				{
-					// load content	
+					// load content
 					echo '<div ng-if="!changed" content-id="'.$c_data["content_id"].'">';
 
 					// content
@@ -181,7 +179,7 @@ OUTPUT;
 					// load extension
 					$manifest = RazorFileTools::read_file_contents(RAZOR_BASE_PATH."extension/{$c_data['extension']}", "json");
 					$view_path = RAZOR_BASE_PATH."extension/{$manifest->type}/{$manifest->handle}/{$manifest->extension}/view/{$manifest->view}.php";
-					
+
 					echo '<div ng-if="!changed">';
 					include($view_path);
 					echo '</div>';
@@ -210,7 +208,7 @@ OUTPUT;
 		<li ng-repeat="mis in mi.sub_menu" ng-class="{'click-and-sort-sub': toggle, 'active': linkIsActive(mis.page_id), 'selected': \$parent.clickAndSort['{$loc}Sub'].selected, 'place-holder': \$parent.clickAndSort['{$loc}Sub'].picked != \$index && \$parent.clickAndSort['{$loc}Sub'].selected}">
 			<a ng-href="{{(!toggle ? mis.link_url || getMenuLink(mis.page_link) : '#')}}" ng-click="clickAndSortClick('{$loc}Sub', \$index, mi.sub_menu); \$event.preventDefault()" target="{{mis.link_target}}">
 				<button class="btn btn-xs btn-default" ng-if="toggle" ng-click="mi.sub_menu.splice(\$index, 1); \$event.preventDefault()"><i class="fa fa-times"></i></button>
-				<i class="fa fa-eye-slash" ng-hide="mis.page_active || mis.link_label"></i> 
+				<i class="fa fa-eye-slash" ng-hide="mis.page_active || mis.link_label"></i>
 				{{mis.page_name || mis.link_label}}
 			</a>
 		</li>
@@ -252,7 +250,7 @@ OUTPUT;
 					foreach ($m_item["sub_menu"] as $sm_item)
 					{
 						if (!empty($sm_item["link_label"]) || (!empty($sm_item["page_id"]) && $sm_item["page_id.access_level"] <= $this->logged_in && ($sm_item["page_id.active"] || $this->logged_in > 5)))
-						{  
+						{
 							echo '<li '.($this->logged_in < 7 ? '' : 'ng-if="!changed"').' '.($sm_item["page_id"] == $this->page["id"] ? ' class="active"' : '').'>';
 							echo '<a href="'.(isset($sm_item["page_id.link"]) ? RAZOR_BASE_URL.$sm_item["page_id.link"] : $sm_item["link_url"]).'" target="'.$sm_item["link_target"].'" '.($sm_item["link_url"] == "#" ? 'onclick="return false;"' : '').'>';
 							if (isset($sm_item["page_id.active"]) && !$sm_item["page_id.active"]) echo '<i class="fa fa-eye-slash"></i> ';
@@ -263,7 +261,7 @@ OUTPUT;
 					echo "</ul>";
 				}
 
-				echo '</li>';   
+				echo '</li>';
 			}
 		}
 	}
@@ -271,7 +269,7 @@ OUTPUT;
 	public function data_main()
 	{
 		// public or preview
-		if (isset($_GET["preview"]) || (!$this->login && !isset($_COOKIE["token"]))) 
+		if (isset($_GET["preview"]) || (!$this->login && !isset($_COOKIE["token"])))
 		{
 			echo 'data-main="base-module"';
 			return;
@@ -319,8 +317,8 @@ OUTPUT;
 	<!--[if lt IE 9]>
 		<div class="ie8">
 			<p class="message">
-				<i class="fa fa-exclamation-triangle"></i> You are using an outdated version of Internet Explorer that is not supported, 
-				please update your browser or consider using an alternative, modern browser, such as 
+				<i class="fa fa-exclamation-triangle"></i> You are using an outdated version of Internet Explorer that is not supported,
+				please update your browser or consider using an alternative, modern browser, such as
 				<a href="http://www.google.com/chrome">Google Chome</a>.
 			</p>
 		<div>
@@ -391,7 +389,7 @@ OUTPUT;
 		{
 			$this->page = $page;
 			$this->page['id'] = (int) $this->page['id'];
-			$this->page['active'] = (int) $this->page['active']; 
+			$this->page['active'] = (int) $this->page['active'];
 			$this->page['access_level'] = (int) $this->page['access_level'];
 		}
 		else $this->page = null;
