@@ -7,7 +7,7 @@
  * @site ulsmith.net
  * @created Feb 2014
  */
- 
+
 define(["angular", "cookie-monster", "jquery", "summernote", "ui-bootstrap"], function(angular, monster, $)
 {
 	angular.module("razor.admin.edit", ['ui.bootstrap'])
@@ -19,7 +19,7 @@ define(["angular", "cookie-monster", "jquery", "summernote", "ui-bootstrap"], fu
 		$scope.toggle = true;
 		$scope.changed = true;
 		$scope.clickAndSort = {};
-		
+
 		$scope.site = null;
 		$scope.content = null;
 		$scope.locations = null;
@@ -62,7 +62,7 @@ define(["angular", "cookie-monster", "jquery", "summernote", "ui-bootstrap"], fu
 		};
 
 		$scope.loadPage = function()
-		{   
+		{
 			//get system data
 			rars.get("system/data", "all", monster.get("token")).success(function(data)
 			{
@@ -91,9 +91,9 @@ define(["angular", "cookie-monster", "jquery", "summernote", "ui-bootstrap"], fu
 				if (!$scope.page.theme) return;
 
 				// load in theme data
-				$http.get(RAZOR_BASE_URL + "extension/theme/" + $scope.page.theme).then(function(response) 
-				{ 
-					$scope.page.themeData = response.data; 
+				$http.get(RAZOR_BASE_URL + "extension/theme/" + $scope.page.theme).then(function(response)
+				{
+					$scope.page.themeData = response.data;
 				});
 			});
 
@@ -120,7 +120,7 @@ define(["angular", "cookie-monster", "jquery", "summernote", "ui-bootstrap"], fu
 		{
 			// clear edit stuff
 			$scope.editing = {"handle": null, "id": null};
-			$scope.toggle = false; 
+			$scope.toggle = false;
 		};
 
 		$scope.saveEdit = function()
@@ -139,15 +139,15 @@ define(["angular", "cookie-monster", "jquery", "summernote", "ui-bootstrap"], fu
 
 			// save all content for page
 			rars.post("content/editor", {"locations": $scope.locations, "content": $scope.content, "page_id": RAZOR_PAGE_ID}, monster.get("token")).success(function(data)
-			{ 
+			{
 				// stop edit
 				$scope.savedEditContent = true;
 				$scope.saveSuccess();
 			}).error(function(){
 				// stop edit
 				$scope.savedEditContent = true;
-				$scope.saveSuccess();	
-			});	  
+				$scope.saveSuccess();
+			});
 
 			// save all content for page
 			rars.post("menu/editor", $scope.menus, monster.get("token")).success(function(data)
@@ -158,7 +158,7 @@ define(["angular", "cookie-monster", "jquery", "summernote", "ui-bootstrap"], fu
 				// stop edit
 				$scope.savedEditMenu = true;
 				$scope.saveSuccess();
-			});	  
+			});
 
 			$scope.toggle = false;
 		};
@@ -186,26 +186,26 @@ define(["angular", "cookie-monster", "jquery", "summernote", "ui-bootstrap"], fu
 
 			// clear edit stuff
 			$scope.editing = {
-				"handle": locCol + content_id, 
+				"handle": locCol + content_id,
 				"id": content_id,
 			};
 
 			// start summernote and ensure callback for file uploading
 			$("#" + locCol + content_id).summernote({
-		        onImageUpload: function(files, editor, welEditable) 
+		        onImageUpload: function(files, editor, welEditable)
 		        {
 					rars.post("file/image", {"files": files}, monster.get("token")).success(function(data)
 					{
-						for (var i = 0; i < data.files.length; i++) 
+						for (var i = 0; i < data.files.length; i++)
 						{
 							editor.insertImage(welEditable, data.files[i].url);
-						};						
+						};
 					}).error(function(data)
 					{
 						$rootScope.$broadcast("global-notification", {"type": "danger", "text": "Could not upload image, please try again."});
 					});
 		        },
-		        onImageUploadError: function() 
+		        onImageUploadError: function()
 		        {
 					$rootScope.$broadcast("global-notification", {"type": "danger", "text": "Could not upload image, please try again."});
 		        }
@@ -259,7 +259,7 @@ define(["angular", "cookie-monster", "jquery", "summernote", "ui-bootstrap"], fu
 					newBlock.settings = settings;
 				}
 
-				$scope.locations[loc][col].push(newBlock); 
+				$scope.locations[loc][col].push(newBlock);
 			}
 		};
 
@@ -303,12 +303,12 @@ define(["angular", "cookie-monster", "jquery", "summernote", "ui-bootstrap"], fu
 				templateUrl: RAZOR_BASE_URL + "theme/partial/modal/menu-item-selection.html",
 				controller: "menuItemListModal"
 			}).result.then(function(selected)
-			{				
+			{
 				if (!!selected.label)
 				{
 					// url link
 					if (typeof parentMenuIndex == "undefined") $scope.menus[loc].menu_items.push({"link_label": selected.label, "link_url": selected.link || '#', "link_target": selected.target});
-					else 
+					else
 					{
 						if (!$scope.menus[loc].menu_items[parentMenuIndex].sub_menu) $scope.menus[loc].menu_items[parentMenuIndex].sub_menu = [];
 						$scope.menus[loc].menu_items[parentMenuIndex].sub_menu.push({"link_label": selected.label, "link_url": selected.link || '#', "link_target": selected.target});
@@ -317,7 +317,7 @@ define(["angular", "cookie-monster", "jquery", "summernote", "ui-bootstrap"], fu
 				else
 				{
 					if (typeof parentMenuIndex == "undefined") $scope.menus[loc].menu_items.push({"page_id": selected.id, "page_name": selected.name, "page_link": selected.link, "page_active": selected.active});
-					else 
+					else
 					{
 						if (!$scope.menus[loc].menu_items[parentMenuIndex].sub_menu) $scope.menus[loc].menu_items[parentMenuIndex].sub_menu = [];
 						$scope.menus[loc].menu_items[parentMenuIndex].sub_menu.push({"page_id": selected.id, "page_name": selected.name, "page_link": selected.link, "page_active": selected.active});
@@ -337,7 +337,7 @@ define(["angular", "cookie-monster", "jquery", "summernote", "ui-bootstrap"], fu
 		{
 			return RAZOR_BASE_URL + link;
 		};
-	
+
 		$scope.cancelEdit = function()
 		{
 			$scope.loadPage();
@@ -367,7 +367,7 @@ define(["angular", "cookie-monster", "jquery", "summernote", "ui-bootstrap"], fu
 		rars.get("content/list", "all").success(function(data)
 		{
 			$scope.content = data.content;
-		}); 
+		});
 
 		$scope.cancel = function()
 		{
@@ -377,12 +377,12 @@ define(["angular", "cookie-monster", "jquery", "summernote", "ui-bootstrap"], fu
 		$scope.close = function(c)
 		{
 			$modalInstance.close(c);
-		};	
+		};
 
-		$scope.addContent = function(c) 
+		$scope.addContent = function(c)
 		{
 			$scope.close(c);
-		}; 
+		};
 
 		$scope.loadHTML = function(html)
 		{
@@ -402,7 +402,7 @@ define(["angular", "cookie-monster", "jquery", "summernote", "ui-bootstrap"], fu
 		rars.get("extension/list", "system", monster.get("token")).success(function(data)
 		{
 			$scope.extensions = data.extensions;
-		}); 
+		});
 
 		$scope.cancel = function()
 		{
@@ -412,12 +412,12 @@ define(["angular", "cookie-monster", "jquery", "summernote", "ui-bootstrap"], fu
 		$scope.close = function(e)
 		{
 			$modalInstance.close(e);
-		};	
+		};
 
-		$scope.addExtension = function(e) 
+		$scope.addExtension = function(e)
 		{
 			$scope.close(e);
-		}; 
+		};
 	})
 
 	.controller("extensionListAccordion", function($scope)
@@ -446,11 +446,11 @@ define(["angular", "cookie-monster", "jquery", "summernote", "ui-bootstrap"], fu
 		rars.get("page/list", "all").success(function(data)
 		{
 			$scope.pages = data.pages;
-		}); 
+		});
 
 		$scope.addMenuItem = function(item) {
 			$scope.$parent.close(item);
-		};	
+		};
 
 		$scope.loadPreview = function(link)
 		{
@@ -458,7 +458,7 @@ define(["angular", "cookie-monster", "jquery", "summernote", "ui-bootstrap"], fu
 		};
 	})
 
-	.filter("html", function ($sce) 
+	.filter("html", function ($sce)
 	{
         return function (html) {
             return $sce.trustAsHtml(html);

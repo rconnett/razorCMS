@@ -7,7 +7,7 @@
  * @site ulsmith.net
  * @created Feb 2014
  */
- 
+
 define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 {
 	angular.module("razor.admin.extensions", ["ui.bootstrap"])
@@ -30,7 +30,7 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 				$scope.cats = data.list;
 			}).error(function(){
 				$rootScope.$broadcast("global-notification", {"type": "danger", "text": "Failed to load category list."});
-			}); 
+			});
 
 			// grab extension list
 			rars.get("list/repository", "extension", monster.get("token")).success(function(data)
@@ -38,7 +38,7 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 				$scope.exts = data.list;
 			}).error(function(){
 				$rootScope.$broadcast("global-notification", {"type": "danger", "text": "Failed to load extension list."});
-			}); 
+			});
 		};
 
 		$scope.searchExtensions = function()
@@ -47,7 +47,7 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 			{
 				templateUrl: RAZOR_BASE_URL + "theme/partial/modal/search-extensions.html",
 				controller: "searchExtensionsModal"
-			}).result.then(function()
+			}).result.then(function() {}, function()
 			{
 				$scope.loadExtensions();
 			});
@@ -65,7 +65,7 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 				$rootScope.$broadcast("global-notification", {"type": "success", "text": "Extension removed from system."});
 			}).error(function(){
 				$rootScope.$broadcast("global-notification", {"type": "danger", "text": "Failed to remove extension."});
-			}); 
+			});
 		}
 	})
 
@@ -98,7 +98,7 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 				$scope.extensionDetails = data.details;
 			}).error(function(){
 				$rootScope.$broadcast("global-notification", {"type": "danger", "text": "Failed to load extension details."});
-			}); 
+			});
 		};
 	})
 
@@ -121,7 +121,7 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 			$scope.repo = data.list;
 		}).error(function(){
 			$rootScope.$broadcast("global-notification", {"type": "danger", "text": "Failed to load extension list."});
-		}); 
+		});
 
 		// grab category list
 		rars.get("list/repository", "category", monster.get("token")).success(function(data)
@@ -129,7 +129,7 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 			$scope.cats = data.list;
 		}).error(function(){
 			$rootScope.$broadcast("global-notification", {"type": "danger", "text": "Failed to load category list."});
-		}); 
+		});
 
 		// get extension details
 		$scope.getExtensionDetails = function(ext)
@@ -142,7 +142,7 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 				$scope.extensionDetails = data.details;
 			}).error(function(){
 				$rootScope.$broadcast("global-notification", {"type": "danger", "text": "Failed to load extension details."});
-			}); 
+			});
 		};
 
 		// install extension
@@ -155,7 +155,7 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 				$rootScope.$broadcast("global-notification", {"type": "success", "text": "Extension installed."});
 			}).error(function(){
 				$rootScope.$broadcast("global-notification", {"type": "danger", "text": "Failed to install extension, please install manually."});
-			}); 
+			});
 		};
 	});
 });
