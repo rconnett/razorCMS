@@ -4,13 +4,13 @@
 <div class="modal-body">
 	<div class="accordian" ng-controller="searchExtensionsAccordion">
 		<div class="filter row">
-			<div class="col-sm-9">
+			<div class="col-sm-8">
 				<div class="input-group">
 						<span class="input-group-addon">Filter</span>
 					<input class="form-control" ng-model="searchFilter" placeholder="Search to filter" />
 				</div>
 			</div>
-			<div class="col-sm-3">
+			<div class="col-sm-4">
 				<div class="input-group">
 					<span class="input-group-addon">Limit</span>
 					<input class="form-control" ng-model="searchLimit" ng-init="searchLimit = 25" type="number"/>
@@ -33,7 +33,7 @@
 					<div class="text-center" ng-if="!extensionDetails">
 						<i class="fa fa-refresh fa-spin fa-5x"></i>
 					</div>
-					
+
 					<div class="extension-info" ng-if="extensionDetails">
 						<button class="btn btn-primary pull-right" ng-click="installExtension(ext)"><i class="fa fa-cogs"></i> Install</button>
 						<p><strong class="extension-detail-label">Name</strong> {{extensionDetails.extension}}</p>
@@ -47,7 +47,7 @@
 					<div ng-if="ext.images.length > 0 && extensionDetails">
 						<p><strong>Screenshots</strong></p>
 						<button class="btn btn-default" ng-repeat="img in ext.images" ng-click="$parent.screenshot = img" style="margin: 0 5px 5px 0;">{{$index + 1}}</button>
-						<img ng-src="{{screenshot}}" width="100%" ng-init="screenshot = ext.images[0]">					
+						<img ng-src="{{screenshot}}" width="100%" ng-init="screenshot = ext.images[0]">
 					</div>
 				</div>
 			</accordion-group>
