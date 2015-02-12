@@ -139,7 +139,7 @@ class RazorSite
 				<div class="form-group" ng-repeat="setting in block.extension_content_settings" ng-form="subForm">
 					<label class="col-sm-3 control-label">{{setting.label}}</label>
 					<div class="col-sm-7">
-						<input type="text" class="form-control" placeholder="{{setting.placeholder}}" name="input" ng-model="block.settings[setting.name]" ng-pattern="{{setting.regex}}" >
+						<input type="text" class="form-control" placeholder="{{setting.placeholder}}" name="input" ng-model="block.settings[setting.name]" ng-pattern="setting.regex.substring(0, 1) == '/' ? setting.regex.substring(1, setting.regex.length -1) : setting.regex" >
 					</div>
 					<div class="col-sm-2 error-block" ng-show="subForm.input.\$dirty && subForm.input.\$invalid">
 						<span class="alert alert-danger alert-form" ng-show="subForm.input.\$error.pattern">Invalid</span>
