@@ -30,6 +30,16 @@
 						<span class="alert alert-danger alert-form" ng-show="form.name.$error.required">Required</span>
 					</div>
 				</div>
+				<div class="form-group" ng-if="site.dev_mode === true || site.dev_mode === false">
+					<label class="col-sm-3 control-label">Development Mode</label>
+					<div class="col-sm-2">
+						<slide-switch rzr-model="site.dev_mode"></slide-switch>
+					</div>
+					<div class="col-sm-5">
+						<p ng-if="!site.dev_mode" class="alert alert-success alert-inline-message">Standard mode, error message hidden from user.</p>
+						<p ng-if="site.dev_mode" class="alert alert-danger alert-inline-message">Development mode, error message show to user.</p>
+					</div>
+				</div>
 				<div class="form-group">
 					<label for="site-name" class="col-sm-3 control-label">Site Name</label>
 					<div class="col-sm-7">
@@ -121,7 +131,7 @@
 				<div class="form-group">
 					<div class="col-sm-offset-3 col-sm-7">
 						<button type="submit" class="btn btn-success" ng-click="save()" ng-disabled="form.$invalid || processing">
-							<i class="fa fa-check"></i> 
+							<i class="fa fa-check"></i>
 							Save Settings
 						</button>
 					</div>

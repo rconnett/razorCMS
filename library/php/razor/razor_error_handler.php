@@ -9,17 +9,11 @@
  * @site ulsmith.net
  * @created Feb 2014
  */
- 
+
 class RazorErrorHandler {
 
 	private $mode = "production"; // set default state
 	
-	function __construct()
-	{
-		// detect if local host and auto switch to dev mode
-		if (strpos(RAZOR_BASE_URL, "http://localhost") === 0) $this->mode = "development";
-	}
-
 	/**
 	 * Handle Error
 	 * Handles all errors and exceptions

@@ -9,7 +9,7 @@
  * @site ulsmith.net
  * @created Feb 2014
  */
- 
+
 // RazorAPI class
 class RazorAPI
 {
@@ -38,7 +38,7 @@ class RazorAPI
 		{
 			// we do not have to do much checking here, the db class protects itself against harmfull chars
 			if (defined("RARS_CLEAN_DATA_ALLOWED_TAGS")) return strip_tags($data, RARS_CLEAN_DATA_ALLOWED_TAGS);
-			else return $data;			
+			else return $data;
 		}
 		elseif (is_bool($data) || is_int($data) || is_float($data)) return $data;
 		else return null;
@@ -128,14 +128,14 @@ class RazorAPI
 			// find banned rows
 			$banned = $this->razor_db->get_first('banned', '*', array('ip_address' => $ip_address, 'user_agent' => $user_agent));
 
-			if (!empty($banned)) return RazorAPI::response(array("message" => "Login failed: ip banned", "login_error_code" => 104), "json");  
+			if (!empty($banned)) return RazorAPI::response(array("message" => "Login failed: ip banned", "login_error_code" => 104), "json");
 		}
 
 		/* carry on with login */
 
 		// find user
 		$user = $this->razor_db->get_first('user', '*', array('email_address' => $data['username']));
-		
+
 		// check user found
 		if (empty($user)) return RazorAPI::response(array("message" => "Login failed: username or password missmatch", "login_error_code" => 101), "json");
 
@@ -147,14 +147,14 @@ class RazorAPI
 
 		// check active user
 		if (!$user["active"]) return RazorAPI::response(array("message" => "Login failed: user not active", "login_error_code" => 103), "json");
-		
-		// now check if password ok (we need password first to get salt from it before we can check it), if not then send response		
+
+		// now check if password ok (we need password first to get salt from it before we can check it), if not then send response
 		if (RazorAPI::create_hash($data["password"],substr($user["password"],0,(strlen($user["password"])/2)),'sha1') !== $user["password"])
 		{
 			// data to update
 			$update_data = array('failed_attempts' => $user['failed_attempts']++);
 			if ($user["failed_attempts"] > 0 && $user["failed_attempts"] % RARS_ACCESS_ATTEMPTS == 0) $update_data['lock_until'] = time() + RARS_ACCESS_LOCKOUT;
-			
+
 			// update
 			$this->razor_db->edit_data('user', $update_data, array('id' => $user['id']));
 
@@ -215,7 +215,7 @@ class RazorAPI
 		$user = $this->razor_db->get_first('user', '*', array('id' => $id));
 
 		// no user found or no access in XXX seconds
-		if (empty($user)) return false;	 
+		if (empty($user)) return false;
 		if ($user["last_accessed"] < time() - $access_timeout) return false;
 
 		/* all ok, so go verify user */
@@ -260,9 +260,8 @@ class RazorAPI
 	public function email($from, $to, $subject, $message)
 	{
 		$headers = "From: {$from}\r\nReply-To: {$from}\r\nMIME-Version: 1.0" . "\r\nContent-type:text/html;charset=UTF-8";
-		
-		// do base check for production server and mail only if not localhost
-		if (strpos(RAZOR_BASE_URL, "http://localhost") !== 0) mail($to, $subject, $message, $headers);
+
+		mail($to, $subject, $message, $headers);
 	}
 
 	public static function response($data, $type = null, $code = null)
@@ -346,7 +345,7 @@ class RazorAPI
 	private static function raw($data)
 	{
 		$data = RazorAPI::clean_output($data);
-		
+
 		header("Cache-Control: no-cache, no-store, must-revalidate");
 		echo (isset($data["error"]) ? $data["error"].(empty($data["response"]) ? "" : " with response: ".$data["response"]) : var_export($data, true));
 		exit();
@@ -355,7 +354,7 @@ class RazorAPI
 	private static function json($data)
 	{
 		$data = RazorAPI::clean_output($data);
-		
+
 		header("Content-type: application/json");
 		header("Cache-Control: no-cache, no-store, must-revalidate");
 		echo json_encode($data);

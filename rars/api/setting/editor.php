@@ -9,7 +9,7 @@
  * @site ulsmith.net
  * @created Feb 2014
  */
- 
+
 class SettingEditor extends RazorAPI
 {
 	function __construct()
@@ -40,6 +40,14 @@ class SettingEditor extends RazorAPI
 				break;
 			}
 		}
+
+        // for super admin, allow dev mode to be changed
+        if ((int) $this->check_access() > 9)
+        {
+            $err_hand = file_get_contents(RAZOR_BASE_PATH.'library/php/razor/razor_error_handler.php');
+            if (strpos($err_hand, 'private $mode = "development";') > 0) $settings['dev_mode'] = true;
+            elseif (strpos($err_hand, 'private $mode = "production";') > 0) $settings['dev_mode'] = false;
+        }
 
 		// return the basic user details
 		$this->response(array("settings" => $settings), "json");
