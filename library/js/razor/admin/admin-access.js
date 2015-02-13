@@ -7,7 +7,7 @@
  * @site ulsmith.net
  * @created Feb 2014
  */
- 
+
 define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 {
 	angular.module("razor.admin.access", ['ui.bootstrap'])
@@ -23,7 +23,7 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 		$scope.site = null;
 		$scope.page = null;
 		$scope.system = null;
-		
+
 		$scope.latestVersion = null;
 		$scope.upgrade = null;
 		$scope.noUpgrade = null;
@@ -35,7 +35,7 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 		{
 			$scope.site = {name: siteName, allow_regsitration: allowRegistration};
 			$scope.loginCheck();
-			
+
 			// nav active watcher
 			$scope.$watch("location.path()", function(path)
 			{
@@ -117,9 +117,9 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 				if (!$scope.page.theme) return;
 
 				// load in theme data
-				$http.get(RAZOR_BASE_URL + "extension/theme/" + $scope.page.theme).then(function(response) 
-				{ 
-					$scope.page.themeData = response.data; 
+				$http.get(RAZOR_BASE_URL + "extension/theme/" + $scope.page.theme).then(function(response)
+				{
+					$scope.page.themeData = response.data;
 				});
 			});
 		};
@@ -164,7 +164,7 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 		};
 
 		$scope.register = function()
-		{			
+		{
 			$modal.open(
 			{
 				templateUrl: RAZOR_BASE_URL + "theme/partial/modal/register-user.html",
@@ -173,7 +173,7 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 		};
 
 		$scope.editProfile = function()
-		{			
+		{
 			$modal.open(
 			{
 				templateUrl: RAZOR_BASE_URL + "theme/partial/modal/user-profile.html",
@@ -185,14 +185,14 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 		};
 
 		$scope.loginModal = function()
-		{			
+		{
 			$modal.open(
 			{
 				templateUrl: RAZOR_BASE_URL + "theme/partial/modal/login.html",
 				controller: "login",
 				resolve: {
 					site: function(){ return $scope.site; },
-					activePage: function(){ return $scope.activePage; } 
+					activePage: function(){ return $scope.activePage; }
 				}
 			}).result.then(function(response)
 			{
@@ -208,7 +208,7 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 		$scope.cancel = function()
 		{
 			$modalInstance.dismiss('cancel');
-		}; 
+		};
 
 		$scope.saveUser = function(profile)
 		{
@@ -217,11 +217,11 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 			rars.post("user/data", profile, monster.get("token")).success(function(data)
 			{
 				$scope.processing = false;
-				
+
 				if (!!data.reload)
 				{
 					$rootScope.$broadcast("global-notification", {"type": "success", "text": "User profile updated, logging out in 3 seconds."});
-	
+
 					$timeout(function()
 					{
 						window.location = RAZOR_BASE_URL;
@@ -229,13 +229,13 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 				}
 				else $rootScope.$broadcast("global-notification", {"type": "success", "text": "User profile updated."});
 
-			}).error(function(data, header) 
-			{ 
+			}).error(function(data, header)
+			{
 				$scope.processing = false;
 				if (header == 409) $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Could not update user profile, email address already registered."});
 				else $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Could not update user profile."});
 			});
-		};   
+		};
 	})
 
 	.controller("registerUserModal", function($scope, $modalInstance, $rootScope, rars, $timeout)
@@ -254,8 +254,8 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 				if (data.manual_activation) $rootScope.$broadcast("global-notification", {"type": "success", "text": "Registration completed, please allow time for administration to activate account."});
 				else $rootScope.$broadcast("global-notification", {"type": "success", "text": "Registration completed, please click link in activation email to complete."});
 				$modalInstance.close();
-			}).error(function(data, header) 
-			{ 
+			}).error(function(data, header)
+			{
 				if (header == 409) $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Could not register user, email address already registered."});
 				else if (header == 406) $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Could not register user, you are not human."});
 				else $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Could not register user, please try again later."});
@@ -265,7 +265,7 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 					window.location.href = RAZOR_BASE_URL + "/login#register";
 				}, 3000);
 			});
-		};	
+		};
 	})
 
 	.controller("addNewPageModal", function($scope, $modalInstance, rars, $rootScope)
@@ -274,7 +274,7 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 		$scope.processing = null;
 		$scope.completed = null;
 		$scope.newPage = null;
-		
+
 		$scope.accessLevels = [
 			{"name": "Public Access", "value": 0},
 			{"name": "User Level 1", "value": 1},
@@ -292,14 +292,14 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 		$scope.closeAndEdit = function()
 		{
 			$modalInstance.close($scope.newPage.link);
-		};  
+		};
 
 		$scope.addAnother = function()
 		{
 			$scope.completed = null;
 			$scope.processing = null;
 			$scope.page = {};
-		};  
+		};
 
 		$scope.saveNewPage = function()
 		{
@@ -317,18 +317,18 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 				if (!data.response.code) $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Could not save page, please try again later."});
 				else if (data.response.code == 101) $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Link is not unique, already being used by another page."});
 				$scope.processing = false;
-			}); 
-		};  
+			});
+		};
 
 	})
 
 	.controller("copyPageModal", function($scope, $modalInstance, rars, $rootScope, page)
 	{
-		$scope.page = angular.copy(page);		
+		$scope.page = angular.copy(page);
 		$scope.processing = null;
 		$scope.completed = null;
 		$scope.newPage = null;
-		
+
 		$scope.accessLevels = [
 			{"name": "Public Access", "value": 0},
 			{"name": "User Level 1", "value": 1},
@@ -346,14 +346,14 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 		$scope.closeAndEdit = function()
 		{
 			$modalInstance.close($scope.newPage.link);
-		};  
+		};
 
 		$scope.addAnother = function()
 		{
 			$scope.completed = null;
 			$scope.processing = null;
 			$scope.page = angular.copy(page);
-		};  
+		};
 
 		$scope.copyPage = function()
 		{
@@ -371,8 +371,8 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 				if (!data.response.code) $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Could not copy page, please try again later."});
 				else if (data.response.code == 101) $rootScope.$broadcast("global-notification", {"type": "danger", "text": "Link is not unique, already being used by another page."});
 				$scope.processing = false;
-			}); 
-		};  
+			});
+		};
 
 	})
 
@@ -384,7 +384,8 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 		$scope.loginDetails = {"u": null, "p": null};
 		$scope.passwordDetails = {"password": null, "repeat_password": null};
 		$scope.forgotPassword = false;
-
+        $scope.allowReg = typeof RAZOR_FORM_SIGNATURE === 'undefined' ? false : true;
+        
 		$scope.cancel = function()
 		{
 			$modalInstance.dismiss();
@@ -395,7 +396,7 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 			if ($scope.activePage == 'password-reset') $scope.passwordReset();
 			else if (!!$scope.forgotPassword) $scope.passwordEmail();
 			else $scope.login();
-		};	
+		};
 
 		$scope.login = function()
 		{
@@ -424,7 +425,7 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 			.error(function(data)
 			{
 				$scope.processing = false;
-				$rootScope.$broadcast("global-notification", {"type": "danger", "text": "Login failed."}); 
+				$rootScope.$broadcast("global-notification", {"type": "danger", "text": "Login failed."});
 			});
 		};
 
@@ -438,7 +439,7 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 					$rootScope.$broadcast("global-notification", {"type": "success", "text": "Password reset link emailed to you, you have one hour to use the link."});
 					$scope.processing = false;
 				})
-				.error(function(data, header) 
+				.error(function(data, header)
 				{
 					$rootScope.$broadcast("global-notification", {"type": "danger", "text": "Could not send password request, user not found or too many requests in last ten minutes."});
 					$scope.processing = false;
