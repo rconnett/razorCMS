@@ -419,8 +419,8 @@ OUTPUT;
 			.", c.json_settings AS 'menu_id.json_settings'"
 			.", c.access_level AS 'menu_id.access_level'"
 			.' FROM menu_item AS a'
-			.' JOIN page AS b ON a.page_id = b.id'
-			.' JOIN menu AS c ON a.menu_id = c.id'
+			.' LEFT JOIN page AS b ON a.page_id = b.id'
+			.' LEFT JOIN menu AS c ON a.menu_id = c.id'
 			.' ORDER BY position ASC'
 		);
 

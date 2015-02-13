@@ -4,7 +4,7 @@
 	</div>
 	<div class="modal-body">
 		<tabset>
-			<tab heading="Page" select="$parent.selected = 'page'">
+			<tab heading="Page" select="$parent.$parent.selected = 'page'">
 				<div class="accordian" ng-controller="menuItemListAccordion">
 					<div class="filter row">
 						<div class="col-sm-8">
@@ -39,17 +39,17 @@
 				</div>
 			</tab>
 
-			<tab heading="URL" select="$parent.selected = 'url'">
+			<tab heading="URL" select="$parent.$parent.selected = 'url'">
 				<div class="form-group">
 					<label for="url-link" class="col-sm-3 control-label">URL</label>
 					<div class="col-sm-7">
-						<input id="url-link" name="urlLink" class="form-control" type="text" ng-model="$parent.url.link" placeholder="http://www.somelink.co.uk" ng-disabled="processing">
+						<input id="url-link" name="urlLink" class="form-control" type="text" ng-model="$parent.$parent.url.link" placeholder="http://www.somelink.co.uk" ng-disabled="processing">
 					</div>
 				</div>
 				<div class="form-group">
 					<label for="url-label" class="col-sm-3 control-label">Label</label>
 					<div class="col-sm-7">
-						<input id="url-label" name="urlLabel" class="form-control" type="text" ng-model="$parent.url.label" placeholder="Some Link Label" ng-disabled="processing" required>
+						<input id="url-label" name="urlLabel" class="form-control" type="text" ng-model="$parent.$parent.url.label" placeholder="Some Link Label" ng-disabled="processing" required>
 					</div>
 					<div class="col-sm-2 error-block" ng-show="form.urlLabel.$dirty && form.urlLabel.$invalid">
 						<span class="alert alert-danger alert-form" ng-show="form.urlLabel.$error.pattern">Invalid</span>
@@ -58,7 +58,7 @@
 				<div class="form-group">
 					<label for="url-target" class="col-sm-3 control-label">Target</label>
 					<div class="col-sm-7">
-						<select ng-init="$parent.url.target = ''" class="form-control" id="url-target" ng-model="$parent.url.target" ng-disabled="processing">
+						<select ng-init="$parent.$parent.url.target = ''" class="form-control" id="url-target" ng-model="$parent.$parent.url.target" ng-disabled="processing">
 							<option value="">Same Window/Tab</option>
 							<option value="_blank">New Window/Tab</option>
 						</select>
