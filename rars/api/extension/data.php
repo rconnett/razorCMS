@@ -9,7 +9,7 @@
  * @site ulsmith.net
  * @created Feb 2014
  */
- 
+
 class ExtensionData extends RazorAPI
 {
 	private $ext_path = null;
@@ -33,11 +33,11 @@ class ExtensionData extends RazorAPI
 		foreach ($ext["settings"] as $set) $settings[$set["name"]] = $set["value"];
 
 		$columns = array('id');
-		$where = array('extension' => $ext['extension'], 'type' => $ext['type'], 'handle' => $ext['handle']);
+		$where = array('extension' => strtolower($ext['extension']), 'type' => strtolower($ext['type']), 'handle' => strtolower($ext['handle']));
 		$extension = $this->razor_db->get_first('extension', $columns, $where);
 
 		if (!empty($extension)) $this->razor_db->edit_data('extension', array("json_settings" => json_encode($settings)), $where);
-		else 
+		else
 		{
 			// add new
 			$data = array(
@@ -70,7 +70,7 @@ class ExtensionData extends RazorAPI
 
 		if (!is_dir($remove_path)) $this->response(null, null, 400);
 
-		if (RazorFileTools::delete_directory($remove_path)) 
+		if (RazorFileTools::delete_directory($remove_path))
 		{
 			if (is_dir($rars_remove_path)) RazorFileTools::delete_directory($rars_remove_path);
 			$this->response("success", "json");
