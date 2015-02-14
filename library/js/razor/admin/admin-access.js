@@ -91,7 +91,7 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 					$scope.latestVersion = data;
 
 					var latestBuild = (data.version * 1000000) + (data.milestone * 1000) + data.release;
-					var systemBuild = ($scope.system.version * 1000000) + ($scope.system.milestone * 1000) + $scope.system.release;
+					var systemBuild = (parseInt($scope.system.version) * 1000000) + (parseInt($scope.system.milestone) * 1000) + parseInt($scope.system.release);
 
 					if (latestBuild > systemBuild) $scope.upgrade = true;
 					else $scope.noUpgrade = true;
@@ -385,7 +385,7 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 		$scope.passwordDetails = {"password": null, "repeat_password": null};
 		$scope.forgotPassword = false;
         $scope.allowReg = typeof RAZOR_FORM_SIGNATURE === 'undefined' ? false : true;
-        
+
 		$scope.cancel = function()
 		{
 			$modalInstance.dismiss();
