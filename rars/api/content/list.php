@@ -56,7 +56,7 @@ class ContentList extends RazorAPI
 		}
 
 		// return the basic user details
-		$this->response(array("content" => $content), "json");
+		$this->response(array("content" => array_values($content)), "json");
 	}
 }
 
