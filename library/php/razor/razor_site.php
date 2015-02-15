@@ -20,14 +20,14 @@ class RazorSite
 	private $content = null;
 	private $login = false;
 	private $logged_in = false;
-	private $db = null;
+	private $razor_db = null;
 
 	function __construct()
 	{
 		// generate path from get
 		$this->link = (isset($_GET["path"]) ? $_GET["path"] : null);
 
-		$this->db = new RazorPDO();
+		$this->razor_db = new RazorPDO();
 	}
 
 	public function load()
@@ -139,10 +139,12 @@ class RazorSite
 				<div class="form-group" ng-repeat="setting in block.extension_content_settings" ng-form="subForm">
 					<label class="col-sm-3 control-label">{{setting.label}}</label>
 					<div class="col-sm-7">
-						<input type="text" class="form-control" placeholder="{{setting.placeholder}}" name="input" ng-model="block.settings[setting.name]" ng-pattern="setting.regex.substring(0, 1) == '/' ? setting.regex.substring(1, setting.regex.length -1) : setting.regex" >
+						<input ng-if="!setting.type || setting.type == 'string'" type="text" class="form-control" placeholder="{{setting.placeholder}}" name="input" ng-model="block.settings[setting.name]" ng-pattern="setting.regex.substring(0, 1) == '/' ? setting.regex.substring(1, setting.regex.length -1) : setting.regex" >
+						<input ng-if="setting.type == 'int'" type="number" class="form-control" placeholder="{{setting.placeholder}}" name="input" ng-model="block.settings[setting.name]" ng-pattern="/^[0-9]+\$/" >
+						<slide-switch rzr-model="block.settings[setting.name]" ng-if="setting.type == 'bool'"></slide-switch>
 					</div>
 					<div class="col-sm-2 error-block" ng-show="subForm.input.\$dirty && subForm.input.\$invalid">
-						<span class="alert alert-danger alert-form" ng-show="subForm.input.\$error.pattern">Invalid</span>
+						<span class="alert alert-danger alert-form" ng-show="subForm.input.\$dirty && subForm.input.\$invalid">Invalid</span>
 					</div>
 				</div>
 			</form>
@@ -168,7 +170,7 @@ OUTPUT;
 					echo '<div ng-if="!changed" content-id="'.$c_data["content_id"].'">';
 
 					// content
-					$content = $this->db->get_first('content', '*', array('id' => $c_data['content_id']));
+					$content = $this->razor_db->get_first('content', '*', array('id' => $c_data['content_id']));
 
 					echo str_replace("\\n", "", $content["content"]);
 
@@ -359,7 +361,7 @@ OUTPUT;
 	private function get_site_data()
 	{
 		// get site data
-		$setting = $this->db->get_all('setting');
+		$setting = $this->razor_db->get_all('setting');
 
 		foreach ($setting as $result)
 		{
@@ -382,7 +384,7 @@ OUTPUT;
 	{
 		// get page data
         $where = (empty($this->link) ? array('id' => $this->site["home_page"]) : array('link' => $this->link));
-		$page = $this->db->get_first('page', '*', $where);
+		$page = $this->razor_db->get_first('page', '*', $where);
 
 		// ensure type correct
 		if (!empty($page))
@@ -403,7 +405,7 @@ OUTPUT;
 		// collate all menus (to cut down on duplicate searches)
 		$this->menu = array();
 
-		$menus = $this->db->query_all('SELECT a.*'
+		$menus = $this->razor_db->query_all('SELECT a.*'
 			.", b.id AS 'page_id.id'"
 			.", b.active AS 'page_id.active'"
 			.", b.theme AS 'page_id.theme'"
@@ -444,11 +446,11 @@ OUTPUT;
 
 	private function add_new_menu($loc)
 	{
-		// check if menu exists in db, if yes return false to carry on
+		// check if menu exists in razor_db, if yes return false to carry on
 		if (in_array($loc, $this->all_menus)) return false;
 
 		// create new menu
-		$this->db->add_data('menu', array('name' => $loc));
+		$this->razor_db->add_data('menu', array('name' => $loc));
 
 		return true;
 	}
@@ -459,15 +461,32 @@ OUTPUT;
 		if (empty($this->page)) return;
 
 		// grab all content
-		$this->content = $this->db->query_all('SELECT * FROM page_content WHERE page_id = :page_id ORDER BY position ASC', array('page_id' => $this->page['id']));
+		$this->content = $this->razor_db->query_all('SELECT * FROM page_content WHERE page_id = :page_id ORDER BY position ASC', array('page_id' => $this->page['id']));
 	}
 
 	private function get_all_menus()
 	{
-		$menus = $this->db->get_all('menu');
+		$menus = $this->razor_db->get_all('menu');
 
 		$this->all_menus = array();
 		foreach ($menus as $menu) $this->all_menus[] = $menu["name"];
+	}
+
+	private function extension_settings($manifest, $c_data, $type, $handle, $extension)
+	{
+		$settings = array("extension" => array(), "instance" => array());
+
+		// extension specific
+		$extension = $this->razor_db->get_first('extension', array("json_settings"), array("type" => $type, "handle" => $handle, "extension" => $extension));
+		if (!empty($extension)) $settings["extension"] = (array) json_decode($extension['json_settings']);
+
+		// instance specific
+		$c = json_decode($c_data["json_settings"]);
+		$m = array();
+		foreach ($manifest->content_settings as $m_set) $m[$m_set->name] = (isset($c->{$m_set->name}) && !empty($c->{$m_set->name}) ? $c->{$m_set->name} : $m_set->value);
+		$settings["instance"] = $m;
+
+		return $settings;
 	}
 }
 /* EOF */

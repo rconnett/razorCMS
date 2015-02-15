@@ -88,10 +88,12 @@
 												{{(setting.label ? setting.label : setting.name)}}
 											</label>
 											<div class="col-sm-7">
-												<input name="input" class="form-control" type="text" ng-model="setting.value" placeholder="{{setting.placeholder}}" ng-pattern="{{setting.regex.substring(0, 1) == '/' ? setting.regex.substring(1, setting.regex.length -1) : setting.regex}}">
+												<input ng-if="!setting.type || setting.type == 'string'" name="input" class="form-control" type="text" ng-model="setting.value" placeholder="{{setting.placeholder}}" ng-pattern="{{setting.regex.substring(0, 1) == '/' ? setting.regex.substring(1, setting.regex.length -1) : setting.regex}}">
+												<input ng-if="setting.type == 'int'" name="input" class="form-control" type="number" ng-model="setting.value" placeholder="{{setting.placeholder}}" ng-pattern="/^[0-9]+$/">
+												<slide-switch rzr-model="setting.value" ng-if="setting.type == 'bool'"></slide-switch>
 											</div>
 											<div class="col-sm-2 error-block ng-cloak" ng-show="subForm.input.$dirty && subForm.input.$invalid">
-												<span class="alert alert-danger alert-form" ng-show="subForm.input.$error.pattern">Invalid</span>
+												<span class="alert alert-danger alert-form" ng-show="subForm.input.$dirty && subForm.input.$invalid">Invalid</span>
 											</div>
 										</div>
 										<div class="form-group">
