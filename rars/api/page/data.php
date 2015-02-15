@@ -9,7 +9,7 @@
  * @site ulsmith.net
  * @created Feb 2014
  */
- 
+
 class PageData extends RazorAPI
 {
 	function __construct()
@@ -30,15 +30,16 @@ class PageData extends RazorAPI
 		if (!empty($result)) $this->response(array("error" => "duplicate link found", "code" => 101), 'json', 409);
 
 		$row = array(
-			"name" => $data["name"], 
-			"title" => $data["title"], 
-			"link" => $data["link"], 
-			"keywords" => $data["keywords"], 
-			"description" => $data["description"], 
-			"access_level" => (int) $data["access_level"], 
+			"name" => $data["name"],
+			"title" => $data["title"],
+			"link" => $data["link"],
+			"keywords" => $data["keywords"],
+			"description" => $data["description"],
+			"access_level" => (int) $data["access_level"],
 			"active" => false
 		);
 		$result = $this->razor_db->add_data('page', $row, '*');
+        $result = $result[0];
 
 		// return the basic user details
 		$this->response($result, "json");
@@ -50,7 +51,7 @@ class PageData extends RazorAPI
 		// login check - if fail, return no data to stop error flagging to user
 		if ((int) $this->check_access() < 8) $this->response(null, null, 401);
 		if (!is_numeric($id)) $this->response(null, null, 400);
-		
+
 		// delete page
 		$this->razor_db->delete_data('page', array('id' => (int) $id));
 
