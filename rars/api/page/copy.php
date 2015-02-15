@@ -9,7 +9,7 @@
  * @site ulsmith.net
  * @created Feb 2014
  */
- 
+
 class PageCopy extends RazorAPI
 {
 	function __construct()
@@ -31,22 +31,24 @@ class PageCopy extends RazorAPI
 
 		// copy the page
 		$row = array(
-			"name" => $data["name"], 
-			"title" => $data["title"], 
-			"link" => $data["link"], 
-			"keywords" => $data["keywords"], 
-			"description" => $data["description"], 
-			"access_level" => (int) $data["access_level"], 
-			"theme" => $data["theme"], 
-			"json_settings" => $data["json_settings"], 
+			"name" => $data["name"],
+			"title" => $data["title"],
+			"link" => $data["link"],
+			"keywords" => $data["keywords"],
+			"description" => $data["description"],
+			"access_level" => (int) $data["access_level"],
+			"theme" => $data["theme"],
+			"json_settings" => $data["json_settings"],
 			"active" => false
 		);
-		$new_page = $this->razor_db->add_data('page', $row, '*')[0];
+		$new_page = $this->razor_db->add_data('page', $row, '*');
 
 		if (empty($new_page)) $this->response(null, null, 400);
 
+        $new_page = $new_page[0];
+
 		// next lets get all the page content for page we are copying
-		$page_content = $this->razor_db->get_all('page_content', '*', array('page_id' => $data['id']));		
+		$page_content = $this->razor_db->get_all('page_content', '*', array('page_id' => $data['id']));
 
 		// now copy if any found
 		if (count($page_content) > 0)
@@ -65,7 +67,7 @@ class PageCopy extends RazorAPI
 			}
 
 			$this->razor_db->add_data('page_content', $new_rows);
-		} 
+		}
 
 		// return the basic page details
 		$this->response($new_page, "json");
