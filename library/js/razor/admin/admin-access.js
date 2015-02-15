@@ -93,10 +93,6 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 					var latestBuild = (data.version * 1000000) + (data.milestone * 1000) + data.release;
 					var systemBuild = (parseInt($scope.system.version) * 1000000) + (parseInt($scope.system.milestone) * 1000) + parseInt($scope.system.release);
 
-					// REMOVE AFTER THIS 3.4.5 release to fix bug with version numbers
-					if (latestBuild = 300004005) latestBuild = 3004005;
-					if (latestBuild = 300004006) latestBuild = 3004006;
-
 					if (latestBuild > systemBuild) $scope.upgrade = true;
 					else $scope.noUpgrade = true;
 
