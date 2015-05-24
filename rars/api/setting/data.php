@@ -97,6 +97,12 @@ class SettingData extends RazorAPI
 			if (empty($res)) $this->razor_db->add_data('setting', array("name" => "cookie_message_button", "value" => (string) $data["cookie_message_button"], "type" => "string"));
 		}
 
+                if (isset($data["default_theme"]))
+		{
+			$res = $this->razor_db->edit_data('setting', array("value" => $data["default_theme"]), array('name' => 'default_theme'));
+			if (empty($res)) $this->razor_db->add_data('setting', array("name" => "default_theme", "value" => (string) $data["default_theme"], "type" => "string"));
+		}
+
 		if (isset($data["dev_mode"]))
 		{
 			// error handler dev mode must be changed at file level due to when its instantiated before anything else

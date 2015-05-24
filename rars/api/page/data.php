@@ -38,8 +38,15 @@ class PageData extends RazorAPI
 			"access_level" => (int) $data["access_level"],
 			"active" => false
 		);
-		$result = $this->razor_db->add_data('page', $row, '*');
-        $result = $result[0];
+
+                // Set the theme to the default option as defined in the settings
+                $default_theme = $this->razor_db->get_first('setting', '*', array('name' => 'default_theme'));
+                if (!empty($default_theme['value'])) {
+                  $row["theme"] = $default_theme['value'];
+                }
+                
+                $result = $this->razor_db->add_data('page', $row, '*');
+                $result = $result[0];
 
 		// return the basic user details
 		$this->response($result, "json");

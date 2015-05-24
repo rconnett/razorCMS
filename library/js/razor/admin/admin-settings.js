@@ -14,8 +14,18 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 
 	.controller("settings", function($scope, rars, $rootScope, $http, $modal)
 	{
-		// $scope.current = null;
 
+                // $scope.current = null;
+
+                if ($scope.$parent.$parent.site.default_theme) {
+                    var theme = $scope.$parent.$parent.site.default_theme;
+                    // load in theme data
+                    $http.get(RAZOR_BASE_URL + "extension/theme/" + theme).then(
+                        function(response){
+                	    $scope.site.themeData = response.data;
+		        });
+                }
+            
 	   	$scope.save = function()
 		{
 			$scope.processing = true;
@@ -31,6 +41,30 @@ define(["angular", "cookie-monster", "ui-bootstrap"], function(angular, monster)
 			});
 		};
 
+		$scope.chooseTheme = function()
+		{			
+			$modal.open(
+			{
+				templateUrl: RAZOR_BASE_URL + "theme/partial/modal/theme-selection.html",
+				controller: "themeListModal"
+			}).result.then(function(theme)
+			{
+				if (theme == "default")
+				{
+					$scope.site.default_theme = "";
+					$scope.site.themeData = null;
+				}
+				else
+				{
+					$scope.site.default_theme = theme.handle + "/" + theme.extension + "/" + theme.manifest + ".manifest.json";
+					$scope.site.themeData = theme;
+				}
+
+				$scope.themeChanged = true; // flag so we can reload
+			});
+		};
+
+            
 		$scope.upgradeVersion = function()
 		{			
 			$modal.open(

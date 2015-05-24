@@ -129,6 +129,26 @@
 					</div>
 				</div>
 				<div class="form-group">
+				  <label for="default-theme" class="col-sm-3 control-label">Default Theme</label>
+					<div class="col-sm-7">
+						<button class="btn btn-default pull-left" ng-click="chooseTheme()" ng-disabled="user.access_level < 8"><i class="fa fa-tint"></i> Choose Theme</button>
+						<div class="selected-theme-box pull-left" ng-hide="site.themeData.handle">
+							<i class="fa fa-tint"></i>
+							<div class="text">
+								<span class="handle">razorcms</span>
+								<span class="theme">Default</span>
+							</div>
+						</div>						
+						<div class="selected-theme-box pull-left" ng-show="site.themeData.handle">
+							<i class="fa fa-tint"></i>
+							<div class="text">
+								<span class="handle" ng-show="site.themeData.handle">{{site.themeData.handle}}</span>
+								<span class="theme" ng-show="site.themeData.extension">{{site.themeData.name}} ({{site.themeData.layout}})</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
 					<div class="col-sm-offset-3 col-sm-7">
 						<button type="submit" class="btn btn-success" ng-click="save()" ng-disabled="form.$invalid || processing">
 							<i class="fa fa-check"></i>
